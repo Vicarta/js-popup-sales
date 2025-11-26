@@ -199,6 +199,111 @@ export const translations = {
       privacy: "Privacy Policy",
       support: "Support",
     },
+    terms: {
+      title: "Terms of Use",
+      lastUpdated: "Last Updated: January 2025",
+      sections: {
+        acceptance: {
+          title: "1. Acceptance of Terms",
+          content: "By accessing and using AIbizMate, you accept and agree to be bound by the terms and provision of this agreement. If you do not agree to these terms, please do not use our service.",
+        },
+        description: {
+          title: "2. Description of Service",
+          content: "AIbizMate provides AI-powered email monitoring and lead detection services. We scan your inbox and spam folder to identify potential business leads that may have been missed.",
+        },
+        userResponsibilities: {
+          title: "3. User Responsibilities",
+          content: "You are responsible for maintaining the confidentiality of your account credentials, including your App Password. You agree to use the service in compliance with all applicable laws and regulations. You must not use the service for any illegal or unauthorized purpose.",
+        },
+        dataUsage: {
+          title: "4. Data Usage",
+          content: "We process your email metadata (sender, subject, date) to identify potential leads. We do not store the full content of your emails. All data processing is done in accordance with our Privacy Policy.",
+        },
+        limitation: {
+          title: "5. Limitation of Liability",
+          content: "AIbizMate is provided 'as is' without warranties of any kind. We are not liable for any missed leads, lost revenue, or business opportunities. Our AI system aims for high accuracy but cannot guarantee 100% detection of all potential leads.",
+        },
+        termination: {
+          title: "6. Termination",
+          content: "You may cancel your subscription at any time. We reserve the right to terminate or suspend access to our service immediately, without prior notice, for any breach of these Terms.",
+        },
+        changes: {
+          title: "7. Changes to Terms",
+          content: "We reserve the right to modify these terms at any time. We will notify users of any significant changes via email or through our service.",
+        },
+      },
+    },
+    privacy: {
+      title: "Privacy Policy",
+      lastUpdated: "Last Updated: January 2025",
+      sections: {
+        intro: {
+          title: "Introduction",
+          content: "At AIbizMate, we take your privacy seriously. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our service.",
+        },
+        infoCollected: {
+          title: "Information We Collect",
+          content: "We collect email metadata including sender information, subject lines, dates, and email addresses. We do NOT store the full body content of your emails. We also collect account information such as your email address, App Password (encrypted), and subscription details.",
+        },
+        howWeUse: {
+          title: "How We Use Your Information",
+          content: "We use your information to: scan and analyze your emails for potential leads, provide you with notifications about missed opportunities, improve our AI algorithms and service quality, and process your subscription and billing.",
+        },
+        dataStorage: {
+          title: "Data Storage and Security",
+          content: "We use industry-standard encryption to protect your data. Your App Password is encrypted and never stored in plain text. Email metadata is stored securely on encrypted servers. We retain your data only as long as you maintain an active subscription.",
+        },
+        dataSharing: {
+          title: "Data Sharing",
+          content: "We DO NOT sell your data to third parties. We DO NOT share your email content with anyone. We may share anonymized, aggregated data for research and service improvement. We may disclose information if required by law or to protect our rights.",
+        },
+        yourRights: {
+          title: "Your Rights",
+          content: "You have the right to: access your personal data, request deletion of your data, opt-out of certain data processing, and cancel your subscription at any time. Upon cancellation, we will delete all your stored data within 30 days.",
+        },
+        cookies: {
+          title: "Cookies and Tracking",
+          content: "We use essential cookies for authentication and service functionality. We do not use advertising or tracking cookies. You can disable cookies in your browser, but some features may not work properly.",
+        },
+        contact: {
+          title: "Contact Us",
+          content: "If you have questions about this Privacy Policy, please contact us at privacy@aibizmate.com",
+        },
+      },
+    },
+    support: {
+      title: "Support",
+      subtitle: "We're here to help you get the most out of AIbizMate",
+      sections: {
+        contact: {
+          title: "Contact Us",
+          email: "Email: support@aibizmate.com",
+          response: "Response time: Within 24 hours",
+          description: "For general inquiries, technical issues, or billing questions, please reach out to our support team. We're real humans who genuinely care about helping you succeed.",
+        },
+        setup: {
+          title: "Setup Assistance",
+          description: "Having trouble creating an App Password or connecting your inbox? Don't worry - it happens! Our team will guide you through the process step-by-step. Most setups take less than 3 minutes once you're on a call with us.",
+        },
+        technical: {
+          title: "Technical Support",
+          description: "Experiencing issues with lead detection, notifications, or the dashboard? We're here to help troubleshoot and resolve any problems quickly. Our support team has direct access to our engineering team for faster resolutions.",
+        },
+        billing: {
+          title: "Billing & Subscriptions",
+          description: "Questions about your plan, upgrades, or cancellations? We make it simple. No hidden fees, no retention tricks. If you want to cancel, we'll process it immediately - no questions asked.",
+        },
+        feedback: {
+          title: "Feedback & Feature Requests",
+          description: "Have ideas for improving AIbizMate? We're all ears! Many of our best features came from user suggestions. Share your thoughts and help us build a better product for everyone.",
+        },
+        hours: {
+          title: "Support Hours",
+          description: "Monday - Friday: 9:00 AM - 6:00 PM (EET - Eastern European Time)",
+          weekend: "Weekend: Limited support for critical issues",
+        },
+      },
+    },
   },
   uk: {
     nav: {
@@ -397,6 +502,111 @@ export const translations = {
       terms: "Умови використання",
       privacy: "Політика конфіденційності",
       support: "Підтримка",
+    },
+    terms: {
+      title: "Умови використання",
+      lastUpdated: "Останнє оновлення: Січень 2025",
+      sections: {
+        acceptance: {
+          title: "1. Прийняття умов",
+          content: "Отримуючи доступ до AIbizMate та використовуючи його, ви приймаєте та погоджуєтеся бути зв'язаними умовами цієї угоди. Якщо ви не погоджуєтеся з цими умовами, будь ласка, не використовуйте наш сервіс.",
+        },
+        description: {
+          title: "2. Опис сервісу",
+          content: "AIbizMate надає послуги моніторингу електронної пошти та виявлення лідів на базі AI. Ми скануємо вашу вхідну скриньку та папку спам, щоб визначити потенційні бізнес-ліди, які могли бути пропущені.",
+        },
+        userResponsibilities: {
+          title: "3. Обов'язки користувача",
+          content: "Ви несете відповідальність за збереження конфіденційності облікових даних вашого облікового запису, включаючи ваш App Password. Ви погоджуєтеся використовувати сервіс відповідно до всіх застосовних законів та правил. Ви не повинні використовувати сервіс для будь-яких незаконних або несанкціонованих цілей.",
+        },
+        dataUsage: {
+          title: "4. Використання даних",
+          content: "Ми обробляємо метадані вашої електронної пошти (відправник, тема, дата) для визначення потенційних лідів. Ми не зберігаємо повний вміст ваших листів. Вся обробка даних здійснюється відповідно до нашої Політики конфіденційності.",
+        },
+        limitation: {
+          title: "5. Обмеження відповідальності",
+          content: "AIbizMate надається 'як є' без будь-яких гарантій. Ми не несемо відповідальності за будь-які пропущені ліди, втрачений дохід або бізнес-можливості. Наша система AI прагне високої точності, але не може гарантувати 100% виявлення всіх потенційних лідів.",
+        },
+        termination: {
+          title: "6. Припинення",
+          content: "Ви можете скасувати свою підписку в будь-який час. Ми залишаємо за собою право припинити або призупинити доступ до нашого сервісу негайно, без попереднього повідомлення, у разі будь-якого порушення цих Умов.",
+        },
+        changes: {
+          title: "7. Зміни умов",
+          content: "Ми залишаємо за собою право змінювати ці умови в будь-який час. Ми повідомимо користувачів про будь-які значні зміни електронною поштою або через наш сервіс.",
+        },
+      },
+    },
+    privacy: {
+      title: "Політика конфіденційності",
+      lastUpdated: "Останнє оновлення: Січень 2025",
+      sections: {
+        intro: {
+          title: "Вступ",
+          content: "В AIbizMate ми серйозно ставимося до вашої конфіденційності. Ця Політика конфіденційності пояснює, як ми збираємо, використовуємо, розкриваємо та захищаємо вашу інформацію, коли ви користуєтеся нашим сервісом.",
+        },
+        infoCollected: {
+          title: "Інформація, яку ми збираємо",
+          content: "Ми збираємо метадані електронної пошти, включаючи інформацію про відправника, теми листів, дати та адреси електронної пошти. Ми НЕ зберігаємо повний вміст ваших листів. Ми також збираємо інформацію про обліковий запис, таку як ваша адреса електронної пошти, App Password (зашифрований) та деталі підписки.",
+        },
+        howWeUse: {
+          title: "Як ми використовуємо вашу інформацію",
+          content: "Ми використовуємо вашу інформацію для: сканування та аналізу ваших листів на предмет потенційних лідів, надання вам повідомлень про пропущені можливості, покращення наших AI-алгоритмів та якості сервісу, обробки вашої підписки та виставлення рахунків.",
+        },
+        dataStorage: {
+          title: "Зберігання та безпека даних",
+          content: "Ми використовуємо стандартне шифрування для захисту ваших даних. Ваш App Password зашифрований і ніколи не зберігається у відкритому вигляді. Метадані електронної пошти зберігаються безпечно на зашифрованих серверах. Ми зберігаємо ваші дані лише до тих пір, поки ви підтримуєте активну підписку.",
+        },
+        dataSharing: {
+          title: "Обмін даними",
+          content: "Ми НЕ продаємо ваші дані третім особам. Ми НЕ ділимося вмістом вашої електронної пошти з ким-небудь. Ми можемо ділитися анонімними, агрегованими даними для досліджень та покращення сервісу. Ми можемо розкривати інформацію, якщо це вимагається законом або для захисту наших прав.",
+        },
+        yourRights: {
+          title: "Ваші права",
+          content: "Ви маєте право: отримати доступ до своїх персональних даних, запитати видалення ваших даних, відмовитися від певної обробки даних та скасувати підписку в будь-який час. Після скасування ми видалимо всі ваші збережені дані протягом 30 днів.",
+        },
+        cookies: {
+          title: "Cookies та відстеження",
+          content: "Ми використовуємо основні cookies для автентифікації та функціональності сервісу. Ми не використовуємо рекламні або відстежувальні cookies. Ви можете вимкнути cookies у своєму браузері, але деякі функції можуть не працювати належним чином.",
+        },
+        contact: {
+          title: "Зв'яжіться з нами",
+          content: "Якщо у вас є питання щодо цієї Політики конфіденційності, будь ласка, зв'яжіться з нами за адресою privacy@aibizmate.com",
+        },
+      },
+    },
+    support: {
+      title: "Підтримка",
+      subtitle: "Ми тут, щоб допомогти вам отримати максимум від AIbizMate",
+      sections: {
+        contact: {
+          title: "Зв'яжіться з нами",
+          email: "Email: support@aibizmate.com",
+          response: "Час відповіді: Протягом 24 годин",
+          description: "Для загальних запитів, технічних проблем або питань щодо оплати, будь ласка, зв'яжіться з нашою командою підтримки. Ми справжні люди, яким дійсно важливо допомогти вам досягти успіху.",
+        },
+        setup: {
+          title: "Допомога з налаштуванням",
+          description: "Виникли проблеми зі створенням App Password або підключенням вашої скриньки? Не хвилюйтеся - це буває! Наша команда проведе вас через процес крок за кроком. Більшість налаштувань займає менше 3 хвилин, коли ви на зв'язку з нами.",
+        },
+        technical: {
+          title: "Технічна підтримка",
+          description: "Виникли проблеми з виявленням лідів, сповіщеннями або дашбордом? Ми тут, щоб допомогти швидко діагностувати та вирішити будь-які проблеми. Наша команда підтримки має прямий доступ до нашої інженерної команди для швидшого вирішення.",
+        },
+        billing: {
+          title: "Оплата та підписки",
+          description: "Питання щодо вашого плану, оновлень або скасувань? Ми робимо це просто. Ніяких прихованих платежів, ніяких трюків з утриманням. Якщо ви хочете скасувати, ми обробимо це негайно - без зайвих питань.",
+        },
+        feedback: {
+          title: "Відгуки та запити функцій",
+          description: "Є ідеї щодо покращення AIbizMate? Ми всі вуха! Багато наших найкращих функцій прийшли з пропозицій користувачів. Поділіться своїми думками та допоможіть нам створити кращий продукт для всіх.",
+        },
+        hours: {
+          title: "Години підтримки",
+          description: "Понеділок - П'ятниця: 9:00 - 18:00 (EET - Східноєвропейський час)",
+          weekend: "Вихідні: Обмежена підтримка для критичних питань",
+        },
+      },
     },
   },
 };

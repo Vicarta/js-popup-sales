@@ -2,6 +2,7 @@ import { Navigation } from '@/components/Navigation';
 import { Footer } from '@/components/Footer';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useTranslation } from '@/lib/i18n';
+import founderImage from '@/assets/founder-color.jpg';
 
 const About = () => {
   const { language } = useLanguage();
@@ -14,6 +15,17 @@ const About = () => {
       <section className="py-20 px-4">
         <div className="container mx-auto max-w-4xl">
           <h1 className="text-5xl font-bold text-center mb-12">{t.about.title}</h1>
+          
+          {/* Founder Image */}
+          <div className="mb-12 flex justify-center">
+            <div className="relative w-full max-w-2xl aspect-[16/10] overflow-hidden rounded-lg shadow-xl">
+              <img 
+                src={founderImage} 
+                alt={t.about.founder}
+                className="w-full h-full object-cover transition-all duration-500 grayscale hover:grayscale-0"
+              />
+            </div>
+          </div>
           
           <div className="prose prose-lg max-w-none space-y-6">
             {t.about.story.map((paragraph, index) => (
