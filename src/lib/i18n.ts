@@ -15,7 +15,7 @@ export const translations = {
       cta: 'Start Free Audit',
     },
     auditSection: {
-      title: 'Find Missed Leads Now',
+      title: 'Find Missed Leads Now (Step by Step)',
     },
     wizard: {
       step1Title: 'What\'s your average deal value?',
@@ -139,7 +139,7 @@ export const translations = {
       cta: 'Почати безкоштовний аудит',
     },
     auditSection: {
-      title: 'Знайдіть пропущені ліди зараз',
+      title: 'Знайдіть пропущені ліди зараз (покроково)',
     },
     wizard: {
       step1Title: 'Яка середня вартість вашої угоди?',
