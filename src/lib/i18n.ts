@@ -19,7 +19,7 @@ export const translations = {
     },
     wizard: {
       step1Title: 'What\'s your average deal value?',
-      step1Placeholder: 'Enter amount in USD',
+      step1Placeholder: 'Enter approximate amount in USD',
       step2Title: 'Connect your inbox',
       step2Gmail: 'How to connect Gmail',
       step2Outlook: 'How to connect Outlook',
@@ -143,7 +143,7 @@ export const translations = {
     },
     wizard: {
       step1Title: 'Яка середня вартість вашої угоди?',
-      step1Placeholder: 'Введіть суму в USD',
+      step1Placeholder: 'Введіть приблизну суму в USD',
       step2Title: 'Підключіть вашу скриньку',
       step2Gmail: 'Як підключити Gmail',
       step2Outlook: 'Як підключити Outlook',
