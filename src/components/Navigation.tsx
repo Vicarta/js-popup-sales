@@ -43,6 +43,12 @@ export const Navigation = () => {
             >
               {t.nav.aboutUs}
             </Link>
+            <Link
+              to="/support"
+              className="text-muted-foreground hover:text-foreground transition-colors"
+            >
+              {t.nav.support}
+            </Link>
           </div>
 
           {/* Right side actions */}
@@ -102,6 +108,13 @@ export const Navigation = () => {
               onClick={() => setMobileMenuOpen(false)}
             >
               {t.nav.aboutUs}
+            </Link>
+            <Link
+              to="/support"
+              className="block text-muted-foreground hover:text-foreground transition-colors"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              {t.nav.support}
             </Link>
             <div className="flex flex-col space-y-2 pt-4 border-t border-border">
               <Button
