@@ -23,9 +23,11 @@ const Home = () => {
           <p className="text-xl text-muted-foreground mb-8">
             {t.hero.subheadline}
           </p>
-          <Button size="lg" className="text-lg px-8 py-6 h-auto">
-            {t.hero.cta}
-          </Button>
+          <a href="#audit-wizard">
+            <Button size="lg" className="text-lg px-8 py-6 h-auto">
+              {t.hero.cta}
+            </Button>
+          </a>
         </div>
       </section>
 
@@ -68,9 +70,33 @@ const Home = () => {
       </section>
 
       {/* Audit Wizard Section */}
-      <section className="py-20 px-4">
+      <section id="audit-wizard" className="py-20 px-4">
         <div className="container mx-auto">
+          <h2 className="text-4xl font-bold text-center mb-12">
+            {t.auditSection.title}
+          </h2>
           <AuditWizard />
+        </div>
+      </section>
+
+      {/* Why it is important Section */}
+      <section className="py-20 px-4 bg-card">
+        <div className="container mx-auto max-w-4xl">
+          <h2 className="text-4xl font-bold text-center mb-12">
+            {t.whyImportant.title}
+          </h2>
+          <div className="space-y-6 text-lg text-muted-foreground leading-relaxed">
+            {t.whyImportant.content.map((paragraph, index) => (
+              <p key={index}>{paragraph}</p>
+            ))}
+          </div>
+          <div className="text-center mt-12">
+            <a href="/pricing">
+              <Button size="lg" className="text-lg px-8 py-6 h-auto">
+                {t.whyImportant.cta}
+              </Button>
+            </a>
+          </div>
         </div>
       </section>
 
