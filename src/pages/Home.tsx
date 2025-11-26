@@ -5,13 +5,12 @@ import { Button } from '@/components/ui/button';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useTranslation } from '@/lib/i18n';
 import { Mail, Shield, Zap } from 'lucide-react';
-
 const Home = () => {
-  const { language } = useLanguage();
+  const {
+    language
+  } = useLanguage();
   const t = useTranslation(language);
-
-  return (
-    <div className="min-h-screen flex flex-col">
+  return <div className="min-h-screen flex flex-col">
       <Navigation />
       
       {/* Hero Section */}
@@ -43,27 +42,21 @@ const Home = () => {
                 <Mail className="w-8 h-8 text-primary" />
               </div>
               <h3 className="text-xl font-semibold mb-3">Connect Your Inbox</h3>
-              <p className="text-muted-foreground">
-                Simple setup in minutes. Connect Gmail or Outlook and start monitoring.
-              </p>
+              <p className="text-muted-foreground">Simple setup in minutes. Connect your email account safely.</p>
             </div>
             <div className="text-center p-6">
               <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Zap className="w-8 h-8 text-primary" />
               </div>
               <h3 className="text-xl font-semibold mb-3">AI Scans Your Email</h3>
-              <p className="text-muted-foreground">
-                Our AI works 24/7 to identify missed leads in spam and inbox.
-              </p>
+              <p className="text-muted-foreground">AI works 24/7 to identify missed leads in Spam and Inbox.</p>
             </div>
             <div className="text-center p-6">
               <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Shield className="w-8 h-8 text-primary" />
               </div>
               <h3 className="text-xl font-semibold mb-3">Get Instant Alerts</h3>
-              <p className="text-muted-foreground">
-                Receive notifications via Telegram, Viber, SMS, or even voice calls.
-              </p>
+              <p className="text-muted-foreground">Receive instant notifications via messengers, SMS, or voice call.</p>
             </div>
           </div>
         </div>
@@ -86,9 +79,7 @@ const Home = () => {
             {t.whyImportant.title}
           </h2>
           <div className="space-y-6 text-lg text-muted-foreground leading-relaxed">
-            {t.whyImportant.content.map((paragraph, index) => (
-              <p key={index}>{paragraph}</p>
-            ))}
+            {t.whyImportant.content.map((paragraph, index) => <p key={index}>{paragraph}</p>)}
           </div>
           <div className="text-center mt-12">
             <a href="/pricing">
@@ -101,8 +92,6 @@ const Home = () => {
       </section>
 
       <Footer />
-    </div>
-  );
+    </div>;
 };
-
 export default Home;
