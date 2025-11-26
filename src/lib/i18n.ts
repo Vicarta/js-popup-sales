@@ -14,6 +14,9 @@ export const translations = {
       subheadline: 'AI that rescues leads you missed in your Spam and Inbox.',
       cta: 'Start Free Audit',
     },
+    auditSection: {
+      title: 'Find Missed Leads Now',
+    },
     wizard: {
       step1Title: 'What\'s your average deal value?',
       step1Placeholder: 'Enter amount in USD',
@@ -30,6 +33,16 @@ export const translations = {
       step5Protection: 'Get Full Lead Protection',
       nextStep: 'Next Step',
       previousStep: 'Previous',
+    },
+    whyImportant: {
+      title: 'Why it is important?',
+      content: [
+        'Every day, leads slip through the cracks. A single missed email could be the client you\'ve been waiting for—one with a $50,000 deal on the table. But it ended up in spam. Or buried under ten newsletters. Or simply ignored because your inbox is a chaotic mess.',
+        'You work hard to generate leads. You invest in ads, SEO, networking. Yet the moment a lead reaches out, your system lets you down. The irony? Your inbox—the very tool meant to capture opportunities—becomes the bottleneck that chokes your growth.',
+        'Think about it: How many potential clients gave up on you because you didn\'t respond fast enough? How many deals evaporated while you were drowning in email noise? Every lost lead isn\'t just a missed sale—it\'s a crack in your reputation, a dent in your cash flow, and a gift to your competitors.',
+        'We built AIbizMate because we\'ve been there. We know the gut-wrenching feeling of discovering a hot lead... three weeks too late. We understand that for SMBs, every client matters. Every response counts. And every delay hurts.',
+      ],
+      cta: 'Ready to know about tariffs?',
     },
     pricing: {
       title: 'Pricing Plans',
@@ -125,6 +138,9 @@ export const translations = {
       subheadline: 'AI, який рятує ліди, що ви пропустили в спамі та вхідних.',
       cta: 'Почати безкоштовний аудит',
     },
+    auditSection: {
+      title: 'Знайдіть пропущені ліди зараз',
+    },
     wizard: {
       step1Title: 'Яка середня вартість вашої угоди?',
       step1Placeholder: 'Введіть суму в USD',
@@ -141,6 +157,16 @@ export const translations = {
       step5Protection: 'Отримати повний захист лідів',
       nextStep: 'Далі',
       previousStep: 'Назад',
+    },
+    whyImportant: {
+      title: 'Чому це важливо?',
+      content: [
+        'Кожен день ліди проскочують крізь тріщини. Один пропущений лист може бути клієнтом, якого ви чекали — з угодою на $50,000. Але він потрапив у спам. Або закопаний під десятьма розсилками. Або просто проігнорований, бо ваша скринька — хаотичний безлад.',
+        'Ви важко працюєте, щоб генерувати ліди. Ви інвестуєте в рекламу, SEO, нетворкінг. Проте в момент, коли лід виходить на зв\'язок, ваша система підводить вас. Іронія? Ваша скринька — інструмент, призначений для захоплення можливостей — стає пляшковим горлечком, що душить ваше зростання.',
+        'Подумайте про це: скільки потенційних клієнтів відмовилися від вас, бо ви не відповіли достатньо швидко? Скільки угод випарувалися, поки ви тонули в поштовому шумі? Кожен втрачений лід — це не просто пропущений продаж. Це тріщина у вашій репутації, вм\'ятина у вашому грошовому потоці та подарунок для ваших конкурентів.',
+        'Ми створили AIbizMate, бо самі через це проходили. Ми знаємо це нутряне відчуття, коли виявляєш гарячий лід... через три тижні. Ми розуміємо, що для МСП кожен клієнт важливий. Кожна відповідь має значення. І кожна затримка болить.',
+      ],
+      cta: 'Готові дізнатись про тарифи?',
     },
     pricing: {
       title: 'Тарифні плани',

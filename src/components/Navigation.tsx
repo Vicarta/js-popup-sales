@@ -59,9 +59,11 @@ export const Navigation = () => {
             <Button variant="ghost" size="sm">
               {t.nav.login}
             </Button>
-            <Button size="sm" className="bg-primary hover:bg-primary/90">
-              {t.nav.findLeads}
-            </Button>
+            <Link to="/#audit-wizard">
+              <Button size="sm" className="bg-primary hover:bg-primary/90">
+                {t.nav.findLeads}
+              </Button>
+            </Link>
           </div>
 
           {/* Mobile menu button */}
@@ -114,9 +116,11 @@ export const Navigation = () => {
               <Button variant="ghost" size="sm" className="justify-start">
                 {t.nav.login}
               </Button>
-              <Button size="sm" className="bg-primary hover:bg-primary/90">
-                {t.nav.findLeads}
-              </Button>
+              <Link to="/#audit-wizard" onClick={() => setMobileMenuOpen(false)}>
+                <Button size="sm" className="bg-primary hover:bg-primary/90 w-full">
+                  {t.nav.findLeads}
+                </Button>
+              </Link>
             </div>
           </div>
         )}
