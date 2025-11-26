@@ -1,6 +1,7 @@
 import { Navigation } from '@/components/Navigation';
 import { Footer } from '@/components/Footer';
 import { AuditWizard } from '@/components/AuditWizard';
+import { FAQ } from '@/components/FAQ';
 import { Button } from '@/components/ui/button';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useTranslation } from '@/lib/i18n';
@@ -90,6 +91,8 @@ const Home = () => {
           </div>
         </div>
       </section>
+
+      <FAQ />
 
       <Footer />
     </div>;
