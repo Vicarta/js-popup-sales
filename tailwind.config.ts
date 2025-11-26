@@ -57,6 +57,11 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        "trust-coral": "hsl(var(--trust-coral))",
+        "deep-walnut": "hsl(var(--deep-walnut))",
+        "warm-honey": "hsl(var(--warm-honey))",
+        "stable-umber": "hsl(var(--stable-umber))",
+        "soft-linen": "hsl(var(--soft-linen))",
       },
       borderRadius: {
         lg: "var(--radius)",
