@@ -92,6 +92,7 @@ class JSPopupSale {
     // Create overlay
     this.overlay = document.createElement('div');
     this.overlay.className = `js-popup-sale-overlay position-${this.config.position}`;
+    this.overlay.style.display = 'none';
     
     // Create popup with custom CSS variables
     const popup = document.createElement('div');
