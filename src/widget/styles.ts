@@ -270,7 +270,7 @@ export const widgetStyles = `
 
 /* Horizontal layout */
 .aibizmate-popup.layout-horizontal {
-  max-width: 600px;
+  max-width: 520px;
   display: flex;
   flex-direction: row;
   padding: 0;
@@ -296,7 +296,10 @@ export const widgetStyles = `
 
 .aibizmate-popup.layout-horizontal .aibizmate-popup-content {
   flex: 1;
+  min-width: 0;
   padding: 32px 32px 32px 0;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 @media (max-width: 640px) {
