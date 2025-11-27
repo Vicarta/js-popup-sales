@@ -463,7 +463,7 @@ export const translations = {
         ],
       },
       addons: {
-        title: "Додатки",
+        title: "Екстра можливості",
         subtitle: "Покращте свій план додатковими функціями",
         viber: {
           name: "Сповіщення Viber",
