@@ -273,29 +273,32 @@ export const widgetStyles = `
   max-width: 600px;
   display: flex;
   flex-direction: row;
+  padding: 0;
 }
 
 .aibizmate-popup.layout-horizontal .aibizmate-popup-image-container {
   width: 35%;
   min-width: 140px;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  align-items: stretch;
+  justify-content: flex-start;
   padding: 0;
+  border-radius: 16px 0 0 16px;
+  overflow: hidden;
 }
 
 .aibizmate-popup.layout-horizontal .aibizmate-popup-image {
-  width: auto;
+  width: 100%;
   height: 100%;
-  max-width: 100%;
-  object-fit: contain;
-  border-radius: 12px;
+  object-fit: cover;
+  object-position: left center;
+  border-radius: 0;
   margin-bottom: 0;
 }
 
 .aibizmate-popup.layout-horizontal .aibizmate-popup-content {
   width: 65%;
-  padding: 24px 24px 24px 20px;
+  padding: 32px 32px 32px 24px;
 }
 
 @media (max-width: 640px) {
