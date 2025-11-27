@@ -28,13 +28,16 @@ const WidgetDemo = () => {
     theme: 'light',
     position: 'center',
     inheritFont: 'false',
+    primaryColor: '#f97316',
+    backgroundColor: '',
+    textColor: '',
   });
 
   const generateCode = () => {
     const featuresArray = config.features.split('\n').filter(f => f.trim());
     const featuresJson = JSON.stringify(featuresArray);
     
-    return `<!-- AIbizMate Popup Widget -->
+    let code = `<!-- AIbizMate Popup Widget -->
 <script 
   src="https://yourdomain.com/widget.js"
   data-trigger="${config.trigger}"
@@ -48,8 +51,14 @@ const WidgetDemo = () => {
   data-cta-url="${config.ctaUrl}"${config.image ? `\n  data-image="${config.image}"` : ''}
   data-theme="${config.theme}"
   data-position="${config.position}"
-  data-inherit-font="${config.inheritFont}"
-></script>`;
+  data-inherit-font="${config.inheritFont}"`;
+  
+    if (config.primaryColor) code += `\n  data-primary-color="${config.primaryColor}"`;
+    if (config.backgroundColor) code += `\n  data-background-color="${config.backgroundColor}"`;
+    if (config.textColor) code += `\n  data-text-color="${config.textColor}"`;
+    
+    code += `\n></script>`;
+    return code;
   };
 
   const handleCopy = () => {
@@ -81,6 +90,9 @@ const WidgetDemo = () => {
         theme: config.theme as 'light' | 'dark',
         position: config.position as 'center' | 'top-left' | 'top-center' | 'top-right' | 'center-left' | 'center-right' | 'bottom-left' | 'bottom-center' | 'bottom-right',
         inheritFont: config.inheritFont === 'true',
+        primaryColor: config.primaryColor || undefined,
+        backgroundColor: config.backgroundColor || undefined,
+        textColor: config.textColor || undefined,
       });
       widget.init();
       widget.show();
@@ -152,6 +164,7 @@ const WidgetDemo = () => {
                     value={config.dismissDays}
                     onChange={(e) => setConfig({...config, dismissDays: e.target.value})}
                   />
+                  <p className="text-xs text-muted-foreground mt-1">0 = завжди показувати</p>
                 </div>
 
                 <div>
@@ -252,6 +265,33 @@ const WidgetDemo = () => {
                       <SelectItem value="true">Так</SelectItem>
                     </SelectContent>
                   </Select>
+                </div>
+
+                <div>
+                  <Label>Колір кнопки (HEX)</Label>
+                  <Input 
+                    value={config.primaryColor}
+                    onChange={(e) => setConfig({...config, primaryColor: e.target.value})}
+                    placeholder="#f97316"
+                  />
+                </div>
+
+                <div>
+                  <Label>Колір фону (HEX, опціонально)</Label>
+                  <Input 
+                    value={config.backgroundColor}
+                    onChange={(e) => setConfig({...config, backgroundColor: e.target.value})}
+                    placeholder="#ffffff"
+                  />
+                </div>
+
+                <div>
+                  <Label>Колір тексту (HEX, опціонально)</Label>
+                  <Input 
+                    value={config.textColor}
+                    onChange={(e) => setConfig({...config, textColor: e.target.value})}
+                    placeholder="#000000"
+                  />
                 </div>
               </div>
 
