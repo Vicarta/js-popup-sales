@@ -27,6 +27,7 @@ const WidgetDemo = () => {
     image: '',
     theme: 'light',
     position: 'center',
+    layout: 'vertical',
     inheritFont: 'false',
     primaryColor: '#f97316',
     backgroundColor: '',
@@ -51,6 +52,7 @@ const WidgetDemo = () => {
   data-cta-url="${config.ctaUrl}"${config.image ? `\n  data-image="${config.image}"` : ''}
   data-theme="${config.theme}"
   data-position="${config.position}"
+  data-layout="${config.layout}"
   data-inherit-font="${config.inheritFont}"`;
   
     if (config.primaryColor) code += `\n  data-primary-color="${config.primaryColor}"`;
@@ -89,6 +91,7 @@ const WidgetDemo = () => {
         image: config.image || undefined,
         theme: config.theme as 'light' | 'dark',
         position: config.position as 'center' | 'top-left' | 'top-center' | 'top-right' | 'center-left' | 'center-right' | 'bottom-left' | 'bottom-center' | 'bottom-right',
+        layout: config.layout as 'vertical' | 'horizontal',
         inheritFont: config.inheritFont === 'true',
         primaryColor: config.primaryColor || undefined,
         backgroundColor: config.backgroundColor || undefined,
@@ -217,6 +220,24 @@ const WidgetDemo = () => {
                     onChange={(e) => setConfig({...config, image: e.target.value})}
                     placeholder="https://..."
                   />
+                  <p className="text-xs text-muted-foreground mt-1">
+                    {config.layout === 'vertical' 
+                      ? 'Горизонтальне зображення (480×200 px, 2.4:1)' 
+                      : 'Вертикальне зображення (150×350 px, 1:2.3)'}
+                  </p>
+                </div>
+
+                <div>
+                  <Label>Лейаут</Label>
+                  <Select value={config.layout} onValueChange={(v) => setConfig({...config, layout: v})}>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="vertical">Вертикальний (зображення зверху)</SelectItem>
+                      <SelectItem value="horizontal">Горизонтальний (зображення зліва)</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
@@ -372,6 +393,7 @@ const WidgetDemo = () => {
                   <ul className="text-sm text-muted-foreground space-y-1">
                     <li><code>**text**</code> — жирний текст</li>
                     <li><code>_text_</code> — курсив</li>
+                    <li><code>~~text~~</code> — закреслений текст</li>
                     <li><code>[text](url)</code> — посилання</li>
                     <li>Emoji підтримуються нативно 🚀✨🎉</li>
                   </ul>
