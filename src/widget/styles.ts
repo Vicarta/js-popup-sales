@@ -172,10 +172,10 @@ export const widgetStyles = `
 }
 
 .aibizmate-popup-title {
-  font-size: 24px;
+  font-size: 22px;
   font-weight: 600;
   line-height: 1.3;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
   color: #1a1a1a;
 }
 
@@ -184,10 +184,10 @@ export const widgetStyles = `
 }
 
 .aibizmate-popup-subtitle {
-  font-size: 15px;
-  line-height: 1.6;
+  font-size: 14px;
+  line-height: 1.5;
   color: #666;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 
 .theme-dark .aibizmate-popup-subtitle {
@@ -196,16 +196,16 @@ export const widgetStyles = `
 
 .aibizmate-popup-features {
   list-style: none;
-  margin: 0 0 24px 0;
+  margin: 0 0 20px 0;
   padding: 0;
 }
 
 .aibizmate-popup-features li {
-  padding: 10px 0;
-  padding-left: 28px;
+  padding: 8px 0;
+  padding-left: 24px;
   position: relative;
   font-size: 14px;
-  line-height: 1.5;
+  line-height: 1.4;
   color: #333;
 }
 
@@ -280,7 +280,7 @@ export const widgetStyles = `
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 24px 0 24px 24px;
+  padding: 20px 0 20px 20px;
 }
 
 .aibizmate-popup.layout-horizontal .aibizmate-popup-image {
@@ -294,7 +294,7 @@ export const widgetStyles = `
 
 .aibizmate-popup.layout-horizontal .aibizmate-popup-content {
   width: 65%;
-  padding: 40px 32px 32px 24px;
+  padding: 24px 24px 24px 20px;
 }
 
 @media (max-width: 640px) {
