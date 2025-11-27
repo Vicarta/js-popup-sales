@@ -165,8 +165,9 @@ export const widgetStyles = `
 
 .aibizmate-popup-image {
   width: 100%;
-  height: 200px;
-  object-fit: cover;
+  height: auto;
+  max-height: 300px;
+  object-fit: contain;
   border-radius: 12px;
   margin-bottom: 24px;
 }
@@ -284,9 +285,9 @@ export const widgetStyles = `
 }
 
 .aibizmate-popup.layout-horizontal .aibizmate-popup-image {
-  width: 100%;
-  height: auto;
-  max-height: 350px;
+  width: auto;
+  height: 100%;
+  max-width: 100%;
   object-fit: contain;
   border-radius: 12px;
   margin-bottom: 0;
