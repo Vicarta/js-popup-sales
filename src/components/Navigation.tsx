@@ -60,7 +60,7 @@ export const Navigation = () => {
               className="gap-2"
             >
               <Globe className="w-4 h-4" />
-              {language === 'en' ? 'EN' : 'UK'}
+              {language === 'en' ? 'UK' : 'EN'}
             </Button>
             <Button variant="ghost" size="sm">
               {t.nav.login}
@@ -124,7 +124,7 @@ export const Navigation = () => {
                 className="justify-start gap-2"
               >
                 <Globe className="w-4 h-4" />
-                {language === 'en' ? 'English' : 'Українська'}
+                {language === 'en' ? 'Українська' : 'English'}
               </Button>
               <Button variant="ghost" size="sm" className="justify-start">
                 {t.nav.login}
