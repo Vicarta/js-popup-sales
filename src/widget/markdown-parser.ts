@@ -3,6 +3,8 @@ export function parseMarkdown(text: string): string {
   if (!text) return '';
   
   return text
+    // Strikethrough: ~~text~~
+    .replace(/~~(.+?)~~/g, '<del>$1</del>')
     // Bold: **text** or __text__
     .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
     .replace(/__(.+?)__/g, '<strong>$1</strong>')

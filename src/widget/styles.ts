@@ -262,6 +262,63 @@ export const widgetStyles = `
   font-style: italic;
 }
 
+.aibizmate-popup-content del {
+  text-decoration: line-through;
+  opacity: 0.7;
+}
+
+/* Horizontal layout */
+.aibizmate-popup.layout-horizontal {
+  max-width: 600px;
+  display: flex;
+  flex-direction: row;
+}
+
+.aibizmate-popup.layout-horizontal .aibizmate-popup-image-container {
+  width: 35%;
+  min-width: 140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 0 24px 24px;
+}
+
+.aibizmate-popup.layout-horizontal .aibizmate-popup-image {
+  width: 100%;
+  height: auto;
+  max-height: 350px;
+  object-fit: contain;
+  border-radius: 12px;
+  margin-bottom: 0;
+}
+
+.aibizmate-popup.layout-horizontal .aibizmate-popup-content {
+  width: 65%;
+  padding: 40px 32px 32px 24px;
+}
+
+@media (max-width: 640px) {
+  .aibizmate-popup.layout-horizontal {
+    flex-direction: column;
+    max-width: none;
+  }
+  
+  .aibizmate-popup.layout-horizontal .aibizmate-popup-image-container {
+    width: 100%;
+    padding: 24px 24px 0 24px;
+  }
+  
+  .aibizmate-popup.layout-horizontal .aibizmate-popup-image {
+    max-height: 180px;
+    width: auto;
+    max-width: 100%;
+  }
+  
+  .aibizmate-popup.layout-horizontal .aibizmate-popup-content {
+    width: 100%;
+    padding: 16px 24px 24px 24px;
+  }
+
 @media (max-width: 640px) {
   .aibizmate-popup {
     width: 95%;

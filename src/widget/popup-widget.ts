@@ -14,6 +14,7 @@ interface PopupConfig {
   image?: string;
   theme?: 'light' | 'dark';
   position?: 'center' | 'top-left' | 'top-center' | 'top-right' | 'center-left' | 'center-right' | 'bottom-left' | 'bottom-center' | 'bottom-right';
+  layout?: 'vertical' | 'horizontal';
   inheritFont?: boolean;
   primaryColor?: string;
   backgroundColor?: string;
@@ -40,6 +41,7 @@ class PopupWidget {
       image: config.image || '',
       theme: config.theme || 'light',
       position: config.position || 'center',
+      layout: config.layout || 'vertical',
       inheritFont: config.inheritFont || false,
       primaryColor: config.primaryColor || '#f97316',
       backgroundColor: config.backgroundColor || '',
@@ -141,7 +143,7 @@ class PopupWidget {
     
     // Create popup
     const popup = document.createElement('div');
-    popup.className = `aibizmate-popup theme-${this.config.theme}`;
+    popup.className = `aibizmate-popup theme-${this.config.theme} layout-${this.config.layout}`;
     
     // Close button
     const closeBtn = document.createElement('button');
@@ -149,14 +151,24 @@ class PopupWidget {
     closeBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none"><path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/></svg>';
     closeBtn.onclick = () => this.dismiss();
     
+    popup.appendChild(closeBtn);
+    
+    if (this.config.layout === 'horizontal' && this.config.image) {
+      // Horizontal layout: image container + content container
+      const imageContainer = document.createElement('div');
+      imageContainer.className = 'aibizmate-popup-image-container';
+      imageContainer.innerHTML = `<img src="${this.config.image}" alt="" class="aibizmate-popup-image">`;
+      popup.appendChild(imageContainer);
+    }
+    
     // Content
     const content = document.createElement('div');
     content.className = 'aibizmate-popup-content';
     
     let html = '';
     
-    // Image
-    if (this.config.image) {
+    // Image (only for vertical layout)
+    if (this.config.layout === 'vertical' && this.config.image) {
       html += `<img src="${this.config.image}" alt="" class="aibizmate-popup-image">`;
     }
     
@@ -186,7 +198,6 @@ class PopupWidget {
     
     content.innerHTML = html;
     
-    popup.appendChild(closeBtn);
     popup.appendChild(content);
     this.overlay.appendChild(popup);
     this.shadowRoot.appendChild(this.overlay);
@@ -298,6 +309,7 @@ function autoInit() {
       image: script.dataset.image,
       theme: (script.dataset.theme as any) || 'light',
       position: (script.dataset.position as any) || 'center',
+      layout: (script.dataset.layout as 'vertical' | 'horizontal') || 'vertical',
       inheritFont: script.dataset.inheritFont === 'true',
       primaryColor: script.dataset.primaryColor,
       backgroundColor: script.dataset.backgroundColor,
