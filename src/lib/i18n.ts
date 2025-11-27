@@ -10,6 +10,20 @@ export const translations = {
       login: "Login",
       findLeads: "Find Missed Leads",
     },
+    howItWorks: {
+      step1: {
+        title: "Connect Your Inbox",
+        description: "Simple setup in minutes. Connect your email account safely.",
+      },
+      step2: {
+        title: "AI Scans Your Email",
+        description: "AI works 24/7 to identify missed leads in Spam and Inbox.",
+      },
+      step3: {
+        title: "Get Instant Alerts",
+        description: "Receive instant notifications via messengers, SMS, or voice call.",
+      },
+    },
     hero: {
       headline: "Leads in spam, unanswered inquiries — lost sales. Let's fix all.",
       subheadline: "AI that rescues leads you missed in your Spam and Inbox.",
@@ -343,6 +357,20 @@ export const translations = {
       support: "Підтримка",
       login: "Увійти",
       findLeads: "Знайти пропущені ліди",
+    },
+    howItWorks: {
+      step1: {
+        title: "Підключіть вашу пошту",
+        description: "Проста налаштування за кілька хвилин. Безпечно підключіть свій поштовий акаунт.",
+      },
+      step2: {
+        title: "AI сканує вашу пошту",
+        description: "AI працює 24/7, щоб виявити пропущені ліди в спамі та вхідних.",
+      },
+      step3: {
+        title: "Отримуйте миттєві сповіщення",
+        description: "Отримуйте миттєві повідомлення через месенджери, SMS або голосовий дзвінок.",
+      },
     },
     hero: {
       headline: "Ліди в спамі, неопрацьовані запити — втрачені продажі.\nДавайте це виправимо!",

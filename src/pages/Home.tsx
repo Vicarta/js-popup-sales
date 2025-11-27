@@ -42,22 +42,22 @@ const Home = () => {
               <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Mail className="w-8 h-8 text-primary" />
               </div>
-              <h3 className="text-xl font-semibold mb-3">Connect Your Inbox</h3>
-              <p className="text-muted-foreground">Simple setup in minutes. Connect your email account safely.</p>
+              <h3 className="text-xl font-semibold mb-3">{t.howItWorks.step1.title}</h3>
+              <p className="text-muted-foreground">{t.howItWorks.step1.description}</p>
             </div>
             <div className="text-center p-6">
               <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Zap className="w-8 h-8 text-primary" />
               </div>
-              <h3 className="text-xl font-semibold mb-3">AI Scans Your Email</h3>
-              <p className="text-muted-foreground">AI works 24/7 to identify missed leads in Spam and Inbox.</p>
+              <h3 className="text-xl font-semibold mb-3">{t.howItWorks.step2.title}</h3>
+              <p className="text-muted-foreground">{t.howItWorks.step2.description}</p>
             </div>
             <div className="text-center p-6">
               <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Shield className="w-8 h-8 text-primary" />
               </div>
-              <h3 className="text-xl font-semibold mb-3">Get Instant Alerts</h3>
-              <p className="text-muted-foreground">Receive instant notifications via messengers, SMS, or voice call.</p>
+              <h3 className="text-xl font-semibold mb-3">{t.howItWorks.step3.title}</h3>
+              <p className="text-muted-foreground">{t.howItWorks.step3.description}</p>
             </div>
           </div>
         </div>
