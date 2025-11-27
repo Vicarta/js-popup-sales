@@ -79,7 +79,7 @@ const WidgetDemo = () => {
         ctaUrl: config.ctaUrl,
         image: config.image || undefined,
         theme: config.theme as 'light' | 'dark',
-        position: config.position as 'center' | 'bottom-right',
+        position: config.position as 'center' | 'top-left' | 'top-center' | 'top-right' | 'center-left' | 'center-right' | 'bottom-left' | 'bottom-center' | 'bottom-right',
         inheritFont: config.inheritFont === 'true',
       });
       widget.init();
@@ -228,6 +228,13 @@ const WidgetDemo = () => {
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="center">Center</SelectItem>
+                        <SelectItem value="top-left">Top Left</SelectItem>
+                        <SelectItem value="top-center">Top Center</SelectItem>
+                        <SelectItem value="top-right">Top Right</SelectItem>
+                        <SelectItem value="center-left">Center Left</SelectItem>
+                        <SelectItem value="center-right">Center Right</SelectItem>
+                        <SelectItem value="bottom-left">Bottom Left</SelectItem>
+                        <SelectItem value="bottom-center">Bottom Center</SelectItem>
                         <SelectItem value="bottom-right">Bottom Right</SelectItem>
                       </SelectContent>
                     </Select>
@@ -248,10 +255,26 @@ const WidgetDemo = () => {
                 </div>
               </div>
 
-              <Button onClick={handlePreview} className="w-full" size="lg">
-                <Eye className="w-4 h-4 mr-2" />
-                Попередній перегляд
-              </Button>
+              <div className="grid grid-cols-2 gap-3">
+                <Button onClick={handlePreview} className="w-full" size="lg">
+                  <Eye className="w-4 h-4 mr-2" />
+                  Попередній перегляд
+                </Button>
+                <Button 
+                  onClick={() => {
+                    localStorage.removeItem('aibizmate_popup_dismissed');
+                    toast({
+                      title: "Dismiss скинуто",
+                      description: "Тепер віджет знову буде показуватись",
+                    });
+                  }}
+                  variant="outline"
+                  className="w-full"
+                  size="lg"
+                >
+                  Скинути dismiss
+                </Button>
+              </div>
             </Card>
 
             {/* Generated Code */}
@@ -284,13 +307,23 @@ const WidgetDemo = () => {
               </div>
 
               <div className="mt-6 space-y-4">
-                <div>
-                  <h3 className="font-semibold mb-2">Збірка віджету</h3>
-                  <div className="bg-muted rounded p-3">
-                    <code className="text-sm">npm run build:widget</code>
+                <div className="p-4 bg-primary/5 border border-primary/20 rounded-lg">
+                  <h3 className="font-semibold mb-2 flex items-center gap-2">
+                    📦 Збірка віджету
+                  </h3>
+                  <div className="bg-background rounded p-3 mb-2">
+                    <code className="text-sm font-mono">npm run build:widget</code>
                   </div>
-                  <p className="text-sm text-muted-foreground mt-2">
-                    Віджет буде зібраний в папку <code>dist-widget/widget.js</code>
+                  <p className="text-sm text-muted-foreground">
+                    Перед цим додайте скрипт у <code>package.json</code>:
+                  </p>
+                  <div className="bg-background rounded p-3 mt-2 mb-2">
+                    <code className="text-xs font-mono">
+                      "build:widget": "vite build --config vite.widget.config.ts"
+                    </code>
+                  </div>
+                  <p className="text-sm text-muted-foreground">
+                    Результат: <code className="font-mono">dist-widget/widget.js</code>
                   </p>
                 </div>
 
