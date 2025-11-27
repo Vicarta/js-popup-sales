@@ -1,4 +1,4 @@
-export const widgetStyles = `
+export const popupStyles = `
 * {
   box-sizing: border-box;
   margin: 0;
@@ -11,7 +11,7 @@ export const widgetStyles = `
   --popup-text: #1a1a1a;
 }
 
-.aibizmate-popup-overlay {
+.js-popup-sale-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -27,12 +27,12 @@ export const widgetStyles = `
   transition: opacity 0.3s ease;
 }
 
-.aibizmate-popup-overlay.show {
+.js-popup-sale-overlay.show {
   opacity: 1;
 }
 
 /* Position variants - consolidated using CSS variables */
-.aibizmate-popup-overlay[class*="position-"]:not(.aibizmate-popup-overlay.position-center) {
+.js-popup-sale-overlay[class*="position-"]:not(.js-popup-sale-overlay.position-center) {
   padding: 20px;
   background: transparent;
   backdrop-filter: none;
@@ -47,7 +47,7 @@ export const widgetStyles = `
 .position-bottom-center { align-items: flex-end; justify-content: center; }
 .position-bottom-right { align-items: flex-end; justify-content: flex-end; }
 
-.aibizmate-popup {
+.js-popup-sale {
   position: relative;
   background: var(--popup-bg, white);
   color: var(--popup-text, #1a1a1a);
@@ -63,16 +63,16 @@ export const widgetStyles = `
   font-size: 14px;
 }
 
-.aibizmate-popup-overlay.show .aibizmate-popup {
+.js-popup-sale-overlay.show .js-popup-sale {
   transform: scale(1) translateY(0);
 }
 
-.aibizmate-popup.theme-dark {
+.js-popup-sale.theme-dark {
   background: #1a1a1a;
   color: #ffffff;
 }
 
-.aibizmate-popup-close {
+.js-popup-sale-close {
   position: absolute;
   top: 16px;
   right: 16px;
@@ -89,37 +89,37 @@ export const widgetStyles = `
   z-index: 10;
 }
 
-.aibizmate-popup-close:hover {
+.js-popup-sale-close:hover {
   background: rgba(0, 0, 0, 0.1);
   transform: scale(1.05);
 }
 
-.theme-dark .aibizmate-popup-close {
+.theme-dark .js-popup-sale-close {
   background: rgba(255, 255, 255, 0.1);
 }
 
-.theme-dark .aibizmate-popup-close:hover {
+.theme-dark .js-popup-sale-close:hover {
   background: rgba(255, 255, 255, 0.15);
 }
 
-.aibizmate-popup-close svg {
+.js-popup-sale-close svg {
   width: 18px;
   height: 18px;
   stroke: #333;
   stroke-width: 2;
 }
 
-.theme-dark .aibizmate-popup-close svg {
+.theme-dark .js-popup-sale-close svg {
   stroke: #fff;
 }
 
-.aibizmate-popup-content {
+.js-popup-sale-content {
   padding: 40px 32px 32px;
   overflow-y: auto;
   max-height: 90vh;
 }
 
-.aibizmate-popup-image {
+.js-popup-sale-image {
   width: 100%;
   height: auto;
   max-height: 300px;
@@ -128,7 +128,7 @@ export const widgetStyles = `
   margin-bottom: 24px;
 }
 
-.aibizmate-popup-title {
+.js-popup-sale-title {
   font-size: 22px;
   font-weight: 600;
   line-height: 1.3;
@@ -136,28 +136,28 @@ export const widgetStyles = `
   color: #1a1a1a;
 }
 
-.theme-dark .aibizmate-popup-title {
+.theme-dark .js-popup-sale-title {
   color: #ffffff;
 }
 
-.aibizmate-popup-subtitle {
+.js-popup-sale-subtitle {
   font-size: 14px;
   line-height: 1.5;
   color: #666;
   margin-bottom: 16px;
 }
 
-.theme-dark .aibizmate-popup-subtitle {
+.theme-dark .js-popup-sale-subtitle {
   color: #a0a0a0;
 }
 
-.aibizmate-popup-features {
+.js-popup-sale-features {
   list-style: none;
   margin: 0 0 20px 0;
   padding: 0;
 }
 
-.aibizmate-popup-features li {
+.js-popup-sale-features li {
   padding: 8px 0;
   padding-left: 24px;
   position: relative;
@@ -166,11 +166,11 @@ export const widgetStyles = `
   color: #333;
 }
 
-.theme-dark .aibizmate-popup-features li {
+.theme-dark .js-popup-sale-features li {
   color: #d0d0d0;
 }
 
-.aibizmate-popup-features li:before {
+.js-popup-sale-features li:before {
   content: '✓';
   position: absolute;
   left: 0;
@@ -179,7 +179,7 @@ export const widgetStyles = `
   font-size: 16px;
 }
 
-.aibizmate-popup-cta {
+.js-popup-sale-cta {
   display: block;
   width: 100%;
   padding: 14px 24px;
@@ -196,39 +196,39 @@ export const widgetStyles = `
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
-.aibizmate-popup-cta:hover {
+.js-popup-sale-cta:hover {
   opacity: 0.9;
   transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
-.aibizmate-popup-content a {
+.js-popup-sale-content a {
   color: var(--popup-primary, #f97316);
   text-decoration: underline;
 }
 
-.aibizmate-popup-content strong {
+.js-popup-sale-content strong {
   font-weight: 600;
 }
 
-.aibizmate-popup-content em {
+.js-popup-sale-content em {
   font-style: italic;
 }
 
-.aibizmate-popup-content del {
+.js-popup-sale-content del {
   text-decoration: line-through;
   opacity: 0.7;
 }
 
 /* Horizontal layout */
-.aibizmate-popup.layout-horizontal {
+.js-popup-sale.layout-horizontal {
   max-width: 520px;
   display: flex;
   flex-direction: row;
   padding: 0;
 }
 
-.aibizmate-popup.layout-horizontal .aibizmate-popup-image-container {
+.js-popup-sale.layout-horizontal .js-popup-sale-image-container {
   flex-shrink: 0;
   display: flex;
   align-items: center;
@@ -237,7 +237,7 @@ export const widgetStyles = `
   overflow: hidden;
 }
 
-.aibizmate-popup.layout-horizontal .aibizmate-popup-image {
+.js-popup-sale.layout-horizontal .js-popup-sale-image {
   width: auto;
   height: 100%;
   object-fit: contain;
@@ -246,7 +246,7 @@ export const widgetStyles = `
   margin: 0 16px 0 0;
 }
 
-.aibizmate-popup.layout-horizontal .aibizmate-popup-content {
+.js-popup-sale.layout-horizontal .js-popup-sale-content {
   flex: 1;
   min-width: 0;
   padding: 32px 32px 32px 0;
@@ -255,43 +255,43 @@ export const widgetStyles = `
 }
 
 @media (max-width: 640px) {
-  .aibizmate-popup.layout-horizontal {
+  .js-popup-sale.layout-horizontal {
     flex-direction: column;
     max-width: none;
   }
   
-  .aibizmate-popup.layout-horizontal .aibizmate-popup-image-container {
+  .js-popup-sale.layout-horizontal .js-popup-sale-image-container {
     width: 100%;
     padding: 24px 24px 0 24px;
   }
   
-  .aibizmate-popup.layout-horizontal .aibizmate-popup-image {
+  .js-popup-sale.layout-horizontal .js-popup-sale-image {
     max-height: 180px;
     width: auto;
     max-width: 100%;
   }
   
-  .aibizmate-popup.layout-horizontal .aibizmate-popup-content {
+  .js-popup-sale.layout-horizontal .js-popup-sale-content {
     width: 100%;
     padding: 16px 24px 24px 24px;
   }
   
   /* General mobile styles */
-  .aibizmate-popup {
+  .js-popup-sale {
     width: 95%;
     max-width: none;
     border-radius: 12px;
   }
   
-  .aibizmate-popup-content {
+  .js-popup-sale-content {
     padding: 32px 24px 24px;
   }
   
-  .aibizmate-popup-title {
+  .js-popup-sale-title {
     font-size: 20px;
   }
   
-  .aibizmate-popup-overlay.position-bottom-right {
+  .js-popup-sale-overlay.position-bottom-right {
     padding: 12px;
   }
 }
