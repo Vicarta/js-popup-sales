@@ -403,10 +403,14 @@ const JsPopupSaleDemo = () => {
                 <div>
                   <h3 className="font-semibold mb-2">Програмне керування</h3>
                   <div className="bg-muted rounded p-3 space-y-2">
+                    <div className="text-xs font-medium text-muted-foreground mb-1">Через глобальні функції (рекомендовано):</div>
+                    <div><code className="text-sm">showJSPopupSale()</code> — показати попап</div>
+                    <div><code className="text-sm">hideJSPopupSale()</code> — сховати попап</div>
+                    <div><code className="text-sm">dismissJSPopupSale()</code> — закрити назавжди</div>
+                    <div className="text-xs font-medium text-muted-foreground mt-3 mb-1">Через інстанс (якщо autoInit спрацював):</div>
                     <div><code className="text-sm">jsPopupSaleInstance.show()</code></div>
                     <div><code className="text-sm">jsPopupSaleInstance.hide()</code></div>
-                    <div><code className="text-sm">jsPopupSaleInstance.dismiss()</code></div>
-                    <div className="text-xs text-muted-foreground mt-2">Або створити новий: <code>new JSPopupSale(config)</code></div>
+                    <div className="text-xs text-muted-foreground mt-2">Або створити новий: <code>new JSPopupSale(config).init()</code></div>
                   </div>
                 </div>
               </div>
@@ -476,8 +480,29 @@ const JsPopupSaleDemo = () => {
 ></script>`}</code>
                     </pre>
                   </div>
-                  <div className="ml-8 mt-3 p-3 bg-yellow-500/10 border border-yellow-500/20 rounded-lg">
-                    <p className="text-sm"><strong>⚠️ Важливо:</strong> Атрибут <code className="bg-muted px-1 py-0.5 rounded text-xs">data-js-popup-sale</code> необхідний для коректної роботи автоініціалізації в GTM!</p>
+                  <div className="ml-8 mt-3 space-y-2">
+                    <div className="p-3 bg-yellow-500/10 border border-yellow-500/20 rounded-lg">
+                      <p className="text-sm"><strong>⚠️ Важливо:</strong> Атрибут <code className="bg-muted px-1 py-0.5 rounded text-xs">data-js-popup-sale</code> необхідний для автоматичного показу!</p>
+                    </div>
+                    <div className="p-3 bg-blue-500/10 border border-blue-500/20 rounded-lg">
+                      <p className="text-sm"><strong>💡 Програмний виклик через GTM:</strong></p>
+                      <p className="text-sm mt-1">Якщо потрібно показати попап по кліку або події, додайте в GTM Custom HTML тег:</p>
+                      <pre className="text-xs bg-muted rounded p-2 mt-2 overflow-x-auto"><code>{`<script>
+  // Показати попап
+  if (typeof showJSPopupSale === 'function') {
+    showJSPopupSale();
+  }
+</script>`}</code></pre>
+                      <p className="text-xs text-muted-foreground mt-2">Або створіть новий з власною конфігурацією:</p>
+                      <pre className="text-xs bg-muted rounded p-2 mt-1 overflow-x-auto"><code>{`<script>
+  if (typeof showJSPopupSale === 'function') {
+    showJSPopupSale({
+      title: 'Спеціальна пропозиція!',
+      ctaUrl: 'https://example.com/special'
+    });
+  }
+</script>`}</code></pre>
+                    </div>
                   </div>
                 </div>
 
@@ -632,6 +657,50 @@ const JsPopupSaleDemo = () => {
                     <li>• <strong>Блокування Content Security Policy:</strong> Додайте домен віджету до CSP налаштувань</li>
                     <li>• <strong>Конфлікт з іншими попапами:</strong> Переконайтесь, що z-index віджету достатньо високий</li>
                     <li>• <strong>Тригер не спрацьовує:</strong> Перевірте умови тригера в GTM Debug режимі</li>
+                  </ul>
+                </div>
+
+                <div className="p-4 bg-red-500/10 border border-red-500/20 rounded-lg">
+                  <h3 className="font-semibold mb-2 flex items-center gap-2">
+                    ⚠️ Типові помилки та рішення
+                  </h3>
+                  <ul className="text-sm space-y-3 ml-4">
+                    <li>
+                      <div className="font-medium">❌ <code className="bg-muted px-1 py-0.5 rounded text-xs">Uncaught TypeError: window.JSPopupSale.show is not a function</code></div>
+                      <div className="text-muted-foreground mt-1">
+                        <strong>Причина:</strong> Спроба викликати метод на класі замість інстансу<br/>
+                        <strong>Рішення:</strong> Використовуйте <code className="bg-muted px-1 py-0.5 rounded text-xs">showJSPopupSale()</code> замість <code className="bg-muted px-1 py-0.5 rounded text-xs">window.JSPopupSale.show()</code>
+                      </div>
+                    </li>
+                    <li>
+                      <div className="font-medium">❌ Попап не показується</div>
+                      <div className="text-muted-foreground mt-1">
+                        <strong>Причини:</strong>
+                        <ul className="ml-4 mt-1">
+                          <li>• Відсутній атрибут <code className="bg-muted px-1 py-0.5 rounded text-xs">data-js-popup-sale</code> — додайте його до script тега</li>
+                          <li>• Попап вже був dismissed — очистіть localStorage або встановіть <code className="bg-muted px-1 py-0.5 rounded text-xs">data-dismiss-days="0"</code></li>
+                          <li>• Неправильний тригер — перевірте <code className="bg-muted px-1 py-0.5 rounded text-xs">data-trigger</code> та відповідні параметри</li>
+                          <li>• Скрипт не завантажився — перевірте URL у Developer Tools → Network</li>
+                        </ul>
+                      </div>
+                    </li>
+                    <li>
+                      <div className="font-medium">❌ Попап показується кілька разів</div>
+                      <div className="text-muted-foreground mt-1">
+                        <strong>Причина:</strong> Дублювання тегів у GTM або на сторінці<br/>
+                        <strong>Рішення:</strong> Переконайтесь, що тег підключено лише один раз
+                      </div>
+                    </li>
+                    <li>
+                      <div className="font-medium">💡 <strong>Перевірка в консолі:</strong></div>
+                      <div className="bg-muted rounded p-2 mt-1 font-mono text-xs">
+                        <div>// Перевірити доступність функцій:</div>
+                        <div className="text-green-600">console.log(typeof showJSPopupSale); // "function"</div>
+                        <div className="text-green-600">console.log(typeof JSPopupSale); // "function"</div>
+                        <div className="mt-2">// Показати попап вручну:</div>
+                        <div className="text-blue-600">showJSPopupSale();</div>
+                      </div>
+                    </li>
                   </ul>
                 </div>
               </div>
