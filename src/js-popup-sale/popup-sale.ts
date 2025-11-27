@@ -414,7 +414,29 @@ const currentScriptRef = document.currentScript as HTMLScriptElement | null;
 function autoInit(savedScript?: HTMLScriptElement | null) {
   console.log('[JS Popup Sale] AutoInit started');
   
-  // Функція пошуку скрипта з затримкою для GTM
+  // ПРІОРИТЕТ 1: Перевірка глобальної змінної window.JSPopupSaleConfig (для GTM)
+  if ((window as any).JSPopupSaleConfig) {
+    const config = (window as any).JSPopupSaleConfig as PopupConfig;
+    console.log('[JS Popup Sale] ==========================================');
+    console.log('[JS Popup Sale] ✓ Found config via window.JSPopupSaleConfig');
+    console.log('[JS Popup Sale] Config:', config);
+    console.log('[JS Popup Sale] ==========================================');
+    
+    const widget = new JSPopupSale(config);
+    widget.init();
+    
+    // Expose both class and instance to global scope
+    (window as any).JSPopupSale = JSPopupSale;
+    (window as any).jsPopupSaleInstance = widget;
+    
+    // Helper методи для зручності
+    (window as any).showJSPopupSale = () => widget?.show();
+    (window as any).hideJSPopupSale = () => widget?.hide();
+    (window as any).dismissJSPopupSale = () => widget?.dismiss();
+    return;
+  }
+  
+  // ПРІОРИТЕТ 2: Функція пошуку скрипта з data-* атрибутами
   const findScript = (): HTMLScriptElement | null => {
     console.log('[JS Popup Sale] Searching for script tag...');
     

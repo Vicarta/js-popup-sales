@@ -36,31 +36,42 @@ const JsPopupSaleDemo = () => {
 
   const generateCode = () => {
     const featuresArray = config.features.split('\n').filter(f => f.trim());
-    const featuresJson = JSON.stringify(featuresArray);
     
-    let code = `<!-- JS Popup Sale -->
-<script 
-  src="https://yourdomain.com/js-popup-sale.js"
-  data-js-popup-sale
-  data-trigger="${config.trigger}"
-  data-delay="${config.delay}"
-  data-scroll-percent="${config.scrollPercent}"
-  data-dismiss-days="${config.dismissDays}"
-  data-title="${config.title}"
-  data-subtitle="${config.subtitle}"
-  data-features='${featuresJson}'
-  data-cta-text="${config.ctaText}"
-  data-cta-url="${config.ctaUrl}"${config.image ? `\n  data-image="${config.image}"` : ''}
-  data-theme="${config.theme}"
-  data-position="${config.position}"
-  data-layout="${config.layout}"
-  data-inherit-font="${config.inheritFont}"`;
-  
-    if (config.primaryColor) code += `\n  data-primary-color="${config.primaryColor}"`;
-    if (config.backgroundColor) code += `\n  data-background-color="${config.backgroundColor}"`;
-    if (config.textColor) code += `\n  data-text-color="${config.textColor}"`;
+    // Генеруємо конфігурацію для window.JSPopupSaleConfig (для GTM)
+    const configObj: any = {
+      trigger: config.trigger,
+      delay: parseInt(config.delay),
+      scrollPercent: parseInt(config.scrollPercent),
+      dismissDays: parseInt(config.dismissDays),
+      title: config.title,
+      subtitle: config.subtitle,
+      features: featuresArray,
+      ctaText: config.ctaText,
+      ctaUrl: config.ctaUrl,
+      theme: config.theme,
+      position: config.position,
+      layout: config.layout,
+      inheritFont: config.inheritFont === 'true',
+    };
     
-    code += `\n></script>`;
+    if (config.image) configObj.image = config.image;
+    if (config.primaryColor) configObj.primaryColor = config.primaryColor;
+    if (config.backgroundColor) configObj.backgroundColor = config.backgroundColor;
+    if (config.textColor) configObj.textColor = config.textColor;
+    
+    // Форматуємо JSON для зручного читання
+    const configJson = JSON.stringify(configObj, null, 2)
+      .split('\n')
+      .map((line, i) => i === 0 ? line : '  ' + line)
+      .join('\n');
+    
+    // Генеруємо код з window.JSPopupSaleConfig (рекомендований метод для GTM)
+    let code = `<!-- JS Popup Sale - GTM Recommended Method -->
+<script>
+  window.JSPopupSaleConfig = ${configJson};
+</script>
+<script src="https://yourdomain.com/js-popup-sale.js"></script>`;
+    
     return code;
   };
 
@@ -458,32 +469,47 @@ const JsPopupSaleDemo = () => {
                     <span className="flex items-center justify-center w-6 h-6 rounded-full bg-primary text-primary-foreground text-sm">2</span>
                     Налаштування HTML коду
                   </h3>
-                  <p className="ml-8 text-sm text-muted-foreground mb-2">
-                    Вставте згенерований вище код у поле <strong>HTML</strong>. Переконайтесь, що атрибут <code className="bg-muted px-1 py-0.5 rounded text-xs">data-js-popup-sale</code> присутній:
-                  </p>
-                  <div className="ml-8 bg-muted rounded-lg p-4 overflow-x-auto">
-                    <pre className="text-xs">
-                      <code>{`<script 
+                  <div className="ml-8 space-y-3">
+                    <div className="p-3 bg-green-500/10 border border-green-500/20 rounded-lg">
+                      <p className="text-sm font-semibold mb-2">✅ Рекомендований метод для GTM (використовується у згенерованому коді вище):</p>
+                      <p className="text-xs text-muted-foreground mb-2">Використовуйте <code className="bg-muted px-1 py-0.5 rounded">window.JSPopupSaleConfig</code> - це гарантує, що всі параметри передадуться коректно:</p>
+                      <pre className="text-xs bg-muted rounded p-2 overflow-x-auto"><code>{`<script>
+  window.JSPopupSaleConfig = {
+    trigger: "delay",
+    delay: 3000,
+    dismissDays: 0,
+    title: "Не втрачайте клієнтів! 🚀",
+    subtitle: "**AIbizMate** допоможе знайти ліди",
+    features: ["✅ Перевага 1", "🤖 Перевага 2"],
+    ctaText: "Спробувати",
+    ctaUrl: "https://example.com",
+    image: "https://example.com/image.png",
+    theme: "light",
+    position: "bottom-left",
+    layout: "horizontal",
+    inheritFont: false,
+    primaryColor: "#f97316"
+  };
+</script>
+<script src="https://yourdomain.com/js-popup-sale.js"></script>`}</code></pre>
+                    </div>
+                    
+                    <div className="p-3 bg-yellow-500/10 border border-yellow-500/20 rounded-lg">
+                      <p className="text-sm font-semibold mb-2">⚠️ Чому data-* атрибути не працюють в GTM?</p>
+                      <p className="text-xs text-muted-foreground mb-2">GTM динамічно створює <code className="bg-muted px-1 py-0.5 rounded">&lt;script&gt;</code> елементи і при цьому <strong>ігнорує всі data-* атрибути</strong>. Тому використання <code className="bg-muted px-1 py-0.5 rounded">window.JSPopupSaleConfig</code> є єдиним надійним способом для GTM.</p>
+                    </div>
+                    
+                    <div className="p-3 bg-blue-500/10 border border-blue-500/20 rounded-lg">
+                      <p className="text-sm font-semibold mb-2">💡 Альтернативний метод (тільки для прямого підключення, НЕ для GTM):</p>
+                      <p className="text-xs text-muted-foreground mb-2">Якщо ви вставляєте код безпосередньо в HTML сайту (не через GTM), можете використовувати data-* атрибути:</p>
+                      <pre className="text-xs bg-muted rounded p-2 overflow-x-auto"><code>{`<script 
   src="https://yourdomain.com/js-popup-sale.js"
   data-js-popup-sale
   data-trigger="delay"
-  data-delay="3000"
-  data-dismiss-days="7"
-  data-title="Не втрачайте клієнтів! 🚀"
-  data-subtitle="**AIbizMate** допоможе знайти ліди"
-  data-features='["✅ Перевага 1","🤖 Перевага 2"]'
-  data-cta-text="Спробувати"
-  data-cta-url="https://example.com"
   data-image="https://example.com/image.png"
-  data-theme="light"
-  data-position="center"
-  data-layout="vertical"
-></script>`}</code>
-                    </pre>
-                  </div>
-                  <div className="ml-8 mt-3 space-y-2">
-                    <div className="p-3 bg-yellow-500/10 border border-yellow-500/20 rounded-lg">
-                      <p className="text-sm"><strong>⚠️ Важливо:</strong> Атрибут <code className="bg-muted px-1 py-0.5 rounded text-xs">data-js-popup-sale</code> необхідний для автоматичного показу!</p>
+  data-title="Заголовок"
+></script>`}</code></pre>
+                      <p className="text-xs text-muted-foreground mt-2"><strong>Але для GTM це НЕ спрацює!</strong> Використовуйте window.JSPopupSaleConfig.</p>
                     </div>
                     <div className="p-3 bg-blue-500/10 border border-blue-500/20 rounded-lg">
                       <p className="text-sm"><strong>💡 Програмний виклик через GTM:</strong></p>
@@ -653,10 +679,10 @@ const JsPopupSaleDemo = () => {
                     ⚠️ Діагностика проблем
                   </h3>
                   <ul className="text-sm space-y-2 ml-4">
-                    <li>• <strong>🔍 Перевірка конфігурації:</strong> Відкрийте консоль браузера та знайдіть лог <code className="bg-muted px-1 py-0.5 rounded text-xs">[JS Popup Sale] Initializing with config:</code> — він покаже чи підтягнулась конфігурація з data-атрибутів</li>
-                    <li>• <strong>❌ Відсутній data-js-popup-sale:</strong> Віджет не ініціалізується автоматично → обов'язково додайте цей маркер-атрибут до тега &lt;script&gt;</li>
-                    <li>• <strong>🖼️ Зображення не показується:</strong> Перевірте що data-image присутній у тезі script і URL коректний (HTTPS)</li>
-                    <li>• <strong>📝 Неправильний JSON у data-features:</strong> Використовуйте одинарні лапки для атрибута та подвійні всередині масиву: <code className="bg-muted px-1 py-0.5 rounded text-xs">data-features='["Item 1","Item 2"]'</code></li>
+                    <li>• <strong>🔍 Перевірка конфігурації:</strong> Відкрийте консоль браузера та знайдіть лог <code className="bg-muted px-1 py-0.5 rounded text-xs">[JS Popup Sale] Found config via window.JSPopupSaleConfig</code> або <code className="bg-muted px-1 py-0.5 rounded text-xs">[JS Popup Sale] Initializing with config:</code> — він покаже чи підтягнулась конфігурація</li>
+                    <li>• <strong>🖼️ Зображення не показується:</strong> Переконайтеся, що параметр <code className="bg-muted px-1 py-0.5 rounded text-xs">image</code> присутній у <code className="bg-muted px-1 py-0.5 rounded text-xs">window.JSPopupSaleConfig</code> і URL коректний (HTTPS)</li>
+                    <li>• <strong>❌ Конфігурація не застосовується:</strong> Для GTM <strong>обов'язково використовуйте window.JSPopupSaleConfig</strong>, а не data-* атрибути - GTM ігнорує data-* атрибути!</li>
+                    <li>• <strong>📝 Помилка в JSON:</strong> Перевірте синтаксис JSON у window.JSPopupSaleConfig - використовуйте подвійні лапки для ключів та рядкових значень</li>
                     <li>• <strong>🔒 Блокування CSP:</strong> Додайте домен віджету до Content Security Policy налаштувань</li>
                     <li>• <strong>🎯 Тригер не спрацьовує:</strong> Перевірте умови тригера в GTM Debug режимі та переконайтесь що тег у списку "Tags Fired"</li>
                   </ul>
