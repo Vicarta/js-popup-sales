@@ -25,7 +25,7 @@ export const translations = {
       },
     },
     hero: {
-      headline: "Leads in spam, unanswered inquiries — lost sales. Let's fix all.",
+      headline: "Leads in spam, unanswered inquiries — lost sales. \nLet's fix all.",
       subheadline: "AI that rescues leads you missed in your Spam and Inbox.",
       cta: "Start Free Audit",
     },
