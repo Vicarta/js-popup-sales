@@ -26,14 +26,23 @@ class JSPopupSale {
   private overlay: HTMLElement | null = null;
   private shadowRoot: ShadowRoot | null = null;
   private storageKey = 'js_popup_sale_dismissed';
+  private scrollHandler: (() => void) | null = null;
+  private exitIntentHandler: ((e: MouseEvent) => void) | null = null;
 
   constructor(config: PopupConfig = {}) {
+    // Захист від NaN в dismissDays
+    let dismissDays = config.dismissDays !== undefined ? config.dismissDays : DEFAULT_CONFIG.dismissDays;
+    if (isNaN(dismissDays)) {
+      console.warn('[JS Popup Sale] Invalid dismissDays value, using default:', DEFAULT_CONFIG.dismissDays);
+      dismissDays = DEFAULT_CONFIG.dismissDays;
+    }
+    
     this.config = {
       ...DEFAULT_CONFIG,
       ...config,
       // Гарантуємо, що features завжди масив
       features: Array.isArray(config.features) ? config.features : DEFAULT_CONFIG.features,
-      dismissDays: config.dismissDays !== undefined ? config.dismissDays : DEFAULT_CONFIG.dismissDays,
+      dismissDays,
     } as Required<PopupConfig>;
   }
 
@@ -51,21 +60,58 @@ class JSPopupSale {
     // If dismissDays is 0, always show
     if (this.config.dismissDays === 0) return true;
     
-    const dismissedUntil = localStorage.getItem(this.storageKey);
+    const dismissedUntil = this.safeGetItem(this.storageKey);
     if (!dismissedUntil) return true;
     
     const now = Date.now();
-    const dismissTime = parseInt(dismissedUntil);
+    const dismissTime = parseInt(dismissedUntil, 10);
+    
+    // Захист від NaN
+    if (isNaN(dismissTime)) {
+      this.safeRemoveItem(this.storageKey);
+      return true;
+    }
     
     if (now > dismissTime) {
-      localStorage.removeItem(this.storageKey);
+      this.safeRemoveItem(this.storageKey);
       return true;
     }
     
     return false;
   }
+  
+  private safeGetItem(key: string): string | null {
+    try {
+      return localStorage.getItem(key);
+    } catch (e) {
+      console.warn('[JS Popup Sale] localStorage.getItem failed:', e);
+      return null;
+    }
+  }
+  
+  private safeSetItem(key: string, value: string): void {
+    try {
+      localStorage.setItem(key, value);
+    } catch (e) {
+      console.warn('[JS Popup Sale] localStorage.setItem failed:', e);
+    }
+  }
+  
+  private safeRemoveItem(key: string): void {
+    try {
+      localStorage.removeItem(key);
+    } catch (e) {
+      console.warn('[JS Popup Sale] localStorage.removeItem failed:', e);
+    }
+  }
 
   private createPopup(): void {
+    // Захист від повторної ініціалізації - видалити існуючий контейнер
+    const existing = document.getElementById('js-popup-sale-container');
+    if (existing) {
+      existing.remove();
+    }
+    
     // Create container
     const container = document.createElement('div');
     container.id = 'js-popup-sale-container';
@@ -113,10 +159,13 @@ class JSPopupSale {
     
     // Add image for horizontal layout
     if (this.config.layout === 'horizontal' && this.config.image) {
-      const imageContainer = document.createElement('div');
-      imageContainer.className = 'js-popup-sale-image-container';
-      imageContainer.innerHTML = `<img src="${this.config.image}" alt="" class="js-popup-sale-image">`;
-      popup.appendChild(imageContainer);
+      const safeImageUrl = this.sanitizeUrl(this.config.image);
+      if (safeImageUrl) {
+        const imageContainer = document.createElement('div');
+        imageContainer.className = 'js-popup-sale-image-container';
+        imageContainer.innerHTML = `<img src="${safeImageUrl}" alt="" class="js-popup-sale-image">`;
+        popup.appendChild(imageContainer);
+      }
     }
     
     // Build content HTML
@@ -137,7 +186,10 @@ class JSPopupSale {
     
     // Image (vertical layout only)
     if (this.config.layout === 'vertical' && this.config.image) {
-      html += `<img src="${this.config.image}" alt="" class="js-popup-sale-image">`;
+      const safeImageUrl = this.sanitizeUrl(this.config.image);
+      if (safeImageUrl) {
+        html += `<img src="${safeImageUrl}" alt="" class="js-popup-sale-image">`;
+      }
     }
     
     // Title
@@ -161,10 +213,26 @@ class JSPopupSale {
     
     // CTA
     if (this.config.ctaText && this.config.ctaUrl) {
-      html += `<a href="${this.config.ctaUrl}" class="js-popup-sale-cta" target="_blank">${parseMarkdown(this.config.ctaText)}</a>`;
+      const safeCtaUrl = this.sanitizeUrl(this.config.ctaUrl);
+      if (safeCtaUrl) {
+        html += `<a href="${safeCtaUrl}" class="js-popup-sale-cta" target="_blank">${parseMarkdown(this.config.ctaText)}</a>`;
+      }
     }
     
     return html;
+  }
+  
+  private sanitizeUrl(url: string): string {
+    if (!url) return '';
+    
+    // Блокуємо потенційно небезпечні протоколи
+    const trimmedUrl = url.trim().toLowerCase();
+    if (trimmedUrl.startsWith('javascript:') || trimmedUrl.startsWith('data:text')) {
+      console.warn('[JS Popup Sale] Potentially unsafe URL blocked:', url);
+      return '';
+    }
+    
+    return url.trim();
   }
 
   private setupTrigger(): void {
@@ -185,30 +253,48 @@ class JSPopupSale {
   }
 
   private setupScrollTrigger(): void {
-    const checkScroll = () => {
-      const scrollPercent = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+    this.scrollHandler = () => {
+      const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
+      
+      // Захист від division by zero - якщо сторінка не скролиться
+      if (scrollableHeight <= 0) {
+        this.show();
+        if (this.scrollHandler) {
+          window.removeEventListener('scroll', this.scrollHandler);
+          this.scrollHandler = null;
+        }
+        return;
+      }
+      
+      const scrollPercent = (window.scrollY / scrollableHeight) * 100;
       
       if (scrollPercent >= this.config.scrollPercent) {
         this.show();
-        window.removeEventListener('scroll', checkScroll);
+        if (this.scrollHandler) {
+          window.removeEventListener('scroll', this.scrollHandler);
+          this.scrollHandler = null;
+        }
       }
     };
     
-    window.addEventListener('scroll', checkScroll);
+    window.addEventListener('scroll', this.scrollHandler);
   }
 
   private setupExitIntentTrigger(): void {
     let triggered = false;
     
-    const handleMouseLeave = (e: MouseEvent) => {
+    this.exitIntentHandler = (e: MouseEvent) => {
       if (e.clientY <= 0 && !triggered) {
         triggered = true;
         this.show();
-        document.removeEventListener('mouseleave', handleMouseLeave);
+        if (this.exitIntentHandler) {
+          document.removeEventListener('mouseleave', this.exitIntentHandler);
+          this.exitIntentHandler = null;
+        }
       }
     };
     
-    document.addEventListener('mouseleave', handleMouseLeave);
+    document.addEventListener('mouseleave', this.exitIntentHandler);
   }
 
   show(): void {
@@ -234,7 +320,7 @@ class JSPopupSale {
   dismiss(): void {
     if (this.config.dismissDays > 0) {
       const dismissUntil = Date.now() + (this.config.dismissDays * 24 * 60 * 60 * 1000);
-      localStorage.setItem(this.storageKey, dismissUntil.toString());
+      this.safeSetItem(this.storageKey, dismissUntil.toString());
       console.log(`[JS Popup Sale] Dismissed for ${this.config.dismissDays} days`);
     } else {
       console.log('[JS Popup Sale] Dismissed (dismissDays=0, will show again on next trigger)');
@@ -243,6 +329,16 @@ class JSPopupSale {
   }
 
   destroy(): void {
+    // Очищення event listeners
+    if (this.scrollHandler) {
+      window.removeEventListener('scroll', this.scrollHandler);
+      this.scrollHandler = null;
+    }
+    if (this.exitIntentHandler) {
+      document.removeEventListener('mouseleave', this.exitIntentHandler);
+      this.exitIntentHandler = null;
+    }
+    
     const container = document.getElementById('js-popup-sale-container');
     if (container) {
       container.remove();
@@ -250,6 +346,25 @@ class JSPopupSale {
     this.overlay = null;
     this.shadowRoot = null;
   }
+}
+
+// Утилітна функція для безпечного парсингу чисел
+function safeParseInt(value: string | undefined, defaultValue?: number): number | undefined {
+  if (value === undefined || value === '') return defaultValue;
+  const parsed = parseInt(value, 10);
+  if (isNaN(parsed)) {
+    if (defaultValue !== undefined) {
+      console.warn('[JS Popup Sale] Invalid number value, using default:', value, '→', defaultValue);
+    }
+    return defaultValue;
+  }
+  return parsed;
+}
+
+// Перевірка чи є корисна конфігурація в dataset
+function hasValidConfig(dataset: DOMStringMap): boolean {
+  const configKeys = ['trigger', 'delay', 'scrollPercent', 'title', 'subtitle', 'ctaText', 'ctaUrl', 'features', 'image', 'theme', 'position', 'layout'];
+  return configKeys.some(key => key in dataset && dataset[key]);
 }
 
 // Безпечний парсер конфігурації зі скрипт-тега
@@ -273,9 +388,9 @@ function parseConfigFromScript(script: HTMLScriptElement): PopupConfig {
   
   return {
     trigger: (data.trigger as any) || undefined,
-    delay: data.delay ? parseInt(data.delay) : undefined,
-    scrollPercent: data.scrollPercent ? parseInt(data.scrollPercent) : undefined,
-    dismissDays: data.dismissDays !== undefined ? parseInt(data.dismissDays) : undefined,
+    delay: safeParseInt(data.delay),
+    scrollPercent: safeParseInt(data.scrollPercent),
+    dismissDays: data.dismissDays !== undefined ? safeParseInt(data.dismissDays, 0) : undefined,
     title: data.title,
     subtitle: data.subtitle,
     features,
@@ -300,37 +415,46 @@ function autoInit(savedScript?: HTMLScriptElement | null) {
   let script: HTMLScriptElement | null = null;
   
   // Стратегія 1: Збережений currentScript (переданий як параметр)
-  if (savedScript && savedScript.dataset && Object.keys(savedScript.dataset).length > 0) {
+  if (savedScript && savedScript.dataset && hasValidConfig(savedScript.dataset)) {
     script = savedScript;
   }
   
   // Стратегія 2: Пошук за src (прямий тег)
-  if (!script || Object.keys(script.dataset || {}).length === 0) {
+  if (!script || !hasValidConfig(script.dataset || {})) {
     const scripts = document.querySelectorAll('script[src*="js-popup-sale"]');
     if (scripts.length > 0) {
-      script = scripts[scripts.length - 1] as HTMLScriptElement;
+      const candidate = scripts[scripts.length - 1] as HTMLScriptElement;
+      if (hasValidConfig(candidate.dataset || {})) {
+        script = candidate;
+      }
     }
   }
   
   // Стратегія 3: GTM - пошук за data-gtmsrc
-  if (!script || Object.keys(script.dataset || {}).length === 0) {
+  if (!script || !hasValidConfig(script.dataset || {})) {
     const gtmScripts = document.querySelectorAll('script[data-gtmsrc*="js-popup-sale"]');
     if (gtmScripts.length > 0) {
-      script = gtmScripts[gtmScripts.length - 1] as HTMLScriptElement;
+      const candidate = gtmScripts[gtmScripts.length - 1] as HTMLScriptElement;
+      if (hasValidConfig(candidate.dataset || {})) {
+        script = candidate;
+      }
     }
   }
   
   // Стратегія 4: Пошук за data-js-popup-sale маркером (fallback для будь-яких випадків)
-  if (!script || Object.keys(script.dataset || {}).length === 0) {
+  if (!script || !hasValidConfig(script.dataset || {})) {
     const markedScripts = document.querySelectorAll('script[data-js-popup-sale]');
     if (markedScripts.length > 0) {
-      script = markedScripts[markedScripts.length - 1] as HTMLScriptElement;
+      const candidate = markedScripts[markedScripts.length - 1] as HTMLScriptElement;
+      if (hasValidConfig(candidate.dataset || {})) {
+        script = candidate;
+      }
     }
   }
   
-  // Якщо скрипт не знайдено - не падати, а залогувати
-  if (!script || Object.keys(script.dataset || {}).length === 0) {
-    console.warn('[JS Popup Sale] Script tag not found or has no configuration. Use JSPopupSale class manually or add data-js-popup-sale attribute with data-* config.');
+  // Якщо скрипт не знайдено або немає корисної конфігурації
+  if (!script || !hasValidConfig(script.dataset || {})) {
+    console.warn('[JS Popup Sale] Script tag not found or has no valid configuration. Use JSPopupSale class manually or add data-js-popup-sale attribute with data-* config.');
     // Експортуємо клас для ручної ініціалізації
     (window as any).JSPopupSale = JSPopupSale;
     return;
