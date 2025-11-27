@@ -412,6 +412,231 @@ const JsPopupSaleDemo = () => {
               </div>
             </Card>
           </div>
+
+          {/* GTM Instructions */}
+          <Card className="p-6 mt-8">
+            <div className="space-y-6">
+              <div>
+                <h2 className="text-2xl font-bold mb-2">📊 Підключення через Google Tag Manager</h2>
+                <p className="text-muted-foreground">
+                  Детальна інструкція з налаштування віджету через GTM для динамічного керування без зміни коду сайту
+                </p>
+              </div>
+
+              <div className="space-y-6">
+                <div className="space-y-3">
+                  <h3 className="text-lg font-semibold flex items-center gap-2">
+                    <span className="flex items-center justify-center w-6 h-6 rounded-full bg-primary text-primary-foreground text-sm">1</span>
+                    Створення тега в GTM
+                  </h3>
+                  <ol className="space-y-2 ml-8 text-sm">
+                    <li className="flex gap-2">
+                      <span className="text-muted-foreground">1.1</span>
+                      <span>Відкрийте ваш контейнер у Google Tag Manager</span>
+                    </li>
+                    <li className="flex gap-2">
+                      <span className="text-muted-foreground">1.2</span>
+                      <span>Перейдіть у розділ <strong>Tags</strong> → <strong>New</strong></span>
+                    </li>
+                    <li className="flex gap-2">
+                      <span className="text-muted-foreground">1.3</span>
+                      <span>Назвіть тег, наприклад: <code className="bg-muted px-2 py-0.5 rounded">"JS Popup Sale Widget"</code></span>
+                    </li>
+                    <li className="flex gap-2">
+                      <span className="text-muted-foreground">1.4</span>
+                      <span>Оберіть тип тега: <strong>Custom HTML</strong></span>
+                    </li>
+                  </ol>
+                </div>
+
+                <div className="space-y-3">
+                  <h3 className="text-lg font-semibold flex items-center gap-2">
+                    <span className="flex items-center justify-center w-6 h-6 rounded-full bg-primary text-primary-foreground text-sm">2</span>
+                    Налаштування HTML коду
+                  </h3>
+                  <p className="ml-8 text-sm text-muted-foreground mb-2">
+                    Вставте згенерований вище код у поле <strong>HTML</strong>. Переконайтесь, що атрибут <code className="bg-muted px-1 py-0.5 rounded text-xs">data-js-popup-sale</code> присутній:
+                  </p>
+                  <div className="ml-8 bg-muted rounded-lg p-4 overflow-x-auto">
+                    <pre className="text-xs">
+                      <code>{`<script 
+  src="https://yourdomain.com/js-popup-sale.js"
+  data-js-popup-sale
+  data-trigger="delay"
+  data-delay="3000"
+  data-dismiss-days="7"
+  data-title="Не втрачайте клієнтів! 🚀"
+  data-subtitle="**AIbizMate** допоможе знайти ліди"
+  data-features='["✅ Перевага 1","🤖 Перевага 2"]'
+  data-cta-text="Спробувати"
+  data-cta-url="https://example.com"
+  data-theme="light"
+  data-position="center"
+  data-layout="vertical"
+></script>`}</code>
+                    </pre>
+                  </div>
+                  <div className="ml-8 mt-3 p-3 bg-yellow-500/10 border border-yellow-500/20 rounded-lg">
+                    <p className="text-sm"><strong>⚠️ Важливо:</strong> Атрибут <code className="bg-muted px-1 py-0.5 rounded text-xs">data-js-popup-sale</code> необхідний для коректної роботи автоініціалізації в GTM!</p>
+                  </div>
+                </div>
+
+                <div className="space-y-3">
+                  <h3 className="text-lg font-semibold flex items-center gap-2">
+                    <span className="flex items-center justify-center w-6 h-6 rounded-full bg-primary text-primary-foreground text-sm">3</span>
+                    Використання GTM змінних (опціонально)
+                  </h3>
+                  <p className="ml-8 text-sm text-muted-foreground mb-2">
+                    Для динамічного керування контентом створіть змінні в GTM:
+                  </p>
+                  <div className="ml-8 space-y-2">
+                    <div className="text-sm">
+                      <strong>Створення змінної:</strong> Variables → New → Variable Type → Constant
+                    </div>
+                    <div className="bg-muted rounded-lg p-4 overflow-x-auto">
+                      <pre className="text-xs">
+                        <code>{`<!-- Приклад використання змінних GTM -->
+<script 
+  src="https://yourdomain.com/js-popup-sale.js"
+  data-js-popup-sale
+  data-trigger="{{PopupTrigger}}"
+  data-delay="{{PopupDelay}}"
+  data-title="{{PopupTitle}}"
+  data-subtitle="{{PopupSubtitle}}"
+  data-cta-text="{{PopupCTA}}"
+  data-cta-url="{{PopupURL}}"
+  data-theme="{{PopupTheme}}"
+></script>`}</code>
+                      </pre>
+                    </div>
+                    <p className="text-xs text-muted-foreground mt-2">
+                      Це дозволить швидко змінювати налаштування без редагування коду тега
+                    </p>
+                  </div>
+                </div>
+
+                <div className="space-y-3">
+                  <h3 className="text-lg font-semibold flex items-center gap-2">
+                    <span className="flex items-center justify-center w-6 h-6 rounded-full bg-primary text-primary-foreground text-sm">4</span>
+                    Налаштування тригера
+                  </h3>
+                  <p className="ml-8 text-sm text-muted-foreground mb-2">
+                    Оберіть умови показу віджету:
+                  </p>
+                  <div className="ml-8 space-y-3">
+                    <div className="space-y-2">
+                      <div className="flex items-start gap-2">
+                        <div className="w-2 h-2 rounded-full bg-primary mt-1.5"></div>
+                        <div className="flex-1">
+                          <strong className="text-sm">Всі сторінки:</strong>
+                          <p className="text-xs text-muted-foreground">Trigger Type: <code className="bg-muted px-1 py-0.5 rounded">All Pages</code></p>
+                          <p className="text-xs text-muted-foreground mt-1">Віджет завантажиться на кожній сторінці сайту</p>
+                        </div>
+                      </div>
+
+                      <div className="flex items-start gap-2">
+                        <div className="w-2 h-2 rounded-full bg-primary mt-1.5"></div>
+                        <div className="flex-1">
+                          <strong className="text-sm">Конкретні сторінки:</strong>
+                          <p className="text-xs text-muted-foreground">Trigger Type: <code className="bg-muted px-1 py-0.5 rounded">Page View</code></p>
+                          <p className="text-xs text-muted-foreground mt-1">Додайте умову: <code className="bg-muted px-1 py-0.5 rounded">Page URL contains /checkout</code></p>
+                          <p className="text-xs text-muted-foreground mt-1">Показувати тільки на сторінках оформлення замовлення</p>
+                        </div>
+                      </div>
+
+                      <div className="flex items-start gap-2">
+                        <div className="w-2 h-2 rounded-full bg-primary mt-1.5"></div>
+                        <div className="flex-1">
+                          <strong className="text-sm">З затримкою:</strong>
+                          <p className="text-xs text-muted-foreground">Trigger Type: <code className="bg-muted px-1 py-0.5 rounded">Timer</code></p>
+                          <p className="text-xs text-muted-foreground mt-1">Interval: 5000ms, Limit: 1</p>
+                          <p className="text-xs text-muted-foreground mt-1">Показувати через 5 секунд після завантаження</p>
+                        </div>
+                      </div>
+
+                      <div className="flex items-start gap-2">
+                        <div className="w-2 h-2 rounded-full bg-primary mt-1.5"></div>
+                        <div className="flex-1">
+                          <strong className="text-sm">За скролом:</strong>
+                          <p className="text-xs text-muted-foreground">Trigger Type: <code className="bg-muted px-1 py-0.5 rounded">Scroll Depth</code></p>
+                          <p className="text-xs text-muted-foreground mt-1">Vertical Scroll Depth: 50%</p>
+                          <p className="text-xs text-muted-foreground mt-1">Показувати після прокрутки 50% сторінки</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="space-y-3">
+                  <h3 className="text-lg font-semibold flex items-center gap-2">
+                    <span className="flex items-center justify-center w-6 h-6 rounded-full bg-primary text-primary-foreground text-sm">5</span>
+                    Тестування та публікація
+                  </h3>
+                  <ol className="space-y-2 ml-8 text-sm">
+                    <li className="flex gap-2">
+                      <span className="text-muted-foreground">5.1</span>
+                      <span>Збережіть тег: <strong>Save</strong></span>
+                    </li>
+                    <li className="flex gap-2">
+                      <span className="text-muted-foreground">5.2</span>
+                      <span>Активуйте режим попереднього перегляду: <strong>Preview</strong> у правому верхньому куті</span>
+                    </li>
+                    <li className="flex gap-2">
+                      <span className="text-muted-foreground">5.3</span>
+                      <span>Відкрийте ваш сайт у новій вкладці та перевірте роботу віджету</span>
+                    </li>
+                    <li className="flex gap-2">
+                      <span className="text-muted-foreground">5.4</span>
+                      <span>У GTM Debug вікні переконайтесь, що тег спрацював (<code className="bg-muted px-1 py-0.5 rounded text-xs">Tags Fired</code>)</span>
+                    </li>
+                    <li className="flex gap-2">
+                      <span className="text-muted-foreground">5.5</span>
+                      <span>Якщо все працює коректно: <strong>Submit</strong> → <strong>Publish</strong></span>
+                    </li>
+                  </ol>
+                </div>
+
+                <div className="p-4 bg-green-500/10 border border-green-500/20 rounded-lg">
+                  <h3 className="font-semibold mb-2 flex items-center gap-2">
+                    ✅ Переваги GTM підходу
+                  </h3>
+                  <ul className="text-sm space-y-1 ml-4">
+                    <li>• <strong>Без зміни коду сайту</strong> — керування віджетом через GTM інтерфейс</li>
+                    <li>• <strong>A/B тестування</strong> — легко створити кілька версій з різними налаштуваннями</li>
+                    <li>• <strong>Сегментація аудиторії</strong> — показувати різний контент різним користувачам</li>
+                    <li>• <strong>Швидке оновлення</strong> — зміна тексту та налаштувань без релізу коду</li>
+                    <li>• <strong>Історія версій</strong> — GTM зберігає всі зміни з можливістю відкату</li>
+                  </ul>
+                </div>
+
+                <div className="p-4 bg-blue-500/10 border border-blue-500/20 rounded-lg">
+                  <h3 className="font-semibold mb-2 flex items-center gap-2">
+                    💡 Поради з налаштування
+                  </h3>
+                  <ul className="text-sm space-y-2 ml-4">
+                    <li>• Використовуйте <code className="bg-muted px-1 py-0.5 rounded text-xs">data-dismiss-days="0"</code> під час тестування, щоб попап завжди показувався</li>
+                    <li>• Для продакшену встановіть оптимальне значення (7-14 днів) щоб не дратувати користувачів</li>
+                    <li>• Тестуйте віджет на різних пристроях (десктоп, мобільні, планшети)</li>
+                    <li>• Відстежуйте кліки через GTM Events для аналізу ефективності</li>
+                    <li>• Створіть резервну копію контейнера GTM перед публікацією змін</li>
+                  </ul>
+                </div>
+
+                <div className="p-4 bg-red-500/10 border border-red-500/20 rounded-lg">
+                  <h3 className="font-semibold mb-2 flex items-center gap-2">
+                    ⚠️ Типові помилки
+                  </h3>
+                  <ul className="text-sm space-y-2 ml-4">
+                    <li>• <strong>Відсутній data-js-popup-sale:</strong> Віджет не ініціалізується автоматично → додайте маркер-атрибут</li>
+                    <li>• <strong>Неправильний JSON у data-features:</strong> Використовуйте одинарні лапки для атрибута та подвійні всередині масиву</li>
+                    <li>• <strong>Блокування Content Security Policy:</strong> Додайте домен віджету до CSP налаштувань</li>
+                    <li>• <strong>Конфлікт з іншими попапами:</strong> Переконайтесь, що z-index віджету достатньо високий</li>
+                    <li>• <strong>Тригер не спрацьовує:</strong> Перевірте умови тригера в GTM Debug режимі</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </Card>
         </div>
       </main>
 
