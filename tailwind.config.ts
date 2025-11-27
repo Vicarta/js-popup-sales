@@ -58,10 +58,8 @@ export default {
           ring: "hsl(var(--sidebar-ring))",
         },
         "trust-coral": "hsl(var(--trust-coral))",
-        "deep-walnut": "hsl(var(--deep-walnut))",
-        "warm-honey": "hsl(var(--warm-honey))",
-        "stable-umber": "hsl(var(--stable-umber))",
-        "soft-linen": "hsl(var(--soft-linen))",
+        "electric-blue": "hsl(var(--electric-blue))",
+        "soft-purple": "hsl(var(--soft-purple))",
       },
       borderRadius: {
         lg: "var(--radius)",
