@@ -277,28 +277,27 @@ export const widgetStyles = `
 }
 
 .aibizmate-popup.layout-horizontal .aibizmate-popup-image-container {
-  width: 35%;
-  min-width: 140px;
+  flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: flex-start;
   padding: 0;
-  padding-right: 16px;
   overflow: hidden;
 }
 
 .aibizmate-popup.layout-horizontal .aibizmate-popup-image {
   width: auto;
   height: 100%;
-  max-width: 100%;
+  max-width: 200px;
+  max-height: 100%;
   object-fit: contain;
   object-position: left center;
   border-radius: 0;
-  margin-bottom: 0;
+  margin: 0 16px 0 0;
 }
 
 .aibizmate-popup.layout-horizontal .aibizmate-popup-content {
-  width: 65%;
+  flex: 1;
   padding: 32px 32px 32px 0;
 }
 
