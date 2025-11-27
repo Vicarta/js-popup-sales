@@ -13,7 +13,7 @@ interface PopupConfig {
   ctaUrl?: string;
   image?: string;
   theme?: 'light' | 'dark';
-  position?: 'center' | 'bottom-right';
+  position?: 'center' | 'top-left' | 'top-center' | 'top-right' | 'center-left' | 'center-right' | 'bottom-left' | 'bottom-center' | 'bottom-right';
   inheritFont?: boolean;
 }
 

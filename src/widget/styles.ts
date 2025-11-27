@@ -27,6 +27,63 @@ export const widgetStyles = `
   opacity: 1;
 }
 
+/* Position variants */
+.aibizmate-popup-overlay.position-top-left {
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 20px;
+  background: transparent;
+  backdrop-filter: none;
+}
+
+.aibizmate-popup-overlay.position-top-center {
+  align-items: flex-start;
+  justify-content: center;
+  padding: 20px;
+  background: transparent;
+  backdrop-filter: none;
+}
+
+.aibizmate-popup-overlay.position-top-right {
+  align-items: flex-start;
+  justify-content: flex-end;
+  padding: 20px;
+  background: transparent;
+  backdrop-filter: none;
+}
+
+.aibizmate-popup-overlay.position-center-left {
+  align-items: center;
+  justify-content: flex-start;
+  padding: 20px;
+  background: transparent;
+  backdrop-filter: none;
+}
+
+.aibizmate-popup-overlay.position-center-right {
+  align-items: center;
+  justify-content: flex-end;
+  padding: 20px;
+  background: transparent;
+  backdrop-filter: none;
+}
+
+.aibizmate-popup-overlay.position-bottom-left {
+  align-items: flex-end;
+  justify-content: flex-start;
+  padding: 20px;
+  background: transparent;
+  backdrop-filter: none;
+}
+
+.aibizmate-popup-overlay.position-bottom-center {
+  align-items: flex-end;
+  justify-content: center;
+  padding: 20px;
+  background: transparent;
+  backdrop-filter: none;
+}
+
 .aibizmate-popup-overlay.position-bottom-right {
   align-items: flex-end;
   justify-content: flex-end;
