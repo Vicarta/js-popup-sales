@@ -31,6 +31,8 @@ class JSPopupSale {
     this.config = {
       ...DEFAULT_CONFIG,
       ...config,
+      // Гарантуємо, що features завжди масив
+      features: Array.isArray(config.features) ? config.features : DEFAULT_CONFIG.features,
       dismissDays: config.dismissDays !== undefined ? config.dismissDays : DEFAULT_CONFIG.dismissDays,
     } as Required<PopupConfig>;
   }
@@ -249,38 +251,95 @@ class JSPopupSale {
   }
 }
 
-// Auto-initialize from script tag data attributes
-function autoInit() {
-  const scripts = document.querySelectorAll('script[src*="js-popup-sale"]');
-  const script = scripts[scripts.length - 1] as HTMLScriptElement;
+// Безпечний парсер конфігурації зі скрипт-тега
+function parseConfigFromScript(script: HTMLScriptElement): PopupConfig {
+  const data = script.dataset || {};
   
-  if (script && script.dataset) {
-    const config: PopupConfig = {
-      trigger: (script.dataset.trigger as any) || 'delay',
-      delay: parseInt(script.dataset.delay || '3000'),
-      scrollPercent: parseInt(script.dataset.scrollPercent || '50'),
-      dismissDays: script.dataset.dismissDays ? parseInt(script.dataset.dismissDays) : 7,
-      title: script.dataset.title,
-      subtitle: script.dataset.subtitle,
-      features: script.dataset.features ? JSON.parse(script.dataset.features) : undefined,
-      ctaText: script.dataset.ctaText,
-      ctaUrl: script.dataset.ctaUrl,
-      image: script.dataset.image,
-      theme: (script.dataset.theme as any) || 'light',
-      position: (script.dataset.position as any) || 'center',
-      layout: (script.dataset.layout as 'vertical' | 'horizontal') || 'vertical',
-      inheritFont: script.dataset.inheritFont === 'true',
-      primaryColor: script.dataset.primaryColor,
-      backgroundColor: script.dataset.backgroundColor,
-      textColor: script.dataset.textColor,
-    };
-    
-    const widget = new JSPopupSale(config);
-    widget.init();
-    
-    // Expose to global scope for manual control
-    (window as any).JSPopupSale = widget;
+  // Безпечний парсинг features
+  let features: string[] | undefined;
+  if (data.features) {
+    try {
+      features = JSON.parse(data.features);
+      if (!Array.isArray(features)) {
+        console.warn('[JS Popup Sale] Invalid features JSON (not an array):', data.features);
+        features = undefined;
+      }
+    } catch (e) {
+      console.warn('[JS Popup Sale] Invalid features JSON:', data.features, e);
+      features = undefined;
+    }
   }
+  
+  return {
+    trigger: (data.trigger as any) || undefined,
+    delay: data.delay ? parseInt(data.delay) : undefined,
+    scrollPercent: data.scrollPercent ? parseInt(data.scrollPercent) : undefined,
+    dismissDays: data.dismissDays !== undefined ? parseInt(data.dismissDays) : undefined,
+    title: data.title,
+    subtitle: data.subtitle,
+    features,
+    ctaText: data.ctaText,
+    ctaUrl: data.ctaUrl,
+    image: data.image,
+    theme: data.theme as any,
+    position: data.position as any,
+    layout: data.layout as any,
+    inheritFont: data.inheritFont === 'true',
+    primaryColor: data.primaryColor,
+    backgroundColor: data.backgroundColor,
+    textColor: data.textColor,
+  };
+}
+
+// Auto-initialize з підтримкою GTM та fallback стратегіями
+function autoInit() {
+  let script: HTMLScriptElement | null = null;
+  
+  // Стратегія 1: document.currentScript (найнадійніший спосіб)
+  if (document.currentScript && (document.currentScript as HTMLScriptElement).dataset) {
+    script = document.currentScript as HTMLScriptElement;
+  }
+  
+  // Стратегія 2: Пошук за src (прямий тег)
+  if (!script || !script.dataset?.trigger) {
+    const scripts = document.querySelectorAll('script[src*="js-popup-sale"]');
+    if (scripts.length > 0) {
+      script = scripts[scripts.length - 1] as HTMLScriptElement;
+    }
+  }
+  
+  // Стратегія 3: GTM - пошук за data-gtmsrc
+  if (!script || !script.dataset?.trigger) {
+    const gtmScripts = document.querySelectorAll('script[data-gtmsrc*="js-popup-sale"]');
+    if (gtmScripts.length > 0) {
+      script = gtmScripts[gtmScripts.length - 1] as HTMLScriptElement;
+    }
+  }
+  
+  // Стратегія 4: Пошук за data-js-popup-sale маркером
+  if (!script || !script.dataset?.trigger) {
+    const markedScripts = document.querySelectorAll('script[data-js-popup-sale]');
+    if (markedScripts.length > 0) {
+      script = markedScripts[markedScripts.length - 1] as HTMLScriptElement;
+    }
+  }
+  
+  // Якщо скрипт не знайдено - не падати, а залогувати
+  if (!script) {
+    console.warn('[JS Popup Sale] Script tag not found. Use JSPopupSale class manually or add data-js-popup-sale attribute.');
+    // Експортуємо клас для ручної ініціалізації
+    (window as any).JSPopupSale = JSPopupSale;
+    return;
+  }
+  
+  // Парсинг конфігурації з захистом від помилок
+  const config: PopupConfig = parseConfigFromScript(script);
+  
+  const widget = new JSPopupSale(config);
+  widget.init();
+  
+  // Expose to global scope for manual control
+  (window as any).JSPopupSale = widget;
 }
 
 // Auto-init when DOM is ready
