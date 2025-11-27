@@ -1,5 +1,5 @@
 import { widgetStyles } from './styles';
-import { parseMarkdown } from './markdown-parser';
+import { parseMarkdown, DEFAULT_CONFIG } from './widget-utils';
 
 interface PopupConfig {
   trigger?: 'delay' | 'scroll' | 'exit-intent' | 'manual';
@@ -29,24 +29,10 @@ class PopupWidget {
 
   constructor(config: PopupConfig = {}) {
     this.config = {
-      trigger: config.trigger || 'delay',
-      delay: config.delay || 3000,
-      scrollPercent: config.scrollPercent || 50,
-      dismissDays: config.dismissDays !== undefined ? config.dismissDays : 7,
-      title: config.title || 'Не втрачайте клієнтів! 🚀',
-      subtitle: config.subtitle || 'AIbizMate допоможе знайти пропущені ліди у вашій пошті',
-      features: config.features || ['✅ Автоматичне сканування', '🤖 AI-аналіз листів', '📧 Миттєві сповіщення'],
-      ctaText: config.ctaText || 'Спробувати безкоштовно',
-      ctaUrl: config.ctaUrl || 'https://aibizmate.com',
-      image: config.image || '',
-      theme: config.theme || 'light',
-      position: config.position || 'center',
-      layout: config.layout || 'vertical',
-      inheritFont: config.inheritFont || false,
-      primaryColor: config.primaryColor || '#f97316',
-      backgroundColor: config.backgroundColor || '',
-      textColor: config.textColor || '',
-    };
+      ...DEFAULT_CONFIG,
+      ...config,
+      dismissDays: config.dismissDays !== undefined ? config.dismissDays : DEFAULT_CONFIG.dismissDays,
+    } as Required<PopupConfig>;
   }
 
   init(): void {
@@ -85,54 +71,18 @@ class PopupWidget {
     // Create shadow DOM for style isolation
     this.shadowRoot = container.attachShadow({ mode: 'open' });
     
-    // Add styles
+    // Add styles with dynamic CSS variables
     const style = document.createElement('style');
-    style.textContent = widgetStyles;
     
-    // Override font if inheritFont is true
-    if (this.config.inheritFont) {
-      style.textContent += `
-        .aibizmate-popup {
-          font-family: inherit !important;
-        }
-      `;
-    }
-    
-    // Apply custom colors
-    if (this.config.primaryColor || this.config.backgroundColor || this.config.textColor) {
-      let colorOverrides = '';
-      if (this.config.primaryColor) {
-        colorOverrides += `
-          .aibizmate-popup-cta {
-            background: ${this.config.primaryColor} !important;
-            color: white !important;
-            border: none !important;
-          }
-          .aibizmate-popup-cta:hover {
-            opacity: 0.9 !important;
-          }
-        `;
-      }
-      if (this.config.backgroundColor) {
-        colorOverrides += `
-          .aibizmate-popup {
-            background: ${this.config.backgroundColor} !important;
-          }
-        `;
-      }
-      if (this.config.textColor) {
-        colorOverrides += `
-          .aibizmate-popup {
-            color: ${this.config.textColor} !important;
-          }
-          .aibizmate-popup-title,
-          .aibizmate-popup-subtitle,
-          .aibizmate-popup-features {
-            color: ${this.config.textColor} !important;
-          }
-        `;
-      }
-      style.textContent += colorOverrides;
+    // Add font import only if not inheriting
+    if (!this.config.inheritFont) {
+      style.textContent = `@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');\n`;
+      style.textContent += widgetStyles.replace(
+        'font-family: -apple-system',
+        "font-family: 'Inter', -apple-system"
+      );
+    } else {
+      style.textContent = widgetStyles + `\n.aibizmate-popup { font-family: inherit !important; }`;
     }
     
     this.shadowRoot.appendChild(style);
@@ -141,9 +91,14 @@ class PopupWidget {
     this.overlay = document.createElement('div');
     this.overlay.className = `aibizmate-popup-overlay position-${this.config.position}`;
     
-    // Create popup
+    // Create popup with custom CSS variables
     const popup = document.createElement('div');
     popup.className = `aibizmate-popup theme-${this.config.theme} layout-${this.config.layout}`;
+    
+    // Apply custom colors via CSS variables
+    if (this.config.primaryColor) popup.style.setProperty('--popup-primary', this.config.primaryColor);
+    if (this.config.backgroundColor) popup.style.setProperty('--popup-bg', this.config.backgroundColor);
+    if (this.config.textColor) popup.style.setProperty('--popup-text', this.config.textColor);
     
     // Close button
     const closeBtn = document.createElement('button');
@@ -153,21 +108,31 @@ class PopupWidget {
     
     popup.appendChild(closeBtn);
     
+    // Add image for horizontal layout
     if (this.config.layout === 'horizontal' && this.config.image) {
-      // Horizontal layout: image container + content container
       const imageContainer = document.createElement('div');
       imageContainer.className = 'aibizmate-popup-image-container';
       imageContainer.innerHTML = `<img src="${this.config.image}" alt="" class="aibizmate-popup-image">`;
       popup.appendChild(imageContainer);
     }
     
-    // Content
+    // Build content HTML
     const content = document.createElement('div');
     content.className = 'aibizmate-popup-content';
+    content.innerHTML = this.buildContentHtml();
+
     
+    popup.appendChild(content);
+    this.overlay.appendChild(popup);
+    this.shadowRoot.appendChild(this.overlay);
+    
+    document.body.appendChild(container);
+  }
+
+  private buildContentHtml(): string {
     let html = '';
     
-    // Image (only for vertical layout)
+    // Image (vertical layout only)
     if (this.config.layout === 'vertical' && this.config.image) {
       html += `<img src="${this.config.image}" alt="" class="aibizmate-popup-image">`;
     }
@@ -196,13 +161,7 @@ class PopupWidget {
       html += `<a href="${this.config.ctaUrl}" class="aibizmate-popup-cta" target="_blank">${parseMarkdown(this.config.ctaText)}</a>`;
     }
     
-    content.innerHTML = html;
-    
-    popup.appendChild(content);
-    this.overlay.appendChild(popup);
-    this.shadowRoot.appendChild(this.overlay);
-    
-    document.body.appendChild(container);
+    return html;
   }
 
   private setupTrigger(): void {

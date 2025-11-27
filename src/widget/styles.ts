@@ -1,10 +1,14 @@
 export const widgetStyles = `
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
-
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+}
+
+:host {
+  --popup-primary: #f97316;
+  --popup-bg: #ffffff;
+  --popup-text: #1a1a1a;
 }
 
 .aibizmate-popup-overlay {
@@ -27,74 +31,26 @@ export const widgetStyles = `
   opacity: 1;
 }
 
-/* Position variants */
-.aibizmate-popup-overlay.position-top-left {
-  align-items: flex-start;
-  justify-content: flex-start;
+/* Position variants - consolidated using CSS variables */
+.aibizmate-popup-overlay[class*="position-"]:not(.aibizmate-popup-overlay.position-center) {
   padding: 20px;
   background: transparent;
   backdrop-filter: none;
 }
 
-.aibizmate-popup-overlay.position-top-center {
-  align-items: flex-start;
-  justify-content: center;
-  padding: 20px;
-  background: transparent;
-  backdrop-filter: none;
-}
-
-.aibizmate-popup-overlay.position-top-right {
-  align-items: flex-start;
-  justify-content: flex-end;
-  padding: 20px;
-  background: transparent;
-  backdrop-filter: none;
-}
-
-.aibizmate-popup-overlay.position-center-left {
-  align-items: center;
-  justify-content: flex-start;
-  padding: 20px;
-  background: transparent;
-  backdrop-filter: none;
-}
-
-.aibizmate-popup-overlay.position-center-right {
-  align-items: center;
-  justify-content: flex-end;
-  padding: 20px;
-  background: transparent;
-  backdrop-filter: none;
-}
-
-.aibizmate-popup-overlay.position-bottom-left {
-  align-items: flex-end;
-  justify-content: flex-start;
-  padding: 20px;
-  background: transparent;
-  backdrop-filter: none;
-}
-
-.aibizmate-popup-overlay.position-bottom-center {
-  align-items: flex-end;
-  justify-content: center;
-  padding: 20px;
-  background: transparent;
-  backdrop-filter: none;
-}
-
-.aibizmate-popup-overlay.position-bottom-right {
-  align-items: flex-end;
-  justify-content: flex-end;
-  padding: 20px;
-  background: transparent;
-  backdrop-filter: none;
-}
+.position-top-left { align-items: flex-start; justify-content: flex-start; }
+.position-top-center { align-items: flex-start; justify-content: center; }
+.position-top-right { align-items: flex-start; justify-content: flex-end; }
+.position-center-left { align-items: center; justify-content: flex-start; }
+.position-center-right { align-items: center; justify-content: flex-end; }
+.position-bottom-left { align-items: flex-end; justify-content: flex-start; }
+.position-bottom-center { align-items: flex-end; justify-content: center; }
+.position-bottom-right { align-items: flex-end; justify-content: flex-end; }
 
 .aibizmate-popup {
   position: relative;
-  background: white;
+  background: var(--popup-bg, white);
+  color: var(--popup-text, #1a1a1a);
   border-radius: 16px;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
   max-width: 480px;
@@ -103,7 +59,7 @@ export const widgetStyles = `
   overflow: hidden;
   transform: scale(0.9) translateY(20px);
   transition: transform 0.3s ease;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   font-size: 14px;
 }
 
@@ -227,7 +183,7 @@ export const widgetStyles = `
   display: block;
   width: 100%;
   padding: 14px 24px;
-  background: #f97316;
+  background: var(--popup-primary, #f97316);
   color: white !important;
   text-decoration: none;
   text-align: center;
@@ -241,18 +197,14 @@ export const widgetStyles = `
 }
 
 .aibizmate-popup-cta:hover {
-  background: #ea580c;
+  opacity: 0.9;
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(249, 115, 22, 0.3);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .aibizmate-popup-content a {
-  color: #f97316;
+  color: var(--popup-primary, #f97316);
   text-decoration: underline;
-}
-
-.theme-dark .aibizmate-popup-content a {
-  color: #fb923c;
 }
 
 .aibizmate-popup-content strong {
@@ -323,8 +275,8 @@ export const widgetStyles = `
     width: 100%;
     padding: 16px 24px 24px 24px;
   }
-
-@media (max-width: 640px) {
+  
+  /* General mobile styles */
   .aibizmate-popup {
     width: 95%;
     max-width: none;
