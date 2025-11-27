@@ -288,8 +288,6 @@ export const widgetStyles = `
 .aibizmate-popup.layout-horizontal .aibizmate-popup-image {
   width: auto;
   height: 100%;
-  max-width: 200px;
-  max-height: 100%;
   object-fit: contain;
   object-position: left center;
   border-radius: 0;
