@@ -474,6 +474,7 @@ const JsPopupSaleDemo = () => {
   data-features='["✅ Перевага 1","🤖 Перевага 2"]'
   data-cta-text="Спробувати"
   data-cta-url="https://example.com"
+  data-image="https://example.com/image.png"
   data-theme="light"
   data-position="center"
   data-layout="vertical"
@@ -649,14 +650,15 @@ const JsPopupSaleDemo = () => {
 
                 <div className="p-4 bg-red-500/10 border border-red-500/20 rounded-lg">
                   <h3 className="font-semibold mb-2 flex items-center gap-2">
-                    ⚠️ Типові помилки
+                    ⚠️ Діагностика проблем
                   </h3>
                   <ul className="text-sm space-y-2 ml-4">
-                    <li>• <strong>Відсутній data-js-popup-sale:</strong> Віджет не ініціалізується автоматично → додайте маркер-атрибут</li>
-                    <li>• <strong>Неправильний JSON у data-features:</strong> Використовуйте одинарні лапки для атрибута та подвійні всередині масиву</li>
-                    <li>• <strong>Блокування Content Security Policy:</strong> Додайте домен віджету до CSP налаштувань</li>
-                    <li>• <strong>Конфлікт з іншими попапами:</strong> Переконайтесь, що z-index віджету достатньо високий</li>
-                    <li>• <strong>Тригер не спрацьовує:</strong> Перевірте умови тригера в GTM Debug режимі</li>
+                    <li>• <strong>🔍 Перевірка конфігурації:</strong> Відкрийте консоль браузера та знайдіть лог <code className="bg-muted px-1 py-0.5 rounded text-xs">[JS Popup Sale] Initializing with config:</code> — він покаже чи підтягнулась конфігурація з data-атрибутів</li>
+                    <li>• <strong>❌ Відсутній data-js-popup-sale:</strong> Віджет не ініціалізується автоматично → обов'язково додайте цей маркер-атрибут до тега &lt;script&gt;</li>
+                    <li>• <strong>🖼️ Зображення не показується:</strong> Перевірте що data-image присутній у тезі script і URL коректний (HTTPS)</li>
+                    <li>• <strong>📝 Неправильний JSON у data-features:</strong> Використовуйте одинарні лапки для атрибута та подвійні всередині масиву: <code className="bg-muted px-1 py-0.5 rounded text-xs">data-features='["Item 1","Item 2"]'</code></li>
+                    <li>• <strong>🔒 Блокування CSP:</strong> Додайте домен віджету до Content Security Policy налаштувань</li>
+                    <li>• <strong>🎯 Тригер не спрацьовує:</strong> Перевірте умови тригера в GTM Debug режимі та переконайтесь що тег у списку "Tags Fired"</li>
                   </ul>
                 </div>
 
@@ -673,14 +675,39 @@ const JsPopupSaleDemo = () => {
                       </div>
                     </li>
                     <li>
-                      <div className="font-medium">❌ Попап не показується</div>
+                      <div className="font-medium">❌ Попап не показується автоматично</div>
+                      <div className="text-muted-foreground mt-1">
+                        <strong>Діагностика:</strong>
+                        <ol className="ml-4 mt-1 space-y-1">
+                          <li>1. Відкрийте консоль браузера (F12)</li>
+                          <li>2. Шукайте лог <code className="bg-muted px-1 py-0.5 rounded text-xs">[JS Popup Sale] Initializing with config:</code></li>
+                          <li>3. Якщо логу немає або конфігурація порожня — data-атрибути не підтягнулись</li>
+                        </ol>
+                        <strong className="block mt-2">Рішення:</strong>
+                        <ul className="ml-4 mt-1">
+                          <li>• <strong>ОБОВ'ЯЗКОВО додайте</strong> атрибут <code className="bg-muted px-1 py-0.5 rounded text-xs">data-js-popup-sale</code> до тега &lt;script&gt;</li>
+                          <li>• Переконайтесь що всі data-атрибути (data-trigger, data-title, data-cta-text, data-cta-url) присутні в тезі</li>
+                          <li>• Якщо попап вже був dismissed — очистіть localStorage або встановіть <code className="bg-muted px-1 py-0.5 rounded text-xs">data-dismiss-days="0"</code></li>
+                          <li>• Неправильний тригер — перевірте <code className="bg-muted px-1 py-0.5 rounded text-xs">data-trigger</code> та відповідні параметри</li>
+                          <li>• Скрипт не завантажився — перевірте URL у Developer Tools → Network</li>
+                        </ul>
+                      </div>
+                    </li>
+                    <li>
+                      <div className="font-medium">❌ Зображення не відображається в попапі</div>
                       <div className="text-muted-foreground mt-1">
                         <strong>Причини:</strong>
                         <ul className="ml-4 mt-1">
-                          <li>• Відсутній атрибут <code className="bg-muted px-1 py-0.5 rounded text-xs">data-js-popup-sale</code> — додайте його до script тега</li>
-                          <li>• Попап вже був dismissed — очистіть localStorage або встановіть <code className="bg-muted px-1 py-0.5 rounded text-xs">data-dismiss-days="0"</code></li>
-                          <li>• Неправильний тригер — перевірте <code className="bg-muted px-1 py-0.5 rounded text-xs">data-trigger</code> та відповідні параметри</li>
-                          <li>• Скрипт не завантажився — перевірте URL у Developer Tools → Network</li>
+                          <li>• Відсутній атрибут <code className="bg-muted px-1 py-0.5 rounded text-xs">data-image</code> у script тезі — додайте його</li>
+                          <li>• Неправильний URL зображення або зображення недоступне (404)</li>
+                          <li>• CORS помилка — перевірте що зображення доступне з вашого домену</li>
+                          <li>• Конфігурація не підтягнулась (див. лог в консолі)</li>
+                        </ul>
+                        <strong className="block mt-2">Рішення:</strong>
+                        <ul className="ml-4 mt-1">
+                          <li>• Додайте <code className="bg-muted px-1 py-0.5 rounded text-xs">data-image="https://yoursite.com/image.png"</code> до script тега</li>
+                          <li>• Перевірте URL зображення в браузері — воно має відкриватись</li>
+                          <li>• Використовуйте HTTPS URL для зображення</li>
                         </ul>
                       </div>
                     </li>
