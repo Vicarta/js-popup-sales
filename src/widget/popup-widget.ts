@@ -15,6 +15,9 @@ interface PopupConfig {
   theme?: 'light' | 'dark';
   position?: 'center' | 'top-left' | 'top-center' | 'top-right' | 'center-left' | 'center-right' | 'bottom-left' | 'bottom-center' | 'bottom-right';
   inheritFont?: boolean;
+  primaryColor?: string;
+  backgroundColor?: string;
+  textColor?: string;
 }
 
 class PopupWidget {
@@ -28,7 +31,7 @@ class PopupWidget {
       trigger: config.trigger || 'delay',
       delay: config.delay || 3000,
       scrollPercent: config.scrollPercent || 50,
-      dismissDays: config.dismissDays || 7,
+      dismissDays: config.dismissDays !== undefined ? config.dismissDays : 7,
       title: config.title || 'Не втрачайте клієнтів! 🚀',
       subtitle: config.subtitle || 'AIbizMate допоможе знайти пропущені ліди у вашій пошті',
       features: config.features || ['✅ Автоматичне сканування', '🤖 AI-аналіз листів', '📧 Миттєві сповіщення'],
@@ -38,6 +41,9 @@ class PopupWidget {
       theme: config.theme || 'light',
       position: config.position || 'center',
       inheritFont: config.inheritFont || false,
+      primaryColor: config.primaryColor || '#f97316',
+      backgroundColor: config.backgroundColor || '',
+      textColor: config.textColor || '',
     };
   }
 
@@ -52,6 +58,9 @@ class PopupWidget {
   }
 
   private shouldShow(): boolean {
+    // If dismissDays is 0, always show
+    if (this.config.dismissDays === 0) return true;
+    
     const dismissedUntil = localStorage.getItem(this.storageKey);
     if (!dismissedUntil) return true;
     
@@ -85,6 +94,43 @@ class PopupWidget {
           font-family: inherit !important;
         }
       `;
+    }
+    
+    // Apply custom colors
+    if (this.config.primaryColor || this.config.backgroundColor || this.config.textColor) {
+      let colorOverrides = '';
+      if (this.config.primaryColor) {
+        colorOverrides += `
+          .aibizmate-popup-cta {
+            background: ${this.config.primaryColor} !important;
+            color: white !important;
+            border: none !important;
+          }
+          .aibizmate-popup-cta:hover {
+            opacity: 0.9 !important;
+          }
+        `;
+      }
+      if (this.config.backgroundColor) {
+        colorOverrides += `
+          .aibizmate-popup {
+            background: ${this.config.backgroundColor} !important;
+          }
+        `;
+      }
+      if (this.config.textColor) {
+        colorOverrides += `
+          .aibizmate-popup {
+            color: ${this.config.textColor} !important;
+          }
+          .aibizmate-popup-title,
+          .aibizmate-popup-subtitle,
+          .aibizmate-popup-features {
+            color: ${this.config.textColor} !important;
+          }
+        `;
+      }
+      style.textContent += colorOverrides;
     }
     
     this.shadowRoot.appendChild(style);
@@ -213,9 +259,13 @@ class PopupWidget {
   }
 
   dismiss(): void {
-    const dismissUntil = Date.now() + (this.config.dismissDays * 24 * 60 * 60 * 1000);
-    localStorage.setItem(this.storageKey, dismissUntil.toString());
-    console.log(`[AIbizMate Widget] Dismissed for ${this.config.dismissDays} days`);
+    if (this.config.dismissDays > 0) {
+      const dismissUntil = Date.now() + (this.config.dismissDays * 24 * 60 * 60 * 1000);
+      localStorage.setItem(this.storageKey, dismissUntil.toString());
+      console.log(`[AIbizMate Widget] Dismissed for ${this.config.dismissDays} days`);
+    } else {
+      console.log('[AIbizMate Widget] Dismissed (dismissDays=0, will show again on next trigger)');
+    }
     this.hide();
   }
 
@@ -239,7 +289,7 @@ function autoInit() {
       trigger: (script.dataset.trigger as any) || 'delay',
       delay: parseInt(script.dataset.delay || '3000'),
       scrollPercent: parseInt(script.dataset.scrollPercent || '50'),
-      dismissDays: parseInt(script.dataset.dismissDays || '7'),
+      dismissDays: script.dataset.dismissDays ? parseInt(script.dataset.dismissDays) : 7,
       title: script.dataset.title,
       subtitle: script.dataset.subtitle,
       features: script.dataset.features ? JSON.parse(script.dataset.features) : undefined,
@@ -249,6 +299,9 @@ function autoInit() {
       theme: (script.dataset.theme as any) || 'light',
       position: (script.dataset.position as any) || 'center',
       inheritFont: script.dataset.inheritFont === 'true',
+      primaryColor: script.dataset.primaryColor,
+      backgroundColor: script.dataset.backgroundColor,
+      textColor: script.dataset.textColor,
     };
     
     const widget = new PopupWidget(config);

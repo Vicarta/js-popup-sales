@@ -227,15 +227,16 @@ export const widgetStyles = `
   width: 100%;
   padding: 14px 24px;
   background: #f97316;
-  color: white;
+  color: white !important;
   text-decoration: none;
   text-align: center;
   border-radius: 10px;
-  font-weight: 500;
+  font-weight: 600;
   font-size: 15px;
   transition: all 0.2s ease;
   border: none;
   cursor: pointer;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 .aibizmate-popup-cta:hover {
