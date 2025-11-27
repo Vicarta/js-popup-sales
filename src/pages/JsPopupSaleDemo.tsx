@@ -41,6 +41,7 @@ const JsPopupSaleDemo = () => {
     let code = `<!-- JS Popup Sale -->
 <script 
   src="https://yourdomain.com/js-popup-sale.js"
+  data-js-popup-sale
   data-trigger="${config.trigger}"
   data-delay="${config.delay}"
   data-scroll-percent="${config.scrollPercent}"
@@ -402,9 +403,10 @@ const JsPopupSaleDemo = () => {
                 <div>
                   <h3 className="font-semibold mb-2">Програмне керування</h3>
                   <div className="bg-muted rounded p-3 space-y-2">
-                    <div><code className="text-sm">JSPopupSale.show()</code></div>
-                    <div><code className="text-sm">JSPopupSale.hide()</code></div>
-                    <div><code className="text-sm">JSPopupSale.dismiss()</code></div>
+                    <div><code className="text-sm">jsPopupSaleInstance.show()</code></div>
+                    <div><code className="text-sm">jsPopupSaleInstance.hide()</code></div>
+                    <div><code className="text-sm">jsPopupSaleInstance.dismiss()</code></div>
+                    <div className="text-xs text-muted-foreground mt-2">Або створити новий: <code>new JSPopupSale(config)</code></div>
                   </div>
                 </div>
               </div>

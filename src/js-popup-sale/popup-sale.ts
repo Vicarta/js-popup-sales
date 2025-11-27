@@ -292,17 +292,20 @@ function parseConfigFromScript(script: HTMLScriptElement): PopupConfig {
   };
 }
 
+// Зберігаємо посилання на скрипт ДО того, як воно стане null
+const currentScriptRef = document.currentScript as HTMLScriptElement | null;
+
 // Auto-initialize з підтримкою GTM та fallback стратегіями
-function autoInit() {
+function autoInit(savedScript?: HTMLScriptElement | null) {
   let script: HTMLScriptElement | null = null;
   
-  // Стратегія 1: document.currentScript (найнадійніший спосіб)
-  if (document.currentScript && (document.currentScript as HTMLScriptElement).dataset) {
-    script = document.currentScript as HTMLScriptElement;
+  // Стратегія 1: Збережений currentScript (переданий як параметр)
+  if (savedScript && savedScript.dataset && Object.keys(savedScript.dataset).length > 0) {
+    script = savedScript;
   }
   
   // Стратегія 2: Пошук за src (прямий тег)
-  if (!script || !script.dataset?.trigger) {
+  if (!script || Object.keys(script.dataset || {}).length === 0) {
     const scripts = document.querySelectorAll('script[src*="js-popup-sale"]');
     if (scripts.length > 0) {
       script = scripts[scripts.length - 1] as HTMLScriptElement;
@@ -310,15 +313,15 @@ function autoInit() {
   }
   
   // Стратегія 3: GTM - пошук за data-gtmsrc
-  if (!script || !script.dataset?.trigger) {
+  if (!script || Object.keys(script.dataset || {}).length === 0) {
     const gtmScripts = document.querySelectorAll('script[data-gtmsrc*="js-popup-sale"]');
     if (gtmScripts.length > 0) {
       script = gtmScripts[gtmScripts.length - 1] as HTMLScriptElement;
     }
   }
   
-  // Стратегія 4: Пошук за data-js-popup-sale маркером
-  if (!script || !script.dataset?.trigger) {
+  // Стратегія 4: Пошук за data-js-popup-sale маркером (fallback для будь-яких випадків)
+  if (!script || Object.keys(script.dataset || {}).length === 0) {
     const markedScripts = document.querySelectorAll('script[data-js-popup-sale]');
     if (markedScripts.length > 0) {
       script = markedScripts[markedScripts.length - 1] as HTMLScriptElement;
@@ -326,8 +329,8 @@ function autoInit() {
   }
   
   // Якщо скрипт не знайдено - не падати, а залогувати
-  if (!script) {
-    console.warn('[JS Popup Sale] Script tag not found. Use JSPopupSale class manually or add data-js-popup-sale attribute.');
+  if (!script || Object.keys(script.dataset || {}).length === 0) {
+    console.warn('[JS Popup Sale] Script tag not found or has no configuration. Use JSPopupSale class manually or add data-js-popup-sale attribute with data-* config.');
     // Експортуємо клас для ручної ініціалізації
     (window as any).JSPopupSale = JSPopupSale;
     return;
@@ -339,15 +342,16 @@ function autoInit() {
   const widget = new JSPopupSale(config);
   widget.init();
   
-  // Expose to global scope for manual control
-  (window as any).JSPopupSale = widget;
+  // Expose both class and instance to global scope
+  (window as any).JSPopupSale = JSPopupSale;  // Клас для ручного створення
+  (window as any).jsPopupSaleInstance = widget;  // Екземпляр для керування
 }
 
 // Auto-init when DOM is ready
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', autoInit);
+  document.addEventListener('DOMContentLoaded', () => autoInit(currentScriptRef));
 } else {
-  autoInit();
+  autoInit(currentScriptRef);
 }
 
 export { JSPopupSale };
