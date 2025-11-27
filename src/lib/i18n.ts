@@ -10,6 +10,11 @@ export const translations = {
       login: "Login",
       findLeads: "Find Missed Leads",
     },
+    hero: {
+      headline: "Leads in spam, unanswered inquiries — lost sales. \nLet's fix all.",
+      subheadline: "AI that rescues leads you missed in your Spam and Inbox.",
+      cta: "Start Free Audit",
+    },
     howItWorks: {
       step1: {
         title: "Connect Your Inbox",
@@ -23,11 +28,6 @@ export const translations = {
         title: "Get Instant Alerts",
         description: "Receive instant notifications via messengers, SMS, or voice call.",
       },
-    },
-    hero: {
-      headline: "Leads in spam, unanswered inquiries — lost sales. \nLet's fix all.",
-      subheadline: "AI that rescues leads you missed in your Spam and Inbox.",
-      cta: "Start Free Audit",
     },
     auditSection: {
       title: "Find Missed Leads Now (Step by Step)",
@@ -358,6 +358,11 @@ export const translations = {
       login: "Увійти",
       findLeads: "Знайти пропущені ліди",
     },
+    hero: {
+      headline: "Ліди в спамі або неопрацьовані запити — втрачені продажі.\nДавайте це виправимо!",
+      subheadline: "AI, який рятує ліди, що ви пропустили в спамі та вхідних.",
+      cta: "Почати безкоштовний аудит",
+    },
     howItWorks: {
       step1: {
         title: "Підключіть вашу пошту",
@@ -372,11 +377,6 @@ export const translations = {
         description:
           "Отримуйте миттєві сповіщення про пропущені ліди через месенджери, SMS або навіть голосовий дзвінок для найважливішого.",
       },
-    },
-    hero: {
-      headline: "Ліди в спамі або неопрацьовані запити — втрачені продажі.\nДавайте це виправимо!",
-      subheadline: "AI, який рятує ліди, що ви пропустили в спамі та вхідних.",
-      cta: "Почати безкоштовний аудит",
     },
     auditSection: {
       title: "Знайдіть пропущені ліди зараз (покроково)",
