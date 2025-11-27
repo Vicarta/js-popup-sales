@@ -455,8 +455,18 @@ function autoInit(savedScript?: HTMLScriptElement | null) {
   // Якщо скрипт не знайдено або немає корисної конфігурації
   if (!script || !hasValidConfig(script.dataset || {})) {
     console.warn('[JS Popup Sale] Script tag not found or has no valid configuration. Use JSPopupSale class manually or add data-js-popup-sale attribute with data-* config.');
-    // Експортуємо клас для ручної ініціалізації
+    // Експортуємо клас та helper функції для ручної ініціалізації
     (window as any).JSPopupSale = JSPopupSale;
+    
+    // Helper функції для створення і показу попапу без autoInit
+    (window as any).showJSPopupSale = (customConfig?: Partial<PopupConfig>) => {
+      const config = customConfig || {};
+      const widget = new JSPopupSale(config);
+      widget.init();
+      widget.show();
+      (window as any).jsPopupSaleInstance = widget;
+      return widget;
+    };
     return;
   }
   
@@ -469,6 +479,11 @@ function autoInit(savedScript?: HTMLScriptElement | null) {
   // Expose both class and instance to global scope
   (window as any).JSPopupSale = JSPopupSale;  // Клас для ручного створення
   (window as any).jsPopupSaleInstance = widget;  // Екземпляр для керування
+  
+  // Helper методи для зручності (працюють навіть без autoInit)
+  (window as any).showJSPopupSale = () => widget?.show();
+  (window as any).hideJSPopupSale = () => widget?.hide();
+  (window as any).dismissJSPopupSale = () => widget?.dismiss();
 }
 
 // Auto-init when DOM is ready
