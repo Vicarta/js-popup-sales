@@ -283,6 +283,7 @@ export const widgetStyles = `
   align-items: center;
   justify-content: flex-start;
   padding: 0;
+  padding-right: 16px;
   overflow: hidden;
 }
 
@@ -297,7 +298,7 @@ export const widgetStyles = `
 
 .aibizmate-popup.layout-horizontal .aibizmate-popup-content {
   width: 65%;
-  padding: 32px 32px 32px 24px;
+  padding: 32px 32px 32px 0;
 }
 
 @media (max-width: 640px) {
