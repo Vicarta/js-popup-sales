@@ -17,7 +17,7 @@ const Home = () => {
       {/* Hero Section */}
       <section className="py-20 px-4">
         <div className="container mx-auto text-center max-w-4xl">
-          <h1 className="text-5xl md:text-6xl font-bold mb-6 leading-tight">
+          <h1 className="text-5xl md:text-6xl font-bold mb-6 leading-tight whitespace-pre-line">
             {t.hero.headline}
           </h1>
           <p className="text-xl text-muted-foreground mb-8">
