@@ -280,7 +280,7 @@ export const widgetStyles = `
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 20px 0 20px 20px;
+  padding: 0;
 }
 
 .aibizmate-popup.layout-horizontal .aibizmate-popup-image {
