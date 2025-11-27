@@ -1,4 +1,4 @@
-// Utility functions for popup widget
+// Utility functions for popup sale widget
 
 /**
  * Sanitize HTML to prevent XSS attacks
@@ -35,7 +35,7 @@ export function parseMarkdown(text: string): string {
 }
 
 /**
- * Default configuration for popup widget
+ * Default configuration for popup sale widget
  */
 export const DEFAULT_CONFIG = {
   trigger: 'delay' as const,

@@ -10,7 +10,7 @@ import { Card } from '@/components/ui/card';
 import { Copy, Check, Eye } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
-const WidgetDemo = () => {
+const JsPopupSaleDemo = () => {
   const { toast } = useToast();
   const [copied, setCopied] = useState(false);
   
@@ -38,9 +38,9 @@ const WidgetDemo = () => {
     const featuresArray = config.features.split('\n').filter(f => f.trim());
     const featuresJson = JSON.stringify(featuresArray);
     
-    let code = `<!-- AIbizMate Popup Widget -->
+    let code = `<!-- JS Popup Sale -->
 <script 
-  src="https://yourdomain.com/widget.js"
+  src="https://yourdomain.com/js-popup-sale.js"
   data-trigger="${config.trigger}"
   data-delay="${config.delay}"
   data-scroll-percent="${config.scrollPercent}"
@@ -75,12 +75,12 @@ const WidgetDemo = () => {
 
   const handlePreview = () => {
     // Clear any existing widget
-    const existing = document.getElementById('aibizmate-popup-widget');
+    const existing = document.getElementById('js-popup-sale-container');
     if (existing) existing.remove();
     
     // Import and show widget
-    import('@/widget/popup-widget').then(({ PopupWidget }) => {
-      const widget = new PopupWidget({
+    import('@/js-popup-sale/popup-sale').then(({ JSPopupSale }) => {
+      const widget = new JSPopupSale({
         trigger: 'manual',
         dismissDays: parseInt(config.dismissDays),
         title: config.title,
@@ -109,7 +109,7 @@ const WidgetDemo = () => {
       <main className="container mx-auto px-4 py-24">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold mb-4">Popup Widget Configurator</h1>
+            <h1 className="text-4xl font-bold mb-4">JS Popup Sale Configurator</h1>
             <p className="text-muted-foreground text-lg">
               Налаштуйте параметри віджету та отримайте код для вставки на ваш сайт
             </p>
@@ -323,7 +323,7 @@ const WidgetDemo = () => {
                 </Button>
                 <Button 
                   onClick={() => {
-                    localStorage.removeItem('aibizmate_popup_dismissed');
+                    localStorage.removeItem('js_popup_sale_dismissed');
                     toast({
                       title: "Dismiss скинуто",
                       description: "Тепер віджет знову буде показуватись",
@@ -373,18 +373,18 @@ const WidgetDemo = () => {
                     📦 Збірка віджету
                   </h3>
                   <div className="bg-background rounded p-3 mb-2">
-                    <code className="text-sm font-mono">npm run build:widget</code>
+                    <code className="text-sm font-mono">npm run build:popup-sale</code>
                   </div>
                   <p className="text-sm text-muted-foreground">
                     Перед цим додайте скрипт у <code>package.json</code>:
                   </p>
                   <div className="bg-background rounded p-3 mt-2 mb-2">
                     <code className="text-xs font-mono">
-                      "build:widget": "vite build --config vite.widget.config.ts"
+                      "build:popup-sale": "vite build --config vite.js-popup-sale.config.ts"
                     </code>
                   </div>
                   <p className="text-sm text-muted-foreground">
-                    Результат: <code className="font-mono">dist-widget/widget.js</code>
+                    Результат: <code className="font-mono">dist-js-popup-sale/js-popup-sale.js</code>
                   </p>
                 </div>
 
@@ -402,9 +402,9 @@ const WidgetDemo = () => {
                 <div>
                   <h3 className="font-semibold mb-2">Програмне керування</h3>
                   <div className="bg-muted rounded p-3 space-y-2">
-                    <div><code className="text-sm">AIbizMatePopup.show()</code></div>
-                    <div><code className="text-sm">AIbizMatePopup.hide()</code></div>
-                    <div><code className="text-sm">AIbizMatePopup.dismiss()</code></div>
+                    <div><code className="text-sm">JSPopupSale.show()</code></div>
+                    <div><code className="text-sm">JSPopupSale.hide()</code></div>
+                    <div><code className="text-sm">JSPopupSale.dismiss()</code></div>
                   </div>
                 </div>
               </div>
@@ -418,4 +418,4 @@ const WidgetDemo = () => {
   );
 };
 
-export default WidgetDemo;
+export default JsPopupSaleDemo;

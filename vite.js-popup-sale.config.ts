@@ -1,16 +1,16 @@
 import { defineConfig } from "vite";
 import path from "path";
 
-// Vite config for building the embeddable widget
+// Vite config for building the embeddable popup sale widget
 export default defineConfig({
   build: {
     lib: {
-      entry: path.resolve(__dirname, "src/widget/popup-widget.ts"),
-      name: "AIbizMateWidget",
+      entry: path.resolve(__dirname, "src/js-popup-sale/popup-sale.ts"),
+      name: "JSPopupSale",
       formats: ["iife"],
-      fileName: () => "widget.js",
+      fileName: () => "js-popup-sale.js",
     },
-    outDir: "dist-widget",
+    outDir: "dist-js-popup-sale",
     minify: "terser",
     terserOptions: {
       compress: {

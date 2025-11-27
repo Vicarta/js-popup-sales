@@ -1,5 +1,5 @@
-import { widgetStyles } from './styles';
-import { parseMarkdown, DEFAULT_CONFIG } from './widget-utils';
+import { popupStyles } from './styles';
+import { parseMarkdown, DEFAULT_CONFIG } from './utils';
 
 interface PopupConfig {
   trigger?: 'delay' | 'scroll' | 'exit-intent' | 'manual';
@@ -21,11 +21,11 @@ interface PopupConfig {
   textColor?: string;
 }
 
-class PopupWidget {
+class JSPopupSale {
   private config: Required<PopupConfig>;
   private overlay: HTMLElement | null = null;
   private shadowRoot: ShadowRoot | null = null;
-  private storageKey = 'aibizmate_popup_dismissed';
+  private storageKey = 'js_popup_sale_dismissed';
 
   constructor(config: PopupConfig = {}) {
     this.config = {
@@ -37,7 +37,7 @@ class PopupWidget {
 
   init(): void {
     if (!this.shouldShow()) {
-      console.log('[AIbizMate Widget] Popup dismissed by user');
+      console.log('[JS Popup Sale] Popup dismissed by user');
       return;
     }
 
@@ -66,7 +66,7 @@ class PopupWidget {
   private createPopup(): void {
     // Create container
     const container = document.createElement('div');
-    container.id = 'aibizmate-popup-widget';
+    container.id = 'js-popup-sale-container';
     
     // Create shadow DOM for style isolation
     this.shadowRoot = container.attachShadow({ mode: 'open' });
@@ -77,23 +77,23 @@ class PopupWidget {
     // Add font import only if not inheriting
     if (!this.config.inheritFont) {
       style.textContent = `@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');\n`;
-      style.textContent += widgetStyles.replace(
+      style.textContent += popupStyles.replace(
         'font-family: -apple-system',
         "font-family: 'Inter', -apple-system"
       );
     } else {
-      style.textContent = widgetStyles + `\n.aibizmate-popup { font-family: inherit !important; }`;
+      style.textContent = popupStyles + `\n.js-popup-sale { font-family: inherit !important; }`;
     }
     
     this.shadowRoot.appendChild(style);
     
     // Create overlay
     this.overlay = document.createElement('div');
-    this.overlay.className = `aibizmate-popup-overlay position-${this.config.position}`;
+    this.overlay.className = `js-popup-sale-overlay position-${this.config.position}`;
     
     // Create popup with custom CSS variables
     const popup = document.createElement('div');
-    popup.className = `aibizmate-popup theme-${this.config.theme} layout-${this.config.layout}`;
+    popup.className = `js-popup-sale theme-${this.config.theme} layout-${this.config.layout}`;
     
     // Apply custom colors via CSS variables
     if (this.config.primaryColor) popup.style.setProperty('--popup-primary', this.config.primaryColor);
@@ -102,7 +102,7 @@ class PopupWidget {
     
     // Close button
     const closeBtn = document.createElement('button');
-    closeBtn.className = 'aibizmate-popup-close';
+    closeBtn.className = 'js-popup-sale-close';
     closeBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none"><path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/></svg>';
     closeBtn.onclick = () => this.dismiss();
     
@@ -111,14 +111,14 @@ class PopupWidget {
     // Add image for horizontal layout
     if (this.config.layout === 'horizontal' && this.config.image) {
       const imageContainer = document.createElement('div');
-      imageContainer.className = 'aibizmate-popup-image-container';
-      imageContainer.innerHTML = `<img src="${this.config.image}" alt="" class="aibizmate-popup-image">`;
+      imageContainer.className = 'js-popup-sale-image-container';
+      imageContainer.innerHTML = `<img src="${this.config.image}" alt="" class="js-popup-sale-image">`;
       popup.appendChild(imageContainer);
     }
     
     // Build content HTML
     const content = document.createElement('div');
-    content.className = 'aibizmate-popup-content';
+    content.className = 'js-popup-sale-content';
     content.innerHTML = this.buildContentHtml();
 
     
@@ -134,22 +134,22 @@ class PopupWidget {
     
     // Image (vertical layout only)
     if (this.config.layout === 'vertical' && this.config.image) {
-      html += `<img src="${this.config.image}" alt="" class="aibizmate-popup-image">`;
+      html += `<img src="${this.config.image}" alt="" class="js-popup-sale-image">`;
     }
     
     // Title
     if (this.config.title) {
-      html += `<h2 class="aibizmate-popup-title">${parseMarkdown(this.config.title)}</h2>`;
+      html += `<h2 class="js-popup-sale-title">${parseMarkdown(this.config.title)}</h2>`;
     }
     
     // Subtitle
     if (this.config.subtitle) {
-      html += `<p class="aibizmate-popup-subtitle">${parseMarkdown(this.config.subtitle)}</p>`;
+      html += `<p class="js-popup-sale-subtitle">${parseMarkdown(this.config.subtitle)}</p>`;
     }
     
     // Features
     if (this.config.features.length > 0) {
-      html += '<ul class="aibizmate-popup-features">';
+      html += '<ul class="js-popup-sale-features">';
       this.config.features.forEach(feature => {
         html += `<li>${parseMarkdown(feature)}</li>`;
       });
@@ -158,7 +158,7 @@ class PopupWidget {
     
     // CTA
     if (this.config.ctaText && this.config.ctaUrl) {
-      html += `<a href="${this.config.ctaUrl}" class="aibizmate-popup-cta" target="_blank">${parseMarkdown(this.config.ctaText)}</a>`;
+      html += `<a href="${this.config.ctaUrl}" class="js-popup-sale-cta" target="_blank">${parseMarkdown(this.config.ctaText)}</a>`;
     }
     
     return html;
@@ -232,15 +232,15 @@ class PopupWidget {
     if (this.config.dismissDays > 0) {
       const dismissUntil = Date.now() + (this.config.dismissDays * 24 * 60 * 60 * 1000);
       localStorage.setItem(this.storageKey, dismissUntil.toString());
-      console.log(`[AIbizMate Widget] Dismissed for ${this.config.dismissDays} days`);
+      console.log(`[JS Popup Sale] Dismissed for ${this.config.dismissDays} days`);
     } else {
-      console.log('[AIbizMate Widget] Dismissed (dismissDays=0, will show again on next trigger)');
+      console.log('[JS Popup Sale] Dismissed (dismissDays=0, will show again on next trigger)');
     }
     this.hide();
   }
 
   destroy(): void {
-    const container = document.getElementById('aibizmate-popup-widget');
+    const container = document.getElementById('js-popup-sale-container');
     if (container) {
       container.remove();
     }
@@ -251,7 +251,7 @@ class PopupWidget {
 
 // Auto-initialize from script tag data attributes
 function autoInit() {
-  const scripts = document.querySelectorAll('script[src*="widget"]');
+  const scripts = document.querySelectorAll('script[src*="js-popup-sale"]');
   const script = scripts[scripts.length - 1] as HTMLScriptElement;
   
   if (script && script.dataset) {
@@ -275,11 +275,11 @@ function autoInit() {
       textColor: script.dataset.textColor,
     };
     
-    const widget = new PopupWidget(config);
+    const widget = new JSPopupSale(config);
     widget.init();
     
     // Expose to global scope for manual control
-    (window as any).AIbizMatePopup = widget;
+    (window as any).JSPopupSale = widget;
   }
 }
 
@@ -290,4 +290,4 @@ if (document.readyState === 'loading') {
   autoInit();
 }
 
-export { PopupWidget };
+export { JSPopupSale };
