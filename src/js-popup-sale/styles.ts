@@ -20,7 +20,7 @@ export const popupStyles = `
   background: rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(4px);
   z-index: 999999;
-  display: flex;
+  display: none;
   align-items: center;
   justify-content: center;
   opacity: 0;
