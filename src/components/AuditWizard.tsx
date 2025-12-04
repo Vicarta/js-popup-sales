@@ -76,12 +76,12 @@ export const AuditWizard = () => {
         </div>
       </div>
 
-      <Card className="p-8 bg-card shadow-lg">
+      <Card className="p-4 sm:p-6 md:p-8 bg-card shadow-lg">
         {/* Step 1: Deal Value */}
         {currentStep === 1 && (
-          <div className="space-y-6">
+          <div className="space-y-4 sm:space-y-6">
             <div>
-              <h2 className="text-3xl font-bold mb-2">{t.wizard.step1Title}</h2>
+              <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-2">{t.wizard.step1Title}</h2>
               <p className="text-muted-foreground">
                 This helps us calculate your potential missed revenue
               </p>
@@ -107,9 +107,9 @@ export const AuditWizard = () => {
 
         {/* Step 2: Connect Inbox */}
         {currentStep === 2 && (
-          <div className="space-y-6">
+          <div className="space-y-4 sm:space-y-6">
             <div>
-              <h2 className="text-3xl font-bold mb-2">{t.wizard.step2Title}</h2>
+              <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-2">{t.wizard.step2Title}</h2>
               <p className="text-muted-foreground">
                 Connect your email to start the audit
               </p>
@@ -178,9 +178,9 @@ export const AuditWizard = () => {
 
         {/* Step 3: Scanning */}
         {currentStep === 3 && (
-          <div className="space-y-6 text-center py-8">
+          <div className="space-y-4 sm:space-y-6 text-center py-4 sm:py-8">
             <div>
-              <h2 className="text-3xl font-bold mb-2">{t.wizard.step3Title}</h2>
+              <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-2">{t.wizard.step3Title}</h2>
               <p className="text-muted-foreground">{t.wizard.step3Scanning}</p>
             </div>
             {isScanning ? (
@@ -202,25 +202,25 @@ export const AuditWizard = () => {
 
         {/* Step 4: Results */}
         {currentStep === 4 && (
-          <div className="space-y-6">
+          <div className="space-y-4 sm:space-y-6">
             <div className="text-center">
-              <h2 className="text-3xl font-bold mb-2">{t.wizard.step4Title}</h2>
-              <p className="text-muted-foreground mb-4">{t.wizard.step4Scanned}</p>
-              <CheckCircle2 className="w-16 h-16 text-accent mx-auto mb-6" />
+              <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-2">{t.wizard.step4Title}</h2>
+              <p className="text-sm sm:text-base text-muted-foreground mb-3 sm:mb-4">{t.wizard.step4Scanned}</p>
+              <CheckCircle2 className="w-12 h-12 sm:w-16 sm:h-16 text-accent mx-auto mb-4 sm:mb-6" />
             </div>
-            <div className="grid md:grid-cols-2 gap-6">
-              <Card className="p-6 bg-accent/10 border-accent">
+            <div className="grid grid-cols-2 gap-3 sm:gap-6">
+              <Card className="p-3 sm:p-6 bg-accent/10 border-accent">
                 <div className="text-center">
-                  <div className="text-5xl font-bold text-accent mb-2">{foundLeads}</div>
-                  <p className="text-muted-foreground">{t.wizard.step4Found}</p>
+                  <div className="text-2xl sm:text-4xl md:text-5xl font-bold text-accent mb-1 sm:mb-2">{foundLeads}</div>
+                  <p className="text-xs sm:text-sm md:text-base text-muted-foreground">{t.wizard.step4Found}</p>
                 </div>
               </Card>
-              <Card className="p-6 bg-destructive/10 border-destructive">
+              <Card className="p-3 sm:p-6 bg-destructive/10 border-destructive">
                 <div className="text-center">
-                  <div className="text-5xl font-bold text-destructive mb-2">
+                  <div className="text-2xl sm:text-4xl md:text-5xl font-bold text-destructive mb-1 sm:mb-2">
                     ${missedRevenue.toLocaleString()}
                   </div>
-                  <p className="text-muted-foreground">{t.wizard.step4Loss}</p>
+                  <p className="text-xs sm:text-sm md:text-base text-muted-foreground">{t.wizard.step4Loss}</p>
                 </div>
               </Card>
             </div>
@@ -270,25 +270,25 @@ export const AuditWizard = () => {
 
         {/* Step 5: CTA */}
         {currentStep === 5 && (
-          <div className="space-y-6">
+          <div className="space-y-4 sm:space-y-6">
             <div className="text-center">
-              <h2 className="text-3xl font-bold mb-2">{t.wizard.step5Title}</h2>
+              <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-2">{t.wizard.step5Title}</h2>
             </div>
-            <div className="grid md:grid-cols-2 gap-4">
-              <Card className="p-6 hover:shadow-lg transition-shadow border-2 hover:border-primary cursor-pointer">
-                <div className="text-center space-y-4">
-                  <div className="text-3xl font-bold text-primary">$19</div>
-                  <p className="text-muted-foreground">{t.wizard.step5Report}</p>
-                  <Button className="w-full">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+              <Card className="p-4 sm:p-6 hover:shadow-lg transition-shadow border-2 hover:border-primary cursor-pointer">
+                <div className="text-center space-y-2 sm:space-y-4">
+                  <div className="text-2xl sm:text-3xl font-bold text-primary">$19</div>
+                  <p className="text-sm sm:text-base text-muted-foreground">{t.wizard.step5Report}</p>
+                  <Button className="w-full text-sm sm:text-base">
                     {t.wizard.step5Report}
                   </Button>
                 </div>
               </Card>
-              <Card className="p-6 hover:shadow-lg transition-shadow border-2 border-primary cursor-pointer bg-primary/5">
-                <div className="text-center space-y-4">
-                  <div className="text-3xl font-bold text-primary">Full Protection</div>
-                  <p className="text-muted-foreground">{t.wizard.step5Protection}</p>
-                  <Button className="w-full">
+              <Card className="p-4 sm:p-6 hover:shadow-lg transition-shadow border-2 border-primary cursor-pointer bg-primary/5">
+                <div className="text-center space-y-2 sm:space-y-4">
+                  <div className="text-xl sm:text-2xl md:text-3xl font-bold text-primary">Full Protection</div>
+                  <p className="text-sm sm:text-base text-muted-foreground">{t.wizard.step5Protection}</p>
+                  <Button className="w-full text-sm sm:text-base">
                     {t.wizard.step5Protection}
                   </Button>
                 </div>
