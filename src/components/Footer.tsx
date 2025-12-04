@@ -7,13 +7,13 @@ export const Footer = () => {
   const t = useTranslation(language);
 
   return (
-    <footer className="bg-card border-t border-border py-8 mt-20">
+    <footer className="bg-card border-t border-border py-6 sm:py-8 mt-12 sm:mt-16 md:mt-20">
       <div className="container mx-auto px-4">
-        <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-          <div className="text-muted-foreground text-sm">
+        <div className="flex flex-col md:flex-row justify-between items-center space-y-3 md:space-y-0">
+          <div className="text-muted-foreground text-xs sm:text-sm">
             © 2025 AIbizMate. All rights reserved.
           </div>
-          <div className="flex space-x-6">
+          <div className="flex flex-wrap justify-center gap-4 sm:gap-6">
             <Link
               to="/terms"
               className="text-muted-foreground hover:text-foreground text-sm transition-colors"

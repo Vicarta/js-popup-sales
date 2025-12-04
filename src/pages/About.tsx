@@ -12,9 +12,9 @@ const About = () => {
     <div className="min-h-screen flex flex-col">
       <Navigation />
       
-      <section className="py-20 px-4">
+      <section className="py-12 sm:py-16 md:py-20 px-4">
         <div className="container mx-auto max-w-4xl">
-          <h1 className="text-5xl font-bold text-center mb-12">{t.about.title}</h1>
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-center mb-8 sm:mb-12">{t.about.title}</h1>
           
           {/* Founder Image */}
           <div className="mb-12 flex justify-center">

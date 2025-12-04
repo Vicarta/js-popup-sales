@@ -23,86 +23,86 @@ const Pricing = () => {
     <div className="min-h-screen flex flex-col">
       <Navigation />
       
-      <section className="py-20 px-4">
+      <section className="py-12 sm:py-16 md:py-20 px-4">
         <div className="container mx-auto">
-          <div className="text-center mb-16">
-            <h1 className="text-5xl font-bold mb-4">{t.pricing.title}</h1>
-            <p className="text-xl text-muted-foreground">{t.pricing.subtitle}</p>
+          <div className="text-center mb-8 sm:mb-12 md:mb-16">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-4">{t.pricing.title}</h1>
+            <p className="text-base sm:text-lg md:text-xl text-muted-foreground px-2">{t.pricing.subtitle}</p>
           </div>
 
           {/* Main Pricing Tiers */}
-          <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto mb-20">
+          <div className="grid md:grid-cols-3 gap-4 sm:gap-6 md:gap-8 max-w-6xl mx-auto mb-12 sm:mb-16 md:mb-20">
             {/* Tier 1 */}
-            <Card className="p-8 hover:shadow-lg transition-shadow">
-              <div className="mb-6">
-                <h3 className="text-2xl font-bold mb-2">{t.pricing.tier1.name}</h3>
-                <div className="text-4xl font-bold text-primary mb-2">
+            <Card className="p-4 sm:p-6 md:p-8 hover:shadow-lg transition-shadow">
+              <div className="mb-4 sm:mb-6">
+                <h3 className="text-lg sm:text-xl md:text-2xl font-bold mb-2">{t.pricing.tier1.name}</h3>
+                <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary mb-2">
                   {t.pricing.tier1.price}
-                  <span className="text-lg text-muted-foreground">{t.pricing.monthly}</span>
+                  <span className="text-sm sm:text-base md:text-lg text-muted-foreground">{t.pricing.monthly}</span>
                 </div>
-                <p className="text-muted-foreground">{t.pricing.tier1.description}</p>
+                <p className="text-sm sm:text-base text-muted-foreground">{t.pricing.tier1.description}</p>
               </div>
-              <ul className="space-y-3 mb-8">
+              <ul className="space-y-2 sm:space-y-3 mb-6 sm:mb-8">
                 {t.pricing.tier1.features.map((feature, index) => (
                   <li key={index} className="flex items-start gap-2">
-                    <Check className="w-5 h-5 text-accent flex-shrink-0 mt-0.5" />
-                    <span>{feature}</span>
+                    <Check className="w-4 h-4 sm:w-5 sm:h-5 text-accent flex-shrink-0 mt-0.5" />
+                    <span className="text-sm sm:text-base">{feature}</span>
                   </li>
                 ))}
               </ul>
-              <Button className="w-full">{t.pricing.selectPlan}</Button>
+              <Button className="w-full text-sm sm:text-base">{t.pricing.selectPlan}</Button>
             </Card>
 
             {/* Tier 2 - Featured */}
-            <Card className="p-8 border-2 border-primary shadow-lg relative">
-              <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground px-4 py-1 rounded-full text-sm font-semibold">
+            <Card className="p-4 sm:p-6 md:p-8 border-2 border-primary shadow-lg relative">
+              <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground px-3 sm:px-4 py-1 rounded-full text-xs sm:text-sm font-semibold">
                 Popular
               </div>
-              <div className="mb-6">
-                <h3 className="text-2xl font-bold mb-2">{t.pricing.tier2.name}</h3>
-                <div className="text-4xl font-bold text-primary mb-2">
+              <div className="mb-4 sm:mb-6">
+                <h3 className="text-lg sm:text-xl md:text-2xl font-bold mb-2">{t.pricing.tier2.name}</h3>
+                <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary mb-2">
                   {t.pricing.tier2.price}
-                  <span className="text-lg text-muted-foreground">{t.pricing.monthly}</span>
+                  <span className="text-sm sm:text-base md:text-lg text-muted-foreground">{t.pricing.monthly}</span>
                 </div>
-                <p className="text-muted-foreground">{t.pricing.tier2.description}</p>
+                <p className="text-sm sm:text-base text-muted-foreground">{t.pricing.tier2.description}</p>
               </div>
-              <ul className="space-y-3 mb-8">
+              <ul className="space-y-2 sm:space-y-3 mb-6 sm:mb-8">
                 {t.pricing.tier2.features.map((feature, index) => (
                   <li key={index} className="flex items-start gap-2">
-                    <Check className="w-5 h-5 text-accent flex-shrink-0 mt-0.5" />
-                    <span>{feature}</span>
+                    <Check className="w-4 h-4 sm:w-5 sm:h-5 text-accent flex-shrink-0 mt-0.5" />
+                    <span className="text-sm sm:text-base">{feature}</span>
                   </li>
                 ))}
               </ul>
-              <Button className="w-full">{t.pricing.selectPlan}</Button>
+              <Button className="w-full text-sm sm:text-base">{t.pricing.selectPlan}</Button>
             </Card>
 
             {/* Tier 3 */}
-            <Card className="p-8 hover:shadow-lg transition-shadow bg-muted/30">
-              <div className="mb-6">
-                <h3 className="text-2xl font-bold mb-2">{t.pricing.tier3.name}</h3>
-                <div className="text-4xl font-bold text-primary mb-2">
+            <Card className="p-4 sm:p-6 md:p-8 hover:shadow-lg transition-shadow bg-muted/30">
+              <div className="mb-4 sm:mb-6">
+                <h3 className="text-lg sm:text-xl md:text-2xl font-bold mb-2">{t.pricing.tier3.name}</h3>
+                <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary mb-2">
                   {t.pricing.tier3.price}
                 </div>
-                <p className="text-muted-foreground">{t.pricing.tier3.description}</p>
+                <p className="text-sm sm:text-base text-muted-foreground">{t.pricing.tier3.description}</p>
               </div>
-              <ul className="space-y-3 mb-8">
+              <ul className="space-y-2 sm:space-y-3 mb-6 sm:mb-8">
                 {t.pricing.tier3.features.map((feature, index) => (
                   <li key={index} className="flex items-start gap-2">
-                    <Check className="w-5 h-5 text-accent flex-shrink-0 mt-0.5" />
-                    <span>{feature}</span>
+                    <Check className="w-4 h-4 sm:w-5 sm:h-5 text-accent flex-shrink-0 mt-0.5" />
+                    <span className="text-sm sm:text-base">{feature}</span>
                   </li>
                 ))}
               </ul>
-              <Button variant="secondary" className="w-full">{t.pricing.contactSales}</Button>
+              <Button variant="secondary" className="w-full text-sm sm:text-base">{t.pricing.contactSales}</Button>
             </Card>
           </div>
 
           {/* Add-ons Section */}
           <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-12">
-              <h2 className="text-4xl font-bold mb-4">{t.pricing.addons.title}</h2>
-              <p className="text-xl text-muted-foreground">{t.pricing.addons.subtitle}</p>
+            <div className="text-center mb-8 sm:mb-12">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4">{t.pricing.addons.title}</h2>
+              <p className="text-base sm:text-lg md:text-xl text-muted-foreground px-2">{t.pricing.addons.subtitle}</p>
             </div>
 
             <div className="grid md:grid-cols-3 gap-6">

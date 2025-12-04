@@ -15,10 +15,10 @@ const Support = () => {
     <div className="min-h-screen flex flex-col">
       <Navigation />
       
-      <main className="flex-1 py-20 px-4">
+      <main className="flex-1 py-12 sm:py-16 md:py-20 px-4">
         <div className="container mx-auto max-w-6xl">
-          <h1 className="text-5xl font-bold text-center mb-4">{t.support.title}</h1>
-          <p className="text-center text-xl text-muted-foreground mb-16">{t.support.subtitle}</p>
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-center mb-3 sm:mb-4">{t.support.title}</h1>
+          <p className="text-center text-base sm:text-lg md:text-xl text-muted-foreground mb-8 sm:mb-12 md:mb-16 px-2">{t.support.subtitle}</p>
           
           <div className="grid md:grid-cols-2 gap-6">
             {Object.values(t.support.sections).map((section: any, index) => {

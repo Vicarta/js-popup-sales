@@ -128,6 +128,7 @@ All colors MUST be HSL.
     background: linear-gradient(180deg, hsl(220, 40%, 98%) 0%, hsl(210, 40%, 96%) 100%);
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     min-height: 100vh;
+    overflow-x: hidden;
   }
 
   h1, h2, h3, h4, h5, h6 {

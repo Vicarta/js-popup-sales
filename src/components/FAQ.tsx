@@ -12,15 +12,15 @@ export const FAQ = () => {
   const t = useTranslation(language);
 
   return (
-    <section className="py-20 px-4">
+    <section className="py-12 sm:py-16 md:py-20 px-4">
       <div className="container mx-auto max-w-4xl">
-        <h2 className="text-4xl font-bold text-center mb-12">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-8 sm:mb-12">
           {t.faq.title}
         </h2>
         
         {/* Security & Privacy */}
-        <div className="mb-12">
-          <h3 className="text-2xl font-semibold mb-6">{t.faq.securityTitle}</h3>
+        <div className="mb-8 sm:mb-12">
+          <h3 className="text-lg sm:text-xl md:text-2xl font-semibold mb-4 sm:mb-6">{t.faq.securityTitle}</h3>
           <Accordion type="single" collapsible className="space-y-4">
             <AccordionItem value="app-password">
               <AccordionTrigger className="text-left">
@@ -57,8 +57,8 @@ export const FAQ = () => {
         </div>
 
         {/* How It Works */}
-        <div className="mb-12">
-          <h3 className="text-2xl font-semibold mb-6">{t.faq.howItWorksTitle}</h3>
+        <div className="mb-8 sm:mb-12">
+          <h3 className="text-lg sm:text-xl md:text-2xl font-semibold mb-4 sm:mb-6">{t.faq.howItWorksTitle}</h3>
           <Accordion type="single" collapsible className="space-y-4">
             <AccordionItem value="different-spam">
               <AccordionTrigger className="text-left">
@@ -92,7 +92,7 @@ export const FAQ = () => {
 
         {/* Billing & Setup */}
         <div>
-          <h3 className="text-2xl font-semibold mb-6">{t.faq.billingTitle}</h3>
+          <h3 className="text-lg sm:text-xl md:text-2xl font-semibold mb-4 sm:mb-6">{t.faq.billingTitle}</h3>
           <Accordion type="single" collapsible className="space-y-4">
             <AccordionItem value="cancel">
               <AccordionTrigger className="text-left">
