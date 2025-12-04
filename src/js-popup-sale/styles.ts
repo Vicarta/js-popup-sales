@@ -260,20 +260,14 @@ export const popupStyles = `
     max-width: none;
   }
   
+  /* Hide image for horizontal layout on mobile */
   .js-popup-sale.layout-horizontal .js-popup-sale-image-container {
-    width: 100%;
-    padding: 24px 24px 0 24px;
-  }
-  
-  .js-popup-sale.layout-horizontal .js-popup-sale-image {
-    max-height: 180px;
-    width: auto;
-    max-width: 100%;
+    display: none;
   }
   
   .js-popup-sale.layout-horizontal .js-popup-sale-content {
     width: 100%;
-    padding: 16px 24px 24px 24px;
+    padding: 32px 24px 24px 24px;
   }
   
   /* General mobile styles */
