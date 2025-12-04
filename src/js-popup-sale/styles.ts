@@ -289,4 +289,60 @@ export const popupStyles = `
     padding: 12px;
   }
 }
+
+/* Landscape mobile - compact mode */
+@media (max-height: 500px) and (orientation: landscape) {
+  .js-popup-sale {
+    max-height: 95vh;
+    border-radius: 10px;
+  }
+  
+  .js-popup-sale-content {
+    padding: 16px 20px 16px;
+    overflow-y: auto;
+    max-height: calc(95vh - 20px);
+  }
+  
+  /* Hide image in landscape */
+  .js-popup-sale-image,
+  .js-popup-sale-image-container {
+    display: none !important;
+  }
+  
+  .js-popup-sale-close {
+    top: 8px;
+    right: 8px;
+    width: 28px;
+    height: 28px;
+  }
+  
+  .js-popup-sale-title {
+    font-size: 18px;
+    margin-bottom: 6px;
+  }
+  
+  .js-popup-sale-subtitle {
+    font-size: 13px;
+    margin-bottom: 10px;
+  }
+  
+  .js-popup-sale-features {
+    margin-bottom: 12px;
+  }
+  
+  .js-popup-sale-features li {
+    padding: 4px 0;
+    padding-left: 20px;
+    font-size: 13px;
+  }
+  
+  .js-popup-sale-cta {
+    padding: 10px 20px;
+    font-size: 14px;
+  }
+  
+  .js-popup-sale.layout-horizontal .js-popup-sale-content {
+    padding: 16px 20px 16px 20px;
+  }
+}
 `;
