@@ -97,9 +97,9 @@ export const AuditWizard = () => {
               <Button
                 onClick={handleNextStep}
                 disabled={!dealValue}
-                className="w-full h-12 text-lg"
+                className="w-full h-auto min-h-[48px] py-3 text-base sm:text-lg whitespace-normal"
               >
-                {t.wizard.nextStep} <ArrowRight className="ml-2 w-5 h-5" />
+                {t.wizard.nextStep} <ArrowRight className="ml-2 w-5 h-5 flex-shrink-0" />
               </Button>
             </div>
           </div>
@@ -165,12 +165,12 @@ export const AuditWizard = () => {
               </div>
             </div>
 
-            <div className="flex gap-4">
-              <Button onClick={handlePreviousStep} variant="outline" className="flex-1 h-12">
-                <ArrowLeft className="mr-2 w-5 h-5" /> {t.wizard.previousStep}
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+              <Button onClick={handlePreviousStep} variant="outline" className="flex-1 h-auto min-h-[48px] py-3 whitespace-normal">
+                <ArrowLeft className="mr-2 w-5 h-5 flex-shrink-0" /> {t.wizard.previousStep}
               </Button>
-              <Button onClick={handleNextStep} disabled={!email || !appPassword} className="flex-1 h-12">
-                {t.wizard.nextStep} <ArrowRight className="ml-2 w-5 h-5" />
+              <Button onClick={handleNextStep} disabled={!email || !appPassword} className="flex-1 h-auto min-h-[48px] py-3 whitespace-normal">
+                {t.wizard.nextStep} <ArrowRight className="ml-2 w-5 h-5 flex-shrink-0" />
               </Button>
             </div>
           </div>
@@ -188,12 +188,12 @@ export const AuditWizard = () => {
                 <Loader2 className="w-16 h-16 text-primary animate-spin" />
               </div>
             ) : (
-              <div className="space-y-4">
-                <Button onClick={handleNextStep} className="w-full h-12 text-lg">
-                  {t.wizard.step3SeeResults} <ArrowRight className="ml-2 w-5 h-5" />
+              <div className="space-y-3 sm:space-y-4">
+                <Button onClick={handleNextStep} className="w-full h-auto min-h-[48px] py-3 text-base sm:text-lg whitespace-normal">
+                  {t.wizard.step3SeeResults} <ArrowRight className="ml-2 w-5 h-5 flex-shrink-0" />
                 </Button>
-                <Button onClick={handlePreviousStep} variant="outline" className="w-full h-12">
-                  <ArrowLeft className="mr-2 w-5 h-5" /> {t.wizard.previousStep}
+                <Button onClick={handlePreviousStep} variant="outline" className="w-full h-auto min-h-[48px] py-3 whitespace-normal">
+                  <ArrowLeft className="mr-2 w-5 h-5 flex-shrink-0" /> {t.wizard.previousStep}
                 </Button>
               </div>
             )}
@@ -257,12 +257,12 @@ export const AuditWizard = () => {
               <p className="text-sm leading-relaxed">{t.wizard.step4BottomText}</p>
             </div>
 
-            <div className="flex gap-4">
-              <Button onClick={handlePreviousStep} variant="outline" className="flex-1 h-12">
-                <ArrowLeft className="mr-2 w-5 h-5" /> {t.wizard.previousStep}
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+              <Button onClick={handlePreviousStep} variant="outline" className="flex-1 h-auto min-h-[48px] py-3 whitespace-normal">
+                <ArrowLeft className="mr-2 w-5 h-5 flex-shrink-0" /> {t.wizard.previousStep}
               </Button>
-              <Button onClick={handleNextStep} className="flex-1 h-12">
-                {t.wizard.nextStep} <ArrowRight className="ml-2 w-5 h-5" />
+              <Button onClick={handleNextStep} className="flex-1 h-auto min-h-[48px] py-3 whitespace-normal">
+                {t.wizard.nextStep} <ArrowRight className="ml-2 w-5 h-5 flex-shrink-0" />
               </Button>
             </div>
           </div>
@@ -279,7 +279,7 @@ export const AuditWizard = () => {
                 <div className="text-center space-y-2 sm:space-y-4">
                   <div className="text-2xl sm:text-3xl font-bold text-primary">$19</div>
                   <p className="text-sm sm:text-base text-muted-foreground">{t.wizard.step5Report}</p>
-                  <Button className="w-full text-sm sm:text-base">
+                  <Button className="w-full h-auto min-h-[40px] py-2 text-sm sm:text-base whitespace-normal">
                     {t.wizard.step5Report}
                   </Button>
                 </div>
@@ -288,14 +288,14 @@ export const AuditWizard = () => {
                 <div className="text-center space-y-2 sm:space-y-4">
                   <div className="text-xl sm:text-2xl md:text-3xl font-bold text-primary">Full Protection</div>
                   <p className="text-sm sm:text-base text-muted-foreground">{t.wizard.step5Protection}</p>
-                  <Button className="w-full text-sm sm:text-base">
+                  <Button className="w-full h-auto min-h-[40px] py-2 text-sm sm:text-base whitespace-normal">
                     {t.wizard.step5Protection}
                   </Button>
                 </div>
               </Card>
             </div>
-            <Button onClick={handlePreviousStep} variant="outline" className="w-full h-12">
-              <ArrowLeft className="mr-2 w-5 h-5" /> {t.wizard.previousStep}
+            <Button onClick={handlePreviousStep} variant="outline" className="w-full h-auto min-h-[48px] py-3 whitespace-normal">
+              <ArrowLeft className="mr-2 w-5 h-5 flex-shrink-0" /> {t.wizard.previousStep}
             </Button>
           </div>
         )}

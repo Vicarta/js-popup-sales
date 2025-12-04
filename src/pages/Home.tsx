@@ -87,7 +87,7 @@ const Home = () => {
             </div>
             <div className="text-center mt-8 sm:mt-12 md:mt-16">
               <a href="/pricing">
-                <Button size="lg" className="text-sm sm:text-base md:text-lg px-6 sm:px-8 md:px-12 py-4 sm:py-5 md:py-7 h-auto shadow-xl hover:shadow-accent/25 transition-all duration-300 hover:scale-105">
+                <Button size="lg" className="text-sm sm:text-base md:text-lg px-6 sm:px-8 md:px-12 py-4 sm:py-5 md:py-7 h-auto shadow-xl hover:shadow-accent/25 transition-all duration-300 hover:scale-105 whitespace-normal">
                   {t.whyImportant.cta}
                 </Button>
               </a>
