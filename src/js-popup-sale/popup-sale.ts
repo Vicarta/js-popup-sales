@@ -144,14 +144,13 @@ class JSPopupSale {
     
     // Create popup with custom CSS variables
     const popup = document.createElement('div');
-    popup.className = `js-popup-sale theme-${this.config.theme} layout-${this.config.layout}`;
+    popup.className = `js-popup-sale theme-${this.config.theme} layout-${this.config.layout} align-${this.config.contentAlign}`;
     
     // Apply custom colors via CSS variables
     if (this.config.primaryColor) popup.style.setProperty('--popup-primary', this.config.primaryColor);
     if (this.config.backgroundColor) popup.style.setProperty('--popup-bg', this.config.backgroundColor);
     if (this.config.textColor) popup.style.setProperty('--popup-text', this.config.textColor);
     if (this.config.buttonRadius !== undefined) popup.style.setProperty('--popup-button-radius', `${this.config.buttonRadius}px`);
-    if (this.config.contentAlign) popup.style.setProperty('--popup-content-align', this.config.contentAlign);
     
     // Close button
     const closeBtn = document.createElement('button');
