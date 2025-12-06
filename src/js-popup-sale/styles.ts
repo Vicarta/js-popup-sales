@@ -10,7 +10,6 @@ export const popupStyles = `
   --popup-bg: #ffffff;
   --popup-text: #1a1a1a;
   --popup-button-radius: 10px;
-  --popup-content-align: left;
 }
 
 .js-popup-sale-overlay {
@@ -119,7 +118,6 @@ export const popupStyles = `
   padding: 40px 32px 32px;
   overflow-y: auto;
   max-height: 90vh;
-  text-align: var(--popup-content-align, left);
 }
 
 .js-popup-sale-image {
@@ -182,18 +180,23 @@ export const popupStyles = `
   font-size: 16px;
 }
 
-/* Content alignment - adjust features list */
-.js-popup-sale-content[style*="--popup-content-align: center"] .js-popup-sale-features,
-.js-popup-sale[style*="--popup-content-align: center"] .js-popup-sale-features {
+/* Content alignment - wrapper for proper alignment */
+.js-popup-sale.align-center .js-popup-sale-content {
+  text-align: center;
+}
+
+.js-popup-sale.align-center .js-popup-sale-features {
   display: inline-block;
   text-align: left;
 }
 
-.js-popup-sale-content[style*="--popup-content-align: right"] .js-popup-sale-features,
-.js-popup-sale[style*="--popup-content-align: right"] .js-popup-sale-features {
+.js-popup-sale.align-right .js-popup-sale-content {
+  text-align: right;
+}
+
+.js-popup-sale.align-right .js-popup-sale-features {
   display: inline-block;
   text-align: left;
-  float: right;
 }
 
 .js-popup-sale-cta {
