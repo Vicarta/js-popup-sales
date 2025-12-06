@@ -19,6 +19,8 @@ interface PopupConfig {
   primaryColor?: string;
   backgroundColor?: string;
   textColor?: string;
+  buttonRadius?: number;
+  contentAlign?: 'left' | 'center' | 'right';
 }
 
 class JSPopupSale {
@@ -148,6 +150,8 @@ class JSPopupSale {
     if (this.config.primaryColor) popup.style.setProperty('--popup-primary', this.config.primaryColor);
     if (this.config.backgroundColor) popup.style.setProperty('--popup-bg', this.config.backgroundColor);
     if (this.config.textColor) popup.style.setProperty('--popup-text', this.config.textColor);
+    if (this.config.buttonRadius !== undefined) popup.style.setProperty('--popup-button-radius', `${this.config.buttonRadius}px`);
+    if (this.config.contentAlign) popup.style.setProperty('--popup-content-align', this.config.contentAlign);
     
     // Close button
     const closeBtn = document.createElement('button');
@@ -404,6 +408,8 @@ function parseConfigFromScript(script: HTMLScriptElement): PopupConfig {
     primaryColor: data.primaryColor,
     backgroundColor: data.backgroundColor,
     textColor: data.textColor,
+    buttonRadius: safeParseInt(data.buttonRadius),
+    contentAlign: data.contentAlign as any,
   };
 }
 

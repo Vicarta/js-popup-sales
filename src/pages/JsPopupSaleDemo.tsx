@@ -32,6 +32,8 @@ const JsPopupSaleDemo = () => {
     primaryColor: '#f97316',
     backgroundColor: '',
     textColor: '',
+    buttonRadius: '10',
+    contentAlign: 'left',
   });
 
   const generateCode = () => {
@@ -58,6 +60,8 @@ const JsPopupSaleDemo = () => {
     if (config.primaryColor) configObj.primaryColor = config.primaryColor;
     if (config.backgroundColor) configObj.backgroundColor = config.backgroundColor;
     if (config.textColor) configObj.textColor = config.textColor;
+    configObj.buttonRadius = parseInt(config.buttonRadius);
+    configObj.contentAlign = config.contentAlign;
     
     // Форматуємо JSON для зручного читання
     const configJson = JSON.stringify(configObj, null, 2)
@@ -108,6 +112,8 @@ const JsPopupSaleDemo = () => {
         primaryColor: config.primaryColor || undefined,
         backgroundColor: config.backgroundColor || undefined,
         textColor: config.textColor || undefined,
+        buttonRadius: parseInt(config.buttonRadius),
+        contentAlign: config.contentAlign as 'left' | 'center' | 'right',
       });
       widget.init();
       widget.show();
@@ -325,6 +331,30 @@ const JsPopupSaleDemo = () => {
                     onChange={(e) => setConfig({...config, textColor: e.target.value})}
                     placeholder="#000000"
                   />
+                </div>
+
+                <div>
+                  <Label>Радіус кнопки (px)</Label>
+                  <Input 
+                    type="number" 
+                    value={config.buttonRadius}
+                    onChange={(e) => setConfig({...config, buttonRadius: e.target.value})}
+                    placeholder="10"
+                  />
+                </div>
+
+                <div>
+                  <Label>Вирівнювання контенту</Label>
+                  <Select value={config.contentAlign} onValueChange={(v) => setConfig({...config, contentAlign: v})}>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="left">По лівому краю</SelectItem>
+                      <SelectItem value="center">По центру</SelectItem>
+                      <SelectItem value="right">По правому краю</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
               </div>
 

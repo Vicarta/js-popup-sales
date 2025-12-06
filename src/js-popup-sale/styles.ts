@@ -9,6 +9,8 @@ export const popupStyles = `
   --popup-primary: #f97316;
   --popup-bg: #ffffff;
   --popup-text: #1a1a1a;
+  --popup-button-radius: 10px;
+  --popup-content-align: left;
 }
 
 .js-popup-sale-overlay {
@@ -117,6 +119,7 @@ export const popupStyles = `
   padding: 40px 32px 32px;
   overflow-y: auto;
   max-height: 90vh;
+  text-align: var(--popup-content-align, left);
 }
 
 .js-popup-sale-image {
@@ -179,6 +182,20 @@ export const popupStyles = `
   font-size: 16px;
 }
 
+/* Content alignment - adjust features list */
+.js-popup-sale-content[style*="--popup-content-align: center"] .js-popup-sale-features,
+.js-popup-sale[style*="--popup-content-align: center"] .js-popup-sale-features {
+  display: inline-block;
+  text-align: left;
+}
+
+.js-popup-sale-content[style*="--popup-content-align: right"] .js-popup-sale-features,
+.js-popup-sale[style*="--popup-content-align: right"] .js-popup-sale-features {
+  display: inline-block;
+  text-align: left;
+  float: right;
+}
+
 .js-popup-sale-cta {
   display: block;
   width: 100%;
@@ -187,7 +204,7 @@ export const popupStyles = `
   color: white !important;
   text-decoration: none;
   text-align: center;
-  border-radius: 10px;
+  border-radius: var(--popup-button-radius, 10px);
   font-weight: 600;
   font-size: 15px;
   transition: all 0.2s ease;
