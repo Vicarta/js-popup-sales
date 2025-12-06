@@ -19,10 +19,10 @@ const JsPopupSaleDemo = () => {
     delay: '3000',
     scrollPercent: '50',
     dismissDays: '7',
-    title: 'Не втрачайте клієнтів! 🚀',
-    subtitle: '**AIbizMate** допоможе знайти _пропущені ліди_ у вашій пошті',
-    features: '✅ Автоматичне сканування\n🤖 AI-аналіз листів\n📧 Миттєві сповіщення',
-    ctaText: 'Спробувати безкоштовно',
+    title: "Don't lose customers! 🚀",
+    subtitle: '**AIbizMate** helps you find _missed leads_ in your inbox',
+    features: '✅ Automatic scanning\n🤖 AI-powered analysis\n📧 Instant notifications',
+    ctaText: 'Try for free',
     ctaUrl: 'https://aibizmate.com',
     image: '',
     theme: 'light',
@@ -39,7 +39,7 @@ const JsPopupSaleDemo = () => {
   const generateCode = () => {
     const featuresArray = config.features.split('\n').filter(f => f.trim());
     
-    // Генеруємо конфігурацію для window.JSPopupSaleConfig (для GTM)
+    // Generate config for window.JSPopupSaleConfig (for GTM)
     const configObj: any = {
       trigger: config.trigger,
       delay: parseInt(config.delay),
@@ -63,13 +63,13 @@ const JsPopupSaleDemo = () => {
     configObj.buttonRadius = parseInt(config.buttonRadius);
     configObj.contentAlign = config.contentAlign;
     
-    // Форматуємо JSON для зручного читання
+    // Format JSON for readability
     const configJson = JSON.stringify(configObj, null, 2)
       .split('\n')
       .map((line, i) => i === 0 ? line : '  ' + line)
       .join('\n');
     
-    // Генеруємо код з window.JSPopupSaleConfig (рекомендований метод для GTM)
+    // Generate code with window.JSPopupSaleConfig (recommended method for GTM)
     let code = `<!-- JS Popup Sale - GTM Recommended Method -->
 <script>
   window.JSPopupSaleConfig = ${configJson};
@@ -83,8 +83,8 @@ const JsPopupSaleDemo = () => {
     navigator.clipboard.writeText(generateCode());
     setCopied(true);
     toast({
-      title: "Код скопійовано!",
-      description: "Тепер ви можете вставити його на свій сайт",
+      title: "Code copied!",
+      description: "You can now paste it on your website",
     });
     setTimeout(() => setCopied(false), 2000);
   };
@@ -129,7 +129,7 @@ const JsPopupSaleDemo = () => {
           <div className="text-center mb-12">
             <h1 className="text-4xl font-bold mb-4">JS Popup Sale Configurator</h1>
             <p className="text-muted-foreground text-lg">
-              Налаштуйте параметри віджету та отримайте код для вставки на ваш сайт
+              Configure widget parameters and get the code to embed on your website
             </p>
           </div>
 
@@ -137,28 +137,28 @@ const JsPopupSaleDemo = () => {
             {/* Configuration */}
             <Card className="p-6 space-y-6">
               <div>
-                <h2 className="text-xl font-semibold mb-4">Налаштування</h2>
+                <h2 className="text-xl font-semibold mb-4">Configuration</h2>
               </div>
 
               <div className="space-y-4">
                 <div>
-                  <Label>Тригер показу</Label>
+                  <Label>Display Trigger</Label>
                   <Select value={config.trigger} onValueChange={(v) => setConfig({...config, trigger: v})}>
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="delay">Затримка</SelectItem>
-                      <SelectItem value="scroll">Скрол</SelectItem>
+                      <SelectItem value="delay">Delay</SelectItem>
+                      <SelectItem value="scroll">Scroll</SelectItem>
                       <SelectItem value="exit-intent">Exit Intent</SelectItem>
-                      <SelectItem value="manual">Вручну</SelectItem>
+                      <SelectItem value="manual">Manual</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
 
                 {config.trigger === 'delay' && (
                   <div>
-                    <Label>Затримка (мс)</Label>
+                    <Label>Delay (ms)</Label>
                     <Input 
                       type="number" 
                       value={config.delay}
@@ -169,7 +169,7 @@ const JsPopupSaleDemo = () => {
 
                 {config.trigger === 'scroll' && (
                   <div>
-                    <Label>Скрол сторінки (%)</Label>
+                    <Label>Page Scroll (%)</Label>
                     <Input 
                       type="number" 
                       value={config.scrollPercent}
@@ -179,26 +179,26 @@ const JsPopupSaleDemo = () => {
                 )}
 
                 <div>
-                  <Label>Не показувати після закриття (днів)</Label>
+                  <Label>Hide after dismiss (days)</Label>
                   <Input 
                     type="number" 
                     value={config.dismissDays}
                     onChange={(e) => setConfig({...config, dismissDays: e.target.value})}
                   />
-                  <p className="text-xs text-muted-foreground mt-1">0 = завжди показувати</p>
+                  <p className="text-xs text-muted-foreground mt-1">0 = always show</p>
                 </div>
 
                 <div>
-                  <Label>Заголовок (підтримує markdown та emoji)</Label>
+                  <Label>Title (supports markdown and emoji)</Label>
                   <Input 
                     value={config.title}
                     onChange={(e) => setConfig({...config, title: e.target.value})}
-                    placeholder="**Bold** _italic_ та emoji 🚀"
+                    placeholder="**Bold** _italic_ and emoji 🚀"
                   />
                 </div>
 
                 <div>
-                  <Label>Підзаголовок</Label>
+                  <Label>Subtitle</Label>
                   <Textarea 
                     value={config.subtitle}
                     onChange={(e) => setConfig({...config, subtitle: e.target.value})}
@@ -207,7 +207,7 @@ const JsPopupSaleDemo = () => {
                 </div>
 
                 <div>
-                  <Label>Переваги (кожна з нового рядка)</Label>
+                  <Label>Features (one per line)</Label>
                   <Textarea 
                     value={config.features}
                     onChange={(e) => setConfig({...config, features: e.target.value})}
@@ -216,7 +216,7 @@ const JsPopupSaleDemo = () => {
                 </div>
 
                 <div>
-                  <Label>Текст кнопки</Label>
+                  <Label>Button Text</Label>
                   <Input 
                     value={config.ctaText}
                     onChange={(e) => setConfig({...config, ctaText: e.target.value})}
@@ -224,7 +224,7 @@ const JsPopupSaleDemo = () => {
                 </div>
 
                 <div>
-                  <Label>URL кнопки</Label>
+                  <Label>Button URL</Label>
                   <Input 
                     value={config.ctaUrl}
                     onChange={(e) => setConfig({...config, ctaUrl: e.target.value})}
@@ -232,7 +232,7 @@ const JsPopupSaleDemo = () => {
                 </div>
 
                 <div>
-                  <Label>URL зображення (опціонально)</Label>
+                  <Label>Image URL (optional)</Label>
                   <Input 
                     value={config.image}
                     onChange={(e) => setConfig({...config, image: e.target.value})}
@@ -240,27 +240,27 @@ const JsPopupSaleDemo = () => {
                   />
                   <p className="text-xs text-muted-foreground mt-1">
                     {config.layout === 'vertical' 
-                      ? 'Горизонтальне зображення (480×200 px, 2.4:1)' 
-                      : 'Вертикальне зображення (150×350 px, 1:2.3)'}
+                      ? 'Horizontal image (480×200 px, 2.4:1)' 
+                      : 'Vertical image (150×350 px, 1:2.3)'}
                   </p>
                 </div>
 
                 <div>
-                  <Label>Лейаут</Label>
+                  <Label>Layout</Label>
                   <Select value={config.layout} onValueChange={(v) => setConfig({...config, layout: v})}>
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="vertical">Вертикальний (зображення зверху)</SelectItem>
-                      <SelectItem value="horizontal">Горизонтальний (зображення зліва)</SelectItem>
+                      <SelectItem value="vertical">Vertical (image on top)</SelectItem>
+                      <SelectItem value="horizontal">Horizontal (image on left)</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <Label>Тема</Label>
+                    <Label>Theme</Label>
                     <Select value={config.theme} onValueChange={(v) => setConfig({...config, theme: v})}>
                       <SelectTrigger>
                         <SelectValue />
@@ -273,7 +273,7 @@ const JsPopupSaleDemo = () => {
                   </div>
 
                   <div>
-                    <Label>Позиція</Label>
+                    <Label>Position</Label>
                     <Select value={config.position} onValueChange={(v) => setConfig({...config, position: v})}>
                       <SelectTrigger>
                         <SelectValue />
@@ -294,20 +294,20 @@ const JsPopupSaleDemo = () => {
                 </div>
 
                 <div>
-                  <Label>Використовувати шрифт сайту</Label>
+                  <Label>Use Website Font</Label>
                   <Select value={config.inheritFont} onValueChange={(v) => setConfig({...config, inheritFont: v})}>
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="false">Ні (Inter)</SelectItem>
-                      <SelectItem value="true">Так</SelectItem>
+                      <SelectItem value="false">No (Inter)</SelectItem>
+                      <SelectItem value="true">Yes</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
 
                 <div>
-                  <Label>Колір кнопки (HEX)</Label>
+                  <Label>Button Color (HEX)</Label>
                   <Input 
                     value={config.primaryColor}
                     onChange={(e) => setConfig({...config, primaryColor: e.target.value})}
@@ -316,7 +316,7 @@ const JsPopupSaleDemo = () => {
                 </div>
 
                 <div>
-                  <Label>Колір фону (HEX, опціонально)</Label>
+                  <Label>Background Color (HEX, optional)</Label>
                   <Input 
                     value={config.backgroundColor}
                     onChange={(e) => setConfig({...config, backgroundColor: e.target.value})}
@@ -325,7 +325,7 @@ const JsPopupSaleDemo = () => {
                 </div>
 
                 <div>
-                  <Label>Колір тексту (HEX, опціонально)</Label>
+                  <Label>Text Color (HEX, optional)</Label>
                   <Input 
                     value={config.textColor}
                     onChange={(e) => setConfig({...config, textColor: e.target.value})}
@@ -334,7 +334,7 @@ const JsPopupSaleDemo = () => {
                 </div>
 
                 <div>
-                  <Label>Радіус кнопки (px)</Label>
+                  <Label>Button Radius (px)</Label>
                   <Input 
                     type="number" 
                     value={config.buttonRadius}
@@ -344,15 +344,15 @@ const JsPopupSaleDemo = () => {
                 </div>
 
                 <div>
-                  <Label>Вирівнювання контенту</Label>
+                  <Label>Content Alignment</Label>
                   <Select value={config.contentAlign} onValueChange={(v) => setConfig({...config, contentAlign: v})}>
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="left">По лівому краю</SelectItem>
-                      <SelectItem value="center">По центру</SelectItem>
-                      <SelectItem value="right">По правому краю</SelectItem>
+                      <SelectItem value="left">Left</SelectItem>
+                      <SelectItem value="center">Center</SelectItem>
+                      <SelectItem value="right">Right</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -361,21 +361,21 @@ const JsPopupSaleDemo = () => {
               <div className="grid grid-cols-2 gap-3">
                 <Button onClick={handlePreview} className="w-full" size="lg">
                   <Eye className="w-4 h-4 mr-2" />
-                  Попередній перегляд
+                  Preview
                 </Button>
                 <Button 
                   onClick={() => {
                     localStorage.removeItem('js_popup_sale_dismissed');
                     toast({
-                      title: "Dismiss скинуто",
-                      description: "Тепер віджет знову буде показуватись",
+                      title: "Dismiss reset",
+                      description: "The widget will now show again",
                     });
                   }}
                   variant="outline"
                   className="w-full"
                   size="lg"
                 >
-                  Скинути dismiss
+                  Reset Dismiss
                 </Button>
               </div>
             </Card>
@@ -383,7 +383,7 @@ const JsPopupSaleDemo = () => {
             {/* Generated Code */}
             <Card className="p-6">
               <div className="mb-4 flex items-center justify-between">
-                <h2 className="text-xl font-semibold">Згенерований код</h2>
+                <h2 className="text-xl font-semibold">Generated Code</h2>
                 <Button 
                   onClick={handleCopy}
                   variant="outline"
@@ -392,12 +392,12 @@ const JsPopupSaleDemo = () => {
                   {copied ? (
                     <>
                       <Check className="w-4 h-4 mr-2" />
-                      Скопійовано
+                      Copied
                     </>
                   ) : (
                     <>
                       <Copy className="w-4 h-4 mr-2" />
-                      Копіювати
+                      Copy
                     </>
                   )}
                 </Button>
@@ -412,13 +412,13 @@ const JsPopupSaleDemo = () => {
               <div className="mt-6 space-y-4">
                 <div className="p-4 bg-primary/5 border border-primary/20 rounded-lg">
                   <h3 className="font-semibold mb-2 flex items-center gap-2">
-                    📦 Збірка віджету
+                    📦 Building the Widget
                   </h3>
                   <div className="bg-background rounded p-3 mb-2">
                     <code className="text-sm font-mono">npm run build:popup-sale</code>
                   </div>
                   <p className="text-sm text-muted-foreground">
-                    Перед цим додайте скрипт у <code>package.json</code>:
+                    First, add this script to <code>package.json</code>:
                   </p>
                   <div className="bg-background rounded p-3 mt-2 mb-2">
                     <code className="text-xs font-mono">
@@ -426,32 +426,32 @@ const JsPopupSaleDemo = () => {
                     </code>
                   </div>
                   <p className="text-sm text-muted-foreground">
-                    Результат: <code className="font-mono">dist-js-popup-sale/js-popup-sale.js</code>
+                    Output: <code className="font-mono">dist-js-popup-sale/js-popup-sale.js</code>
                   </p>
                 </div>
 
                 <div>
-                  <h3 className="font-semibold mb-2">Markdown підтримка</h3>
+                  <h3 className="font-semibold mb-2">Markdown Support</h3>
                   <ul className="text-sm text-muted-foreground space-y-1">
-                    <li><code>**text**</code> — жирний текст</li>
-                    <li><code>_text_</code> — курсив</li>
-                    <li><code>~~text~~</code> — закреслений текст</li>
-                    <li><code>[text](url)</code> — посилання</li>
-                    <li>Emoji підтримуються нативно 🚀✨🎉</li>
+                    <li><code>**text**</code> — bold text</li>
+                    <li><code>_text_</code> — italic</li>
+                    <li><code>~~text~~</code> — strikethrough</li>
+                    <li><code>[text](url)</code> — link</li>
+                    <li>Emoji supported natively 🚀✨🎉</li>
                   </ul>
                 </div>
 
                 <div>
-                  <h3 className="font-semibold mb-2">Програмне керування</h3>
+                  <h3 className="font-semibold mb-2">Programmatic Control</h3>
                   <div className="bg-muted rounded p-3 space-y-2">
-                    <div className="text-xs font-medium text-muted-foreground mb-1">Через глобальні функції (рекомендовано):</div>
-                    <div><code className="text-sm">showJSPopupSale()</code> — показати попап</div>
-                    <div><code className="text-sm">hideJSPopupSale()</code> — сховати попап</div>
-                    <div><code className="text-sm">dismissJSPopupSale()</code> — закрити назавжди</div>
-                    <div className="text-xs font-medium text-muted-foreground mt-3 mb-1">Через інстанс (якщо autoInit спрацював):</div>
+                    <div className="text-xs font-medium text-muted-foreground mb-1">Via global functions (recommended):</div>
+                    <div><code className="text-sm">showJSPopupSale()</code> — show popup</div>
+                    <div><code className="text-sm">hideJSPopupSale()</code> — hide popup</div>
+                    <div><code className="text-sm">dismissJSPopupSale()</code> — dismiss forever</div>
+                    <div className="text-xs font-medium text-muted-foreground mt-3 mb-1">Via instance (if autoInit worked):</div>
                     <div><code className="text-sm">jsPopupSaleInstance.show()</code></div>
                     <div><code className="text-sm">jsPopupSaleInstance.hide()</code></div>
-                    <div className="text-xs text-muted-foreground mt-2">Або створити новий: <code>new JSPopupSale(config).init()</code></div>
+                    <div className="text-xs text-muted-foreground mt-2">Or create new: <code>new JSPopupSale(config).init()</code></div>
                   </div>
                 </div>
               </div>
@@ -462,9 +462,9 @@ const JsPopupSaleDemo = () => {
           <Card className="p-6 mt-8">
             <div className="space-y-6">
               <div>
-                <h2 className="text-2xl font-bold mb-2">📊 Підключення через Google Tag Manager</h2>
+                <h2 className="text-2xl font-bold mb-2">📊 Google Tag Manager Integration</h2>
                 <p className="text-muted-foreground">
-                  Детальна інструкція з налаштування віджету через GTM для динамічного керування без зміни коду сайту
+                  Detailed instructions for setting up the widget via GTM for dynamic management without changing website code
                 </p>
               </div>
 
@@ -472,24 +472,24 @@ const JsPopupSaleDemo = () => {
                 <div className="space-y-3">
                   <h3 className="text-lg font-semibold flex items-center gap-2">
                     <span className="flex items-center justify-center w-6 h-6 rounded-full bg-primary text-primary-foreground text-sm">1</span>
-                    Створення тега в GTM
+                    Creating a Tag in GTM
                   </h3>
                   <ol className="space-y-2 ml-8 text-sm">
                     <li className="flex gap-2">
                       <span className="text-muted-foreground">1.1</span>
-                      <span>Відкрийте ваш контейнер у Google Tag Manager</span>
+                      <span>Open your container in Google Tag Manager</span>
                     </li>
                     <li className="flex gap-2">
                       <span className="text-muted-foreground">1.2</span>
-                      <span>Перейдіть у розділ <strong>Tags</strong> → <strong>New</strong></span>
+                      <span>Go to <strong>Tags</strong> → <strong>New</strong></span>
                     </li>
                     <li className="flex gap-2">
                       <span className="text-muted-foreground">1.3</span>
-                      <span>Назвіть тег, наприклад: <code className="bg-muted px-2 py-0.5 rounded">"JS Popup Sale Widget"</code></span>
+                      <span>Name the tag, e.g.: <code className="bg-muted px-2 py-0.5 rounded">"JS Popup Sale Widget"</code></span>
                     </li>
                     <li className="flex gap-2">
                       <span className="text-muted-foreground">1.4</span>
-                      <span>Оберіть тип тега: <strong>Custom HTML</strong></span>
+                      <span>Select tag type: <strong>Custom HTML</strong></span>
                     </li>
                   </ol>
                 </div>
@@ -497,21 +497,21 @@ const JsPopupSaleDemo = () => {
                 <div className="space-y-3">
                   <h3 className="text-lg font-semibold flex items-center gap-2">
                     <span className="flex items-center justify-center w-6 h-6 rounded-full bg-primary text-primary-foreground text-sm">2</span>
-                    Налаштування HTML коду
+                    Setting Up HTML Code
                   </h3>
                   <div className="ml-8 space-y-3">
                     <div className="p-3 bg-green-500/10 border border-green-500/20 rounded-lg">
-                      <p className="text-sm font-semibold mb-2">✅ Рекомендований метод для GTM (використовується у згенерованому коді вище):</p>
-                      <p className="text-xs text-muted-foreground mb-2">Використовуйте <code className="bg-muted px-1 py-0.5 rounded">window.JSPopupSaleConfig</code> - це гарантує, що всі параметри передадуться коректно:</p>
+                      <p className="text-sm font-semibold mb-2">✅ Recommended method for GTM (used in generated code above):</p>
+                      <p className="text-xs text-muted-foreground mb-2">Use <code className="bg-muted px-1 py-0.5 rounded">window.JSPopupSaleConfig</code> - this ensures all parameters are passed correctly:</p>
                       <pre className="text-xs bg-muted rounded p-2 overflow-x-auto"><code>{`<script>
   window.JSPopupSaleConfig = {
     trigger: "delay",
     delay: 3000,
     dismissDays: 0,
-    title: "Не втрачайте клієнтів! 🚀",
-    subtitle: "**AIbizMate** допоможе знайти ліди",
-    features: ["✅ Перевага 1", "🤖 Перевага 2"],
-    ctaText: "Спробувати",
+    title: "Don't lose customers! 🚀",
+    subtitle: "**AIbizMate** helps you find leads",
+    features: ["✅ Feature 1", "🤖 Feature 2"],
+    ctaText: "Try it",
     ctaUrl: "https://example.com",
     image: "https://example.com/image.png",
     theme: "light",
@@ -525,36 +525,36 @@ const JsPopupSaleDemo = () => {
                     </div>
                     
                     <div className="p-3 bg-yellow-500/10 border border-yellow-500/20 rounded-lg">
-                      <p className="text-sm font-semibold mb-2">⚠️ Чому data-* атрибути не працюють в GTM?</p>
-                      <p className="text-xs text-muted-foreground mb-2">GTM динамічно створює <code className="bg-muted px-1 py-0.5 rounded">&lt;script&gt;</code> елементи і при цьому <strong>ігнорує всі data-* атрибути</strong>. Тому використання <code className="bg-muted px-1 py-0.5 rounded">window.JSPopupSaleConfig</code> є єдиним надійним способом для GTM.</p>
+                      <p className="text-sm font-semibold mb-2">⚠️ Why data-* attributes don't work in GTM?</p>
+                      <p className="text-xs text-muted-foreground mb-2">GTM dynamically creates <code className="bg-muted px-1 py-0.5 rounded">&lt;script&gt;</code> elements and <strong>ignores all data-* attributes</strong>. Therefore, using <code className="bg-muted px-1 py-0.5 rounded">window.JSPopupSaleConfig</code> is the only reliable way for GTM.</p>
                     </div>
                     
                     <div className="p-3 bg-blue-500/10 border border-blue-500/20 rounded-lg">
-                      <p className="text-sm font-semibold mb-2">💡 Альтернативний метод (тільки для прямого підключення, НЕ для GTM):</p>
-                      <p className="text-xs text-muted-foreground mb-2">Якщо ви вставляєте код безпосередньо в HTML сайту (не через GTM), можете використовувати data-* атрибути:</p>
+                      <p className="text-sm font-semibold mb-2">💡 Alternative method (for direct embedding only, NOT for GTM):</p>
+                      <p className="text-xs text-muted-foreground mb-2">If you're embedding code directly in your website HTML (not via GTM), you can use data-* attributes:</p>
                       <pre className="text-xs bg-muted rounded p-2 overflow-x-auto"><code>{`<script 
   src="https://yourdomain.com/js-popup-sale.js"
   data-js-popup-sale
   data-trigger="delay"
   data-image="https://example.com/image.png"
-  data-title="Заголовок"
+  data-title="Title"
 ></script>`}</code></pre>
-                      <p className="text-xs text-muted-foreground mt-2"><strong>Але для GTM це НЕ спрацює!</strong> Використовуйте window.JSPopupSaleConfig.</p>
+                      <p className="text-xs text-muted-foreground mt-2"><strong>But this will NOT work in GTM!</strong> Use window.JSPopupSaleConfig instead.</p>
                     </div>
                     <div className="p-3 bg-blue-500/10 border border-blue-500/20 rounded-lg">
-                      <p className="text-sm"><strong>💡 Програмний виклик через GTM:</strong></p>
-                      <p className="text-sm mt-1">Якщо потрібно показати попап по кліку або події, додайте в GTM Custom HTML тег:</p>
+                      <p className="text-sm"><strong>💡 Programmatic call via GTM:</strong></p>
+                      <p className="text-sm mt-1">If you need to show the popup on click or event, add a Custom HTML tag in GTM:</p>
                       <pre className="text-xs bg-muted rounded p-2 mt-2 overflow-x-auto"><code>{`<script>
-  // Показати попап
+  // Show popup
   if (typeof showJSPopupSale === 'function') {
     showJSPopupSale();
   }
 </script>`}</code></pre>
-                      <p className="text-xs text-muted-foreground mt-2">Або створіть новий з власною конфігурацією:</p>
+                      <p className="text-xs text-muted-foreground mt-2">Or create new with custom config:</p>
                       <pre className="text-xs bg-muted rounded p-2 mt-1 overflow-x-auto"><code>{`<script>
   if (typeof showJSPopupSale === 'function') {
     showJSPopupSale({
-      title: 'Спеціальна пропозиція!',
+      title: 'Special offer!',
       ctaUrl: 'https://example.com/special'
     });
   }
@@ -566,18 +566,18 @@ const JsPopupSaleDemo = () => {
                 <div className="space-y-3">
                   <h3 className="text-lg font-semibold flex items-center gap-2">
                     <span className="flex items-center justify-center w-6 h-6 rounded-full bg-primary text-primary-foreground text-sm">3</span>
-                    Використання GTM змінних (опціонально)
+                    Using GTM Variables (optional)
                   </h3>
                   <p className="ml-8 text-sm text-muted-foreground mb-2">
-                    Для динамічного керування контентом створіть змінні в GTM:
+                    For dynamic content management, create variables in GTM:
                   </p>
                   <div className="ml-8 space-y-2">
                     <div className="text-sm">
-                      <strong>Створення змінної:</strong> Variables → New → Variable Type → Constant
+                      <strong>Creating a variable:</strong> Variables → New → Variable Type → Constant
                     </div>
                     <div className="bg-muted rounded-lg p-4 overflow-x-auto">
                       <pre className="text-xs">
-                        <code>{`<!-- Приклад використання змінних GTM -->
+                        <code>{`<!-- Example using GTM variables -->
 <script 
   src="https://yourdomain.com/js-popup-sale.js"
   data-js-popup-sale
@@ -592,7 +592,7 @@ const JsPopupSaleDemo = () => {
                       </pre>
                     </div>
                     <p className="text-xs text-muted-foreground mt-2">
-                      Це дозволить швидко змінювати налаштування без редагування коду тега
+                      This allows quick settings changes without editing the tag code
                     </p>
                   </div>
                 </div>
@@ -600,49 +600,49 @@ const JsPopupSaleDemo = () => {
                 <div className="space-y-3">
                   <h3 className="text-lg font-semibold flex items-center gap-2">
                     <span className="flex items-center justify-center w-6 h-6 rounded-full bg-primary text-primary-foreground text-sm">4</span>
-                    Налаштування тригера
+                    Setting Up Triggers
                   </h3>
                   <p className="ml-8 text-sm text-muted-foreground mb-2">
-                    Оберіть умови показу віджету:
+                    Choose widget display conditions:
                   </p>
                   <div className="ml-8 space-y-3">
                     <div className="space-y-2">
                       <div className="flex items-start gap-2">
                         <div className="w-2 h-2 rounded-full bg-primary mt-1.5"></div>
                         <div className="flex-1">
-                          <strong className="text-sm">Всі сторінки:</strong>
+                          <strong className="text-sm">All pages:</strong>
                           <p className="text-xs text-muted-foreground">Trigger Type: <code className="bg-muted px-1 py-0.5 rounded">All Pages</code></p>
-                          <p className="text-xs text-muted-foreground mt-1">Віджет завантажиться на кожній сторінці сайту</p>
+                          <p className="text-xs text-muted-foreground mt-1">Widget will load on every page</p>
                         </div>
                       </div>
 
                       <div className="flex items-start gap-2">
                         <div className="w-2 h-2 rounded-full bg-primary mt-1.5"></div>
                         <div className="flex-1">
-                          <strong className="text-sm">Конкретні сторінки:</strong>
+                          <strong className="text-sm">Specific pages:</strong>
                           <p className="text-xs text-muted-foreground">Trigger Type: <code className="bg-muted px-1 py-0.5 rounded">Page View</code></p>
-                          <p className="text-xs text-muted-foreground mt-1">Додайте умову: <code className="bg-muted px-1 py-0.5 rounded">Page URL contains /checkout</code></p>
-                          <p className="text-xs text-muted-foreground mt-1">Показувати тільки на сторінках оформлення замовлення</p>
+                          <p className="text-xs text-muted-foreground mt-1">Add condition: <code className="bg-muted px-1 py-0.5 rounded">Page URL contains /checkout</code></p>
+                          <p className="text-xs text-muted-foreground mt-1">Show only on checkout pages</p>
                         </div>
                       </div>
 
                       <div className="flex items-start gap-2">
                         <div className="w-2 h-2 rounded-full bg-primary mt-1.5"></div>
                         <div className="flex-1">
-                          <strong className="text-sm">З затримкою:</strong>
+                          <strong className="text-sm">With delay:</strong>
                           <p className="text-xs text-muted-foreground">Trigger Type: <code className="bg-muted px-1 py-0.5 rounded">Timer</code></p>
                           <p className="text-xs text-muted-foreground mt-1">Interval: 5000ms, Limit: 1</p>
-                          <p className="text-xs text-muted-foreground mt-1">Показувати через 5 секунд після завантаження</p>
+                          <p className="text-xs text-muted-foreground mt-1">Show 5 seconds after page load</p>
                         </div>
                       </div>
 
                       <div className="flex items-start gap-2">
                         <div className="w-2 h-2 rounded-full bg-primary mt-1.5"></div>
                         <div className="flex-1">
-                          <strong className="text-sm">За скролом:</strong>
+                          <strong className="text-sm">On scroll:</strong>
                           <p className="text-xs text-muted-foreground">Trigger Type: <code className="bg-muted px-1 py-0.5 rounded">Scroll Depth</code></p>
                           <p className="text-xs text-muted-foreground mt-1">Vertical Scroll Depth: 50%</p>
-                          <p className="text-xs text-muted-foreground mt-1">Показувати після прокрутки 50% сторінки</p>
+                          <p className="text-xs text-muted-foreground mt-1">Show after scrolling 50% of the page</p>
                         </div>
                       </div>
                     </div>
@@ -652,135 +652,135 @@ const JsPopupSaleDemo = () => {
                 <div className="space-y-3">
                   <h3 className="text-lg font-semibold flex items-center gap-2">
                     <span className="flex items-center justify-center w-6 h-6 rounded-full bg-primary text-primary-foreground text-sm">5</span>
-                    Тестування та публікація
+                    Testing and Publishing
                   </h3>
                   <ol className="space-y-2 ml-8 text-sm">
                     <li className="flex gap-2">
                       <span className="text-muted-foreground">5.1</span>
-                      <span>Збережіть тег: <strong>Save</strong></span>
+                      <span>Save the tag: <strong>Save</strong></span>
                     </li>
                     <li className="flex gap-2">
                       <span className="text-muted-foreground">5.2</span>
-                      <span>Активуйте режим попереднього перегляду: <strong>Preview</strong> у правому верхньому куті</span>
+                      <span>Enable preview mode: <strong>Preview</strong> in the top right corner</span>
                     </li>
                     <li className="flex gap-2">
                       <span className="text-muted-foreground">5.3</span>
-                      <span>Відкрийте ваш сайт у новій вкладці та перевірте роботу віджету</span>
+                      <span>Open your website in a new tab and test the widget</span>
                     </li>
                     <li className="flex gap-2">
                       <span className="text-muted-foreground">5.4</span>
-                      <span>У GTM Debug вікні переконайтесь, що тег спрацював (<code className="bg-muted px-1 py-0.5 rounded text-xs">Tags Fired</code>)</span>
+                      <span>In the GTM Debug window, verify the tag fired (<code className="bg-muted px-1 py-0.5 rounded text-xs">Tags Fired</code>)</span>
                     </li>
                     <li className="flex gap-2">
                       <span className="text-muted-foreground">5.5</span>
-                      <span>Якщо все працює коректно: <strong>Submit</strong> → <strong>Publish</strong></span>
+                      <span>If everything works: <strong>Submit</strong> → <strong>Publish</strong></span>
                     </li>
                   </ol>
                 </div>
 
                 <div className="p-4 bg-green-500/10 border border-green-500/20 rounded-lg">
                   <h3 className="font-semibold mb-2 flex items-center gap-2">
-                    ✅ Переваги GTM підходу
+                    ✅ GTM Approach Benefits
                   </h3>
                   <ul className="text-sm space-y-1 ml-4">
-                    <li>• <strong>Без зміни коду сайту</strong> — керування віджетом через GTM інтерфейс</li>
-                    <li>• <strong>A/B тестування</strong> — легко створити кілька версій з різними налаштуваннями</li>
-                    <li>• <strong>Сегментація аудиторії</strong> — показувати різний контент різним користувачам</li>
-                    <li>• <strong>Швидке оновлення</strong> — зміна тексту та налаштувань без релізу коду</li>
-                    <li>• <strong>Історія версій</strong> — GTM зберігає всі зміни з можливістю відкату</li>
+                    <li>• <strong>No code changes</strong> — manage widget via GTM interface</li>
+                    <li>• <strong>A/B testing</strong> — easily create multiple versions with different settings</li>
+                    <li>• <strong>Audience segmentation</strong> — show different content to different users</li>
+                    <li>• <strong>Quick updates</strong> — change text and settings without code releases</li>
+                    <li>• <strong>Version history</strong> — GTM saves all changes with rollback capability</li>
                   </ul>
                 </div>
 
                 <div className="p-4 bg-blue-500/10 border border-blue-500/20 rounded-lg">
                   <h3 className="font-semibold mb-2 flex items-center gap-2">
-                    💡 Поради з налаштування
+                    💡 Configuration Tips
                   </h3>
                   <ul className="text-sm space-y-2 ml-4">
-                    <li>• Використовуйте <code className="bg-muted px-1 py-0.5 rounded text-xs">data-dismiss-days="0"</code> під час тестування, щоб попап завжди показувався</li>
-                    <li>• Для продакшену встановіть оптимальне значення (7-14 днів) щоб не дратувати користувачів</li>
-                    <li>• Тестуйте віджет на різних пристроях (десктоп, мобільні, планшети)</li>
-                    <li>• Відстежуйте кліки через GTM Events для аналізу ефективності</li>
-                    <li>• Створіть резервну копію контейнера GTM перед публікацією змін</li>
+                    <li>• Use <code className="bg-muted px-1 py-0.5 rounded text-xs">data-dismiss-days="0"</code> during testing so the popup always shows</li>
+                    <li>• For production, set an optimal value (7-14 days) to avoid annoying users</li>
+                    <li>• Test the widget on different devices (desktop, mobile, tablets)</li>
+                    <li>• Track clicks via GTM Events to analyze effectiveness</li>
+                    <li>• Create a backup of your GTM container before publishing changes</li>
                   </ul>
                 </div>
 
                 <div className="p-4 bg-red-500/10 border border-red-500/20 rounded-lg">
                   <h3 className="font-semibold mb-2 flex items-center gap-2">
-                    ⚠️ Діагностика проблем
+                    ⚠️ Troubleshooting
                   </h3>
                   <ul className="text-sm space-y-2 ml-4">
-                    <li>• <strong>🔍 Перевірка конфігурації:</strong> Відкрийте консоль браузера та знайдіть лог <code className="bg-muted px-1 py-0.5 rounded text-xs">[JS Popup Sale] Found config via window.JSPopupSaleConfig</code> або <code className="bg-muted px-1 py-0.5 rounded text-xs">[JS Popup Sale] Initializing with config:</code> — він покаже чи підтягнулась конфігурація</li>
-                    <li>• <strong>🖼️ Зображення не показується:</strong> Переконайтеся, що параметр <code className="bg-muted px-1 py-0.5 rounded text-xs">image</code> присутній у <code className="bg-muted px-1 py-0.5 rounded text-xs">window.JSPopupSaleConfig</code> і URL коректний (HTTPS)</li>
-                    <li>• <strong>❌ Конфігурація не застосовується:</strong> Для GTM <strong>обов'язково використовуйте window.JSPopupSaleConfig</strong>, а не data-* атрибути - GTM ігнорує data-* атрибути!</li>
-                    <li>• <strong>📝 Помилка в JSON:</strong> Перевірте синтаксис JSON у window.JSPopupSaleConfig - використовуйте подвійні лапки для ключів та рядкових значень</li>
-                    <li>• <strong>🔒 Блокування CSP:</strong> Додайте домен віджету до Content Security Policy налаштувань</li>
-                    <li>• <strong>🎯 Тригер не спрацьовує:</strong> Перевірте умови тригера в GTM Debug режимі та переконайтесь що тег у списку "Tags Fired"</li>
+                    <li>• <strong>🔍 Configuration check:</strong> Open browser console and look for <code className="bg-muted px-1 py-0.5 rounded text-xs">[JS Popup Sale] Found config via window.JSPopupSaleConfig</code> or <code className="bg-muted px-1 py-0.5 rounded text-xs">[JS Popup Sale] Initializing with config:</code> — this shows if config was loaded</li>
+                    <li>• <strong>🖼️ Image not showing:</strong> Make sure the <code className="bg-muted px-1 py-0.5 rounded text-xs">image</code> parameter is present in <code className="bg-muted px-1 py-0.5 rounded text-xs">window.JSPopupSaleConfig</code> and URL is correct (HTTPS)</li>
+                    <li>• <strong>❌ Config not applied:</strong> For GTM, <strong>you must use window.JSPopupSaleConfig</strong>, not data-* attributes - GTM ignores data-* attributes!</li>
+                    <li>• <strong>📝 JSON error:</strong> Check JSON syntax in window.JSPopupSaleConfig - use double quotes for keys and string values</li>
+                    <li>• <strong>🔒 CSP blocking:</strong> Add widget domain to Content Security Policy settings</li>
+                    <li>• <strong>🎯 Trigger not firing:</strong> Check trigger conditions in GTM Debug mode and verify tag is in "Tags Fired" list</li>
                   </ul>
                 </div>
 
                 <div className="p-4 bg-red-500/10 border border-red-500/20 rounded-lg">
                   <h3 className="font-semibold mb-2 flex items-center gap-2">
-                    ⚠️ Типові помилки та рішення
+                    ⚠️ Common Errors and Solutions
                   </h3>
                   <ul className="text-sm space-y-3 ml-4">
                     <li>
                       <div className="font-medium">❌ <code className="bg-muted px-1 py-0.5 rounded text-xs">Uncaught TypeError: window.JSPopupSale.show is not a function</code></div>
                       <div className="text-muted-foreground mt-1">
-                        <strong>Причина:</strong> Спроба викликати метод на класі замість інстансу<br/>
-                        <strong>Рішення:</strong> Використовуйте <code className="bg-muted px-1 py-0.5 rounded text-xs">showJSPopupSale()</code> замість <code className="bg-muted px-1 py-0.5 rounded text-xs">window.JSPopupSale.show()</code>
+                        <strong>Cause:</strong> Attempting to call method on class instead of instance<br/>
+                        <strong>Solution:</strong> Use <code className="bg-muted px-1 py-0.5 rounded text-xs">showJSPopupSale()</code> instead of <code className="bg-muted px-1 py-0.5 rounded text-xs">window.JSPopupSale.show()</code>
                       </div>
                     </li>
                     <li>
-                      <div className="font-medium">❌ Попап не показується автоматично</div>
+                      <div className="font-medium">❌ Popup not showing automatically</div>
                       <div className="text-muted-foreground mt-1">
-                        <strong>Діагностика:</strong>
+                        <strong>Diagnostics:</strong>
                         <ol className="ml-4 mt-1 space-y-1">
-                          <li>1. Відкрийте консоль браузера (F12)</li>
-                          <li>2. Шукайте лог <code className="bg-muted px-1 py-0.5 rounded text-xs">[JS Popup Sale] Initializing with config:</code></li>
-                          <li>3. Якщо логу немає або конфігурація порожня — data-атрибути не підтягнулись</li>
+                          <li>1. Open browser console (F12)</li>
+                          <li>2. Look for <code className="bg-muted px-1 py-0.5 rounded text-xs">[JS Popup Sale] Initializing with config:</code></li>
+                          <li>3. If no log or config is empty — data attributes were not loaded</li>
                         </ol>
-                        <strong className="block mt-2">Рішення:</strong>
+                        <strong className="block mt-2">Solution:</strong>
                         <ul className="ml-4 mt-1">
-                          <li>• <strong>ОБОВ'ЯЗКОВО додайте</strong> атрибут <code className="bg-muted px-1 py-0.5 rounded text-xs">data-js-popup-sale</code> до тега &lt;script&gt;</li>
-                          <li>• Переконайтесь що всі data-атрибути (data-trigger, data-title, data-cta-text, data-cta-url) присутні в тезі</li>
-                          <li>• Якщо попап вже був dismissed — очистіть localStorage або встановіть <code className="bg-muted px-1 py-0.5 rounded text-xs">data-dismiss-days="0"</code></li>
-                          <li>• Неправильний тригер — перевірте <code className="bg-muted px-1 py-0.5 rounded text-xs">data-trigger</code> та відповідні параметри</li>
-                          <li>• Скрипт не завантажився — перевірте URL у Developer Tools → Network</li>
+                          <li>• <strong>MUST add</strong> the <code className="bg-muted px-1 py-0.5 rounded text-xs">data-js-popup-sale</code> attribute to the &lt;script&gt; tag</li>
+                          <li>• Ensure all data attributes (data-trigger, data-title, data-cta-text, data-cta-url) are present</li>
+                          <li>• If popup was dismissed — clear localStorage or set <code className="bg-muted px-1 py-0.5 rounded text-xs">data-dismiss-days="0"</code></li>
+                          <li>• Wrong trigger — check <code className="bg-muted px-1 py-0.5 rounded text-xs">data-trigger</code> and related parameters</li>
+                          <li>• Script not loaded — check URL in Developer Tools → Network</li>
                         </ul>
                       </div>
                     </li>
                     <li>
-                      <div className="font-medium">❌ Зображення не відображається в попапі</div>
+                      <div className="font-medium">❌ Image not displaying in popup</div>
                       <div className="text-muted-foreground mt-1">
-                        <strong>Причини:</strong>
+                        <strong>Causes:</strong>
                         <ul className="ml-4 mt-1">
-                          <li>• Відсутній атрибут <code className="bg-muted px-1 py-0.5 rounded text-xs">data-image</code> у script тезі — додайте його</li>
-                          <li>• Неправильний URL зображення або зображення недоступне (404)</li>
-                          <li>• CORS помилка — перевірте що зображення доступне з вашого домену</li>
-                          <li>• Конфігурація не підтягнулась (див. лог в консолі)</li>
+                          <li>• Missing <code className="bg-muted px-1 py-0.5 rounded text-xs">data-image</code> attribute in script tag — add it</li>
+                          <li>• Invalid image URL or image unavailable (404)</li>
+                          <li>• CORS error — check if image is accessible from your domain</li>
+                          <li>• Config not loaded (see console log)</li>
                         </ul>
-                        <strong className="block mt-2">Рішення:</strong>
+                        <strong className="block mt-2">Solution:</strong>
                         <ul className="ml-4 mt-1">
-                          <li>• Додайте <code className="bg-muted px-1 py-0.5 rounded text-xs">data-image="https://yoursite.com/image.png"</code> до script тега</li>
-                          <li>• Перевірте URL зображення в браузері — воно має відкриватись</li>
-                          <li>• Використовуйте HTTPS URL для зображення</li>
+                          <li>• Add <code className="bg-muted px-1 py-0.5 rounded text-xs">data-image="https://yoursite.com/image.png"</code> to script tag</li>
+                          <li>• Test image URL in browser — it should open</li>
+                          <li>• Use HTTPS URL for image</li>
                         </ul>
                       </div>
                     </li>
                     <li>
-                      <div className="font-medium">❌ Попап показується кілька разів</div>
+                      <div className="font-medium">❌ Popup showing multiple times</div>
                       <div className="text-muted-foreground mt-1">
-                        <strong>Причина:</strong> Дублювання тегів у GTM або на сторінці<br/>
-                        <strong>Рішення:</strong> Переконайтесь, що тег підключено лише один раз
+                        <strong>Cause:</strong> Duplicate tags in GTM or on page<br/>
+                        <strong>Solution:</strong> Ensure tag is included only once
                       </div>
                     </li>
                     <li>
-                      <div className="font-medium">💡 <strong>Перевірка в консолі:</strong></div>
+                      <div className="font-medium">💡 <strong>Console verification:</strong></div>
                       <div className="bg-muted rounded p-2 mt-1 font-mono text-xs">
-                        <div>// Перевірити доступність функцій:</div>
+                        <div>// Check function availability:</div>
                         <div className="text-green-600">console.log(typeof showJSPopupSale); // "function"</div>
                         <div className="text-green-600">console.log(typeof JSPopupSale); // "function"</div>
-                        <div className="mt-2">// Показати попап вручну:</div>
+                        <div className="mt-2">// Show popup manually:</div>
                         <div className="text-blue-600">showJSPopupSale();</div>
                       </div>
                     </li>
