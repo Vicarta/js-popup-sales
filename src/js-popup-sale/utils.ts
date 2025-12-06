@@ -55,4 +55,6 @@ export const DEFAULT_CONFIG = {
   primaryColor: '#f97316',
   backgroundColor: '',
   textColor: '',
+  buttonRadius: 10,
+  contentAlign: 'left' as const,
 };
