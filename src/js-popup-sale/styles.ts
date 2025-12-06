@@ -81,7 +81,7 @@ export const popupStyles = `
   height: 32px;
   border: none;
   background: rgba(0, 0, 0, 0.05);
-  border-radius: 8px;
+  border-radius: var(--popup-button-radius, 8px);
   cursor: pointer;
   display: flex;
   align-items: center;
