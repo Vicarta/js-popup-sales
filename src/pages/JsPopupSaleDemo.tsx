@@ -38,6 +38,8 @@ const JsPopupSaleDemo = () => {
     // GTM tracking
     enableTracking: false,
     popupId: 'js_popup_sale',
+    // Behavior
+    closeOnCtaClick: true,
   });
 
   const generateCode = () => {
@@ -71,6 +73,11 @@ const JsPopupSaleDemo = () => {
     if (config.enableTracking) {
       configObj.enableTracking = true;
       configObj.popupId = config.popupId;
+    }
+    
+    // Behavior
+    if (!config.closeOnCtaClick) {
+      configObj.closeOnCtaClick = false;
     }
     
     // Format JSON for readability
@@ -126,6 +133,7 @@ const JsPopupSaleDemo = () => {
         contentAlign: config.contentAlign as 'left' | 'center' | 'right',
         enableTracking: config.enableTracking,
         popupId: config.popupId,
+        closeOnCtaClick: config.closeOnCtaClick,
       });
       widget.init();
       widget.show();
@@ -367,6 +375,22 @@ const JsPopupSaleDemo = () => {
                       <SelectItem value="right">Right</SelectItem>
                     </SelectContent>
                   </Select>
+                </div>
+
+                {/* Behavior Section */}
+                <div className="pt-4 border-t">
+                  <h3 className="font-semibold mb-3">Behavior</h3>
+                  
+                  <div className="flex items-center space-x-2">
+                    <Checkbox 
+                      id="closeOnCtaClick"
+                      checked={config.closeOnCtaClick}
+                      onCheckedChange={(checked) => setConfig({...config, closeOnCtaClick: checked as boolean})}
+                    />
+                    <Label htmlFor="closeOnCtaClick" className="cursor-pointer">
+                      Close popup on CTA click
+                    </Label>
+                  </div>
                 </div>
 
                 {/* GTM Tracking Section */}

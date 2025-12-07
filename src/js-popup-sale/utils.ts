@@ -60,4 +60,6 @@ export const DEFAULT_CONFIG = {
   // GTM dataLayer tracking
   enableTracking: false,
   popupId: 'js_popup_sale',
+  // Close popup on CTA click
+  closeOnCtaClick: true,
 };
