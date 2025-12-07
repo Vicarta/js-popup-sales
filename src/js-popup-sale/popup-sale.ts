@@ -1,5 +1,15 @@
 import { popupStyles } from './styles';
-import { parseMarkdown, DEFAULT_CONFIG } from './utils';
+import { 
+  parseMarkdown, 
+  DEFAULT_CONFIG, 
+  validateEnum,
+  VALID_TRIGGERS,
+  VALID_THEMES,
+  VALID_POSITIONS,
+  VALID_LAYOUTS,
+  VALID_ALIGNS,
+  MAX_FEATURES
+} from './utils';
 
 interface PopupConfig {
   trigger?: 'delay' | 'scroll' | 'exit-intent' | 'manual';
@@ -28,6 +38,9 @@ interface PopupConfig {
   closeOnCtaClick?: boolean;
 }
 
+// Animation duration constant (ms)
+const ANIMATION_DURATION = 300;
+
 class JSPopupSale {
   private config: Required<PopupConfig>;
   private overlay: HTMLElement | null = null;
@@ -35,6 +48,9 @@ class JSPopupSale {
   private storageKey = 'js_popup_sale_dismissed';
   private scrollHandler: (() => void) | null = null;
   private exitIntentHandler: ((e: MouseEvent) => void) | null = null;
+  private keyHandler: ((e: KeyboardEvent) => void) | null = null;
+  private isVisible: boolean = false;
+  private scrollTicking: boolean = false;
 
   constructor(config: PopupConfig = {}) {
     // Захист від NaN в dismissDays
@@ -44,17 +60,38 @@ class JSPopupSale {
       dismissDays = DEFAULT_CONFIG.dismissDays;
     }
     
+    // Validate enum values
+    const trigger = validateEnum(config.trigger, VALID_TRIGGERS, DEFAULT_CONFIG.trigger);
+    const theme = validateEnum(config.theme, VALID_THEMES, DEFAULT_CONFIG.theme);
+    const position = validateEnum(config.position, VALID_POSITIONS, DEFAULT_CONFIG.position);
+    const layout = validateEnum(config.layout, VALID_LAYOUTS, DEFAULT_CONFIG.layout);
+    const contentAlign = validateEnum(config.contentAlign, VALID_ALIGNS, DEFAULT_CONFIG.contentAlign);
+    
+    // Limit features array size
+    let features = Array.isArray(config.features) ? config.features : DEFAULT_CONFIG.features;
+    if (features.length > MAX_FEATURES) {
+      console.warn(`[JS Popup Sale] Too many features (${features.length}), limiting to ${MAX_FEATURES}`);
+      features = features.slice(0, MAX_FEATURES);
+    }
+    
     this.config = {
       ...DEFAULT_CONFIG,
       ...config,
-      // Гарантуємо, що features завжди масив
-      features: Array.isArray(config.features) ? config.features : DEFAULT_CONFIG.features,
+      trigger,
+      theme,
+      position,
+      layout,
+      contentAlign,
+      features,
       dismissDays,
     } as Required<PopupConfig>;
   }
 
   init(): void {
     try {
+      // Clean up previous listeners before re-initializing
+      this.cleanup();
+      
       if (!this.shouldShow()) {
         console.log('[JS Popup Sale] Popup dismissed by user');
         return;
@@ -62,9 +99,26 @@ class JSPopupSale {
 
       this.createPopup();
       this.setupTrigger();
+      this.setupKeyboardHandler();
     } catch (e) {
       this.trackError('init', e);
     }
+  }
+  
+  private cleanup(): void {
+    if (this.scrollHandler) {
+      window.removeEventListener('scroll', this.scrollHandler);
+      this.scrollHandler = null;
+    }
+    if (this.exitIntentHandler) {
+      document.removeEventListener('mouseleave', this.exitIntentHandler);
+      this.exitIntentHandler = null;
+    }
+    if (this.keyHandler) {
+      document.removeEventListener('keydown', this.keyHandler);
+      this.keyHandler = null;
+    }
+    this.scrollTicking = false;
   }
 
   private shouldShow(): boolean {
@@ -117,12 +171,12 @@ class JSPopupSale {
   }
 
   // GTM dataLayer tracking
-  private trackEvent(eventName: string, extra?: Record<string, any>): void {
+  private trackEvent(eventName: string, extra?: Record<string, unknown>): void {
     if (this.config.enableTracking !== true) return;
     
     try {
-      (window as any).dataLayer = (window as any).dataLayer || [];
-      (window as any).dataLayer.push({
+      (window as unknown as { dataLayer: unknown[] }).dataLayer = (window as unknown as { dataLayer: unknown[] }).dataLayer || [];
+      (window as unknown as { dataLayer: unknown[] }).dataLayer.push({
         event: eventName,
         popup_id: this.config.popupId,
         ...extra
@@ -138,8 +192,8 @@ class JSPopupSale {
     console.error(`[JS Popup Sale] ${errorType} error:`, error);
     
     try {
-      (window as any).dataLayer = (window as any).dataLayer || [];
-      (window as any).dataLayer.push({
+      (window as unknown as { dataLayer: unknown[] }).dataLayer = (window as unknown as { dataLayer: unknown[] }).dataLayer || [];
+      (window as unknown as { dataLayer: unknown[] }).dataLayer.push({
         event: 'js_popup_sale_error',
         popup_id: this.config?.popupId || 'js_popup_sale',
         error_type: errorType,
@@ -148,6 +202,16 @@ class JSPopupSale {
     } catch (e) {
       // Ignore tracking errors
     }
+  }
+  
+  private setupKeyboardHandler(): void {
+    this.keyHandler = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && this.isVisible) {
+        this.trackEvent('js_popup_sale_closed', { close_type: 'escape' });
+        this.dismiss();
+      }
+    };
+    document.addEventListener('keydown', this.keyHandler);
   }
 
   private createPopup(): void {
@@ -198,6 +262,11 @@ class JSPopupSale {
       const popup = document.createElement('div');
       popup.className = `js-popup-sale theme-${this.config.theme} layout-${this.config.layout} align-${this.config.contentAlign}`;
       
+      // ARIA attributes for accessibility
+      popup.setAttribute('role', 'dialog');
+      popup.setAttribute('aria-modal', 'true');
+      popup.setAttribute('aria-labelledby', 'js-popup-sale-title');
+      
       // Apply custom colors via CSS variables
       if (this.config.primaryColor) popup.style.setProperty('--popup-primary', this.config.primaryColor);
       if (this.config.backgroundColor) popup.style.setProperty('--popup-bg', this.config.backgroundColor);
@@ -207,7 +276,8 @@ class JSPopupSale {
       // Close button
       const closeBtn = document.createElement('button');
       closeBtn.className = 'js-popup-sale-close';
-      closeBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none"><path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+      closeBtn.setAttribute('aria-label', 'Close popup');
+      closeBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/></svg>';
       closeBtn.onclick = () => {
         this.trackEvent('js_popup_sale_closed', { close_type: 'cross' });
         this.dismiss();
@@ -259,6 +329,7 @@ class JSPopupSale {
     if (this.config.title) {
       const title = document.createElement('h2');
       title.className = 'js-popup-sale-title';
+      title.id = 'js-popup-sale-title';
       title.innerHTML = parseMarkdown(this.config.title);
       container.appendChild(title);
     }
@@ -291,6 +362,7 @@ class JSPopupSale {
         cta.href = safeCtaUrl;
         cta.className = 'js-popup-sale-cta';
         cta.target = '_blank';
+        cta.rel = 'noopener noreferrer';
         cta.innerHTML = parseMarkdown(this.config.ctaText);
         
         // Track CTA click and optionally close popup
@@ -309,10 +381,11 @@ class JSPopupSale {
   private sanitizeUrl(url: string): string {
     if (!url) return '';
     
-    // Блокуємо потенційно небезпечні протоколи
     const trimmedUrl = url.trim().toLowerCase();
-    if (trimmedUrl.startsWith('javascript:') || trimmedUrl.startsWith('data:text')) {
-      console.warn('[JS Popup Sale] Potentially unsafe URL blocked:', url);
+    
+    // Block all potentially unsafe protocols
+    if (trimmedUrl.startsWith('javascript:') || trimmedUrl.startsWith('data:')) {
+      console.warn('[JS Popup Sale] Unsafe URL blocked:', url);
       return '';
     }
     
@@ -342,30 +415,38 @@ class JSPopupSale {
 
   private setupScrollTrigger(): void {
     this.scrollHandler = () => {
-      const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
+      // Throttle using requestAnimationFrame
+      if (this.scrollTicking) return;
+      this.scrollTicking = true;
       
-      // Захист від division by zero - якщо сторінка не скролиться
-      if (scrollableHeight <= 0) {
-        this.show();
-        if (this.scrollHandler) {
-          window.removeEventListener('scroll', this.scrollHandler);
-          this.scrollHandler = null;
+      requestAnimationFrame(() => {
+        this.scrollTicking = false;
+        
+        const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
+        
+        // Захист від division by zero - якщо сторінка не скролиться
+        if (scrollableHeight <= 0) {
+          this.show();
+          if (this.scrollHandler) {
+            window.removeEventListener('scroll', this.scrollHandler);
+            this.scrollHandler = null;
+          }
+          return;
         }
-        return;
-      }
-      
-      const scrollPercent = (window.scrollY / scrollableHeight) * 100;
-      
-      if (scrollPercent >= this.config.scrollPercent) {
-        this.show();
-        if (this.scrollHandler) {
-          window.removeEventListener('scroll', this.scrollHandler);
-          this.scrollHandler = null;
+        
+        const scrollPercent = (window.scrollY / scrollableHeight) * 100;
+        
+        if (scrollPercent >= this.config.scrollPercent) {
+          this.show();
+          if (this.scrollHandler) {
+            window.removeEventListener('scroll', this.scrollHandler);
+            this.scrollHandler = null;
+          }
         }
-      }
+      });
     };
     
-    window.addEventListener('scroll', this.scrollHandler);
+    window.addEventListener('scroll', this.scrollHandler, { passive: true });
   }
 
   private setupExitIntentTrigger(): void {
@@ -387,7 +468,11 @@ class JSPopupSale {
 
   show(): void {
     try {
+      // Prevent double-show
+      if (this.isVisible) return;
+      
       if (this.overlay) {
+        this.isVisible = true;
         this.overlay.style.display = 'flex';
         // Trigger reflow for animation
         void this.overlay.offsetHeight;
@@ -403,13 +488,17 @@ class JSPopupSale {
 
   hide(): void {
     try {
+      // Prevent double-hide
+      if (!this.isVisible) return;
+      
       if (this.overlay) {
+        this.isVisible = false;
         this.overlay.classList.remove('show');
         setTimeout(() => {
           if (this.overlay) {
             this.overlay.style.display = 'none';
           }
-        }, 300);
+        }, ANIMATION_DURATION);
       }
     } catch (e) {
       this.trackError('hide', e);
@@ -428,15 +517,8 @@ class JSPopupSale {
   }
 
   destroy(): void {
-    // Очищення event listeners
-    if (this.scrollHandler) {
-      window.removeEventListener('scroll', this.scrollHandler);
-      this.scrollHandler = null;
-    }
-    if (this.exitIntentHandler) {
-      document.removeEventListener('mouseleave', this.exitIntentHandler);
-      this.exitIntentHandler = null;
-    }
+    // Clean up all event listeners
+    this.cleanup();
     
     const container = document.getElementById('js-popup-sale-container');
     if (container) {
@@ -444,6 +526,7 @@ class JSPopupSale {
     }
     this.overlay = null;
     this.shadowRoot = null;
+    this.isVisible = false;
   }
 }
 
@@ -486,7 +569,7 @@ function parseConfigFromScript(script: HTMLScriptElement): PopupConfig {
   }
   
   return {
-    trigger: (data.trigger as any) || undefined,
+    trigger: (data.trigger as PopupConfig['trigger']) || undefined,
     delay: safeParseInt(data.delay),
     scrollPercent: safeParseInt(data.scrollPercent),
     dismissDays: data.dismissDays !== undefined ? safeParseInt(data.dismissDays, 0) : undefined,
@@ -496,17 +579,18 @@ function parseConfigFromScript(script: HTMLScriptElement): PopupConfig {
     ctaText: data.ctaText,
     ctaUrl: data.ctaUrl,
     image: data.image,
-    theme: data.theme as any,
-    position: data.position as any,
-    layout: data.layout as any,
+    theme: data.theme as PopupConfig['theme'],
+    position: data.position as PopupConfig['position'],
+    layout: data.layout as PopupConfig['layout'],
     inheritFont: data.inheritFont === 'true',
     primaryColor: data.primaryColor,
     backgroundColor: data.backgroundColor,
     textColor: data.textColor,
     buttonRadius: safeParseInt(data.buttonRadius),
-    contentAlign: data.contentAlign as any,
+    contentAlign: data.contentAlign as PopupConfig['contentAlign'],
     enableTracking: data.enableTracking === 'true',
     popupId: data.popupId,
+    closeOnCtaClick: data.closeOnCtaClick !== 'false',
   };
 }
 
@@ -519,8 +603,8 @@ function autoInit(savedScript?: HTMLScriptElement | null) {
     console.log('[JS Popup Sale] AutoInit started');
     
     // ПРІОРИТЕТ 1: Перевірка глобальної змінної window.JSPopupSaleConfig (для GTM)
-    if ((window as any).JSPopupSaleConfig) {
-      const config = (window as any).JSPopupSaleConfig as PopupConfig;
+    if ((window as unknown as { JSPopupSaleConfig?: PopupConfig }).JSPopupSaleConfig) {
+      const config = (window as unknown as { JSPopupSaleConfig: PopupConfig }).JSPopupSaleConfig;
       console.log('[JS Popup Sale] ==========================================');
       console.log('[JS Popup Sale] ✓ Found config via window.JSPopupSaleConfig');
       console.log('[JS Popup Sale] Config:', config);
@@ -530,13 +614,13 @@ function autoInit(savedScript?: HTMLScriptElement | null) {
       widget.init();
       
       // Expose both class and instance to global scope
-      (window as any).JSPopupSale = JSPopupSale;
-      (window as any).jsPopupSaleInstance = widget;
+      (window as unknown as { JSPopupSale: typeof JSPopupSale }).JSPopupSale = JSPopupSale;
+      (window as unknown as { jsPopupSaleInstance: JSPopupSale }).jsPopupSaleInstance = widget;
       
       // Helper методи для зручності
-      (window as any).showJSPopupSale = () => widget?.show();
-      (window as any).hideJSPopupSale = () => widget?.hide();
-      (window as any).dismissJSPopupSale = () => widget?.dismiss();
+      (window as unknown as { showJSPopupSale: () => void }).showJSPopupSale = () => widget?.show();
+      (window as unknown as { hideJSPopupSale: () => void }).hideJSPopupSale = () => widget?.hide();
+      (window as unknown as { dismissJSPopupSale: () => void }).dismissJSPopupSale = () => widget?.dismiss();
       return;
     }
     
@@ -598,16 +682,16 @@ function autoInit(savedScript?: HTMLScriptElement | null) {
       console.warn('[JS Popup Sale] ==========================================');
       
       // Експортуємо клас та helper функції для ручної ініціалізації
-      (window as any).JSPopupSale = JSPopupSale;
+      (window as unknown as { JSPopupSale: typeof JSPopupSale }).JSPopupSale = JSPopupSale;
       
       // Helper функції для створення і показу попапу без autoInit
-      (window as any).showJSPopupSale = (customConfig?: Partial<PopupConfig>) => {
+      (window as unknown as { showJSPopupSale: (config?: Partial<PopupConfig>) => JSPopupSale }).showJSPopupSale = (customConfig?: Partial<PopupConfig>) => {
         const config = customConfig || {};
         console.log('[JS Popup Sale] Manual showJSPopupSale called with config:', config);
         const widget = new JSPopupSale(config);
         widget.init();
         widget.show();
-        (window as any).jsPopupSaleInstance = widget;
+        (window as unknown as { jsPopupSaleInstance: JSPopupSale }).jsPopupSaleInstance = widget;
         return widget;
       };
       return;
@@ -624,19 +708,19 @@ function autoInit(savedScript?: HTMLScriptElement | null) {
     widget.init();
     
     // Expose both class and instance to global scope
-    (window as any).JSPopupSale = JSPopupSale;  // Клас для ручного створення
-    (window as any).jsPopupSaleInstance = widget;  // Екземпляр для керування
+    (window as unknown as { JSPopupSale: typeof JSPopupSale }).JSPopupSale = JSPopupSale;
+    (window as unknown as { jsPopupSaleInstance: JSPopupSale }).jsPopupSaleInstance = widget;
     
     // Helper методи для зручності
-    (window as any).showJSPopupSale = () => widget?.show();
-    (window as any).hideJSPopupSale = () => widget?.hide();
-    (window as any).dismissJSPopupSale = () => widget?.dismiss();
+    (window as unknown as { showJSPopupSale: () => void }).showJSPopupSale = () => widget?.show();
+    (window as unknown as { hideJSPopupSale: () => void }).hideJSPopupSale = () => widget?.hide();
+    (window as unknown as { dismissJSPopupSale: () => void }).dismissJSPopupSale = () => widget?.dismiss();
   } catch (e) {
     console.error('[JS Popup Sale] Init error:', e);
     // Send error to dataLayer
     try {
-      (window as any).dataLayer = (window as any).dataLayer || [];
-      (window as any).dataLayer.push({
+      (window as unknown as { dataLayer: unknown[] }).dataLayer = (window as unknown as { dataLayer: unknown[] }).dataLayer || [];
+      (window as unknown as { dataLayer: unknown[] }).dataLayer.push({
         event: 'js_popup_sale_error',
         error_type: 'init',
         error_message: (e as Error)?.message || String(e)

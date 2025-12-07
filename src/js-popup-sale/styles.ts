@@ -274,6 +274,25 @@ export const popupStyles = `
   overflow-wrap: break-word;
 }
 
+/* Accessibility: Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .js-popup-sale-overlay,
+  .js-popup-sale,
+  .js-popup-sale-close,
+  .js-popup-sale-cta {
+    transition: none !important;
+    animation: none !important;
+  }
+  
+  .js-popup-sale {
+    transform: none !important;
+  }
+  
+  .js-popup-sale-overlay.show .js-popup-sale {
+    transform: none !important;
+  }
+}
+
 @media (max-width: 640px) {
   .js-popup-sale.layout-horizontal {
     flex-direction: column;

@@ -35,6 +35,37 @@ export function parseMarkdown(text: string): string {
 }
 
 /**
+ * Valid enum values for popup configuration
+ */
+export const VALID_TRIGGERS = ['delay', 'scroll', 'exit-intent', 'manual'] as const;
+export const VALID_THEMES = ['light', 'dark'] as const;
+export const VALID_POSITIONS = ['center', 'top-left', 'top-center', 'top-right', 'center-left', 'center-right', 'bottom-left', 'bottom-center', 'bottom-right'] as const;
+export const VALID_LAYOUTS = ['vertical', 'horizontal'] as const;
+export const VALID_ALIGNS = ['left', 'center', 'right'] as const;
+
+/**
+ * Validate enum value with fallback to default
+ */
+export function validateEnum<T extends string>(
+  value: string | undefined, 
+  validValues: readonly T[], 
+  defaultValue: T
+): T {
+  if (value && (validValues as readonly string[]).includes(value)) {
+    return value as T;
+  }
+  if (value) {
+    console.warn(`[JS Popup Sale] Invalid value "${value}", using default: ${defaultValue}`);
+  }
+  return defaultValue;
+}
+
+/**
+ * Maximum number of features to prevent DOM bloat
+ */
+export const MAX_FEATURES = 20;
+
+/**
  * Default configuration for popup sale widget
  */
 export const DEFAULT_CONFIG = {
