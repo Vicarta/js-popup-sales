@@ -125,9 +125,9 @@ class JSPopupSale {
   }
   
   private warn(...args: unknown[]): void {
-    if (this.config?.debug !== false) {
-      console.warn('[JS Popup Sale]', ...args);
-    }
+    // Safe check: config may not be initialized yet in constructor
+    if (this.config?.debug === false) return;
+    console.warn('[JS Popup Sale]', ...args);
   }
 
   init(): void {
@@ -707,6 +707,7 @@ function parseConfigFromScript(script: HTMLScriptElement): PopupConfig {
     enableTracking: data.enableTracking === 'true',
     popupId: data.popupId,
     closeOnCtaClick: data.closeOnCtaClick !== 'false',
+    debug: data.debug === 'true',
   };
 }
 
