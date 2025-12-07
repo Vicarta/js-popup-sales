@@ -11,27 +11,71 @@ function sanitizeHtml(html: string): string {
 
 /**
  * Lightweight markdown parser with XSS protection
+ * Supports: **bold**, *italic*, ***bold italic***, ~~strikethrough~~, [links](url)
+ * Also supports nested bold inside italic: *italic **bold** italic*
  */
 export function parseMarkdown(text: string): string {
   if (!text) return '';
   
-  return text
-    // Strikethrough: ~~text~~
-    .replace(/~~(.+?)~~/g, (_, content) => `<del>${sanitizeHtml(content)}</del>`)
-    // Bold: **text** or __text__
-    .replace(/\*\*(.+?)\*\*/g, (_, content) => `<strong>${sanitizeHtml(content)}</strong>`)
-    .replace(/__(.+?)__/g, (_, content) => `<strong>${sanitizeHtml(content)}</strong>`)
-    // Italic: *text* or _text_
-    .replace(/\*(.+?)\*/g, (_, content) => `<em>${sanitizeHtml(content)}</em>`)
-    .replace(/_(.+?)_/g, (_, content) => `<em>${sanitizeHtml(content)}</em>`)
-    // Links: [text](url) - sanitize both text and URL
-    .replace(/\[(.+?)\]\((.+?)\)/g, (_, text, url) => {
-      const sanitizedText = sanitizeHtml(text);
-      const sanitizedUrl = sanitizeHtml(url);
-      return `<a href="${sanitizedUrl}" target="_blank" rel="noopener noreferrer">${sanitizedText}</a>`;
-    })
-    // Line breaks
-    .replace(/\n/g, '<br>');
+  // Process in correct order to handle nested formatting
+  let result = text;
+  
+  // Step 1: Strikethrough: ~~text~~
+  result = result.replace(/~~(.+?)~~/g, (_, content) => `<del>${sanitizeHtml(content)}</del>`);
+  
+  // Step 2: Bold-italic: ***text*** or ___text___
+  result = result.replace(/\*\*\*(.+?)\*\*\*/g, (_, content) => `<strong><em>${sanitizeHtml(content)}</em></strong>`);
+  result = result.replace(/___(.+?)___/g, (_, content) => `<strong><em>${sanitizeHtml(content)}</em></strong>`);
+  
+  // Step 3: Handle nested bold inside italic: *text **bold** text*
+  // This requires a more complex approach - process italic blocks that may contain bold
+  result = result.replace(/\*([^*]+(?:\*\*[^*]+\*\*[^*]*)*)\*/g, (match, content) => {
+    // Check if content contains **bold**
+    if (content.includes('**')) {
+      // Process bold inside, then wrap in italic
+      const processedContent = content.replace(/\*\*(.+?)\*\*/g, (_: string, boldContent: string) => 
+        `<strong>${sanitizeHtml(boldContent)}</strong>`
+      );
+      // Sanitize remaining text parts (split by tags)
+      const sanitizedContent = processedContent.replace(/([^<>]+)(?=<|$)/g, (textMatch: string) => {
+        if (textMatch.startsWith('<') || textMatch.includes('>')) return textMatch;
+        return sanitizeHtml(textMatch);
+      });
+      return `<em>${sanitizedContent}</em>`;
+    }
+    return `<em>${sanitizeHtml(content)}</em>`;
+  });
+  
+  // Step 4: Handle nested bold inside italic with underscores: _text __bold__ text_
+  result = result.replace(/_([^_]+(?:__[^_]+__[^_]*)*)_/g, (match, content) => {
+    if (content.includes('__')) {
+      const processedContent = content.replace(/__(.+?)__/g, (_: string, boldContent: string) => 
+        `<strong>${sanitizeHtml(boldContent)}</strong>`
+      );
+      const sanitizedContent = processedContent.replace(/([^<>]+)(?=<|$)/g, (textMatch: string) => {
+        if (textMatch.startsWith('<') || textMatch.includes('>')) return textMatch;
+        return sanitizeHtml(textMatch);
+      });
+      return `<em>${sanitizedContent}</em>`;
+    }
+    return `<em>${sanitizeHtml(content)}</em>`;
+  });
+  
+  // Step 5: Bold: **text** or __text__ (only remaining ones)
+  result = result.replace(/\*\*(.+?)\*\*/g, (_, content) => `<strong>${sanitizeHtml(content)}</strong>`);
+  result = result.replace(/__(.+?)__/g, (_, content) => `<strong>${sanitizeHtml(content)}</strong>`);
+  
+  // Step 6: Links: [text](url) - sanitize both text and URL
+  result = result.replace(/\[(.+?)\]\((.+?)\)/g, (_, linkText, url) => {
+    const sanitizedText = sanitizeHtml(linkText);
+    const sanitizedUrl = sanitizeHtml(url);
+    return `<a href="${sanitizedUrl}" target="_blank" rel="noopener noreferrer">${sanitizedText}</a>`;
+  });
+  
+  // Step 7: Line breaks
+  result = result.replace(/\n/g, '<br>');
+  
+  return result;
 }
 
 /**
@@ -58,6 +102,47 @@ export function validateEnum<T extends string>(
     console.warn(`[JS Popup Sale] Invalid value "${value}", using default: ${defaultValue}`);
   }
   return defaultValue;
+}
+
+/**
+ * Clamp number to min/max range with fallback to default
+ */
+export function clampNumber(value: number | undefined, min: number, max: number, defaultValue: number): number {
+  if (value === undefined || isNaN(value)) return defaultValue;
+  return Math.max(min, Math.min(max, value));
+}
+
+/**
+ * Validate CSS color format (hex, rgb, hsl, named colors)
+ * Returns the color if valid, otherwise undefined
+ */
+export function validateColor(color: string | undefined): string | undefined {
+  if (!color) return undefined;
+  
+  const trimmed = color.trim();
+  if (!trimmed) return undefined;
+  
+  // Test using CSS.supports if available
+  if (typeof CSS !== 'undefined' && CSS.supports) {
+    if (CSS.supports('color', trimmed)) {
+      return trimmed;
+    }
+    console.warn(`[JS Popup Sale] Invalid color "${color}", ignoring`);
+    return undefined;
+  }
+  
+  // Fallback: basic validation patterns
+  const hexPattern = /^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6}|[0-9A-Fa-f]{8})$/;
+  const rgbPattern = /^rgba?\(\s*\d+\s*,\s*\d+\s*,\s*\d+\s*(,\s*[\d.]+)?\s*\)$/;
+  const hslPattern = /^hsla?\(\s*\d+\s*,\s*[\d.]+%\s*,\s*[\d.]+%\s*(,\s*[\d.]+)?\s*\)$/;
+  const namedColors = ['black', 'white', 'red', 'green', 'blue', 'yellow', 'orange', 'purple', 'pink', 'gray', 'grey', 'transparent', 'inherit', 'currentColor'];
+  
+  if (hexPattern.test(trimmed) || rgbPattern.test(trimmed) || hslPattern.test(trimmed) || namedColors.includes(trimmed.toLowerCase())) {
+    return trimmed;
+  }
+  
+  console.warn(`[JS Popup Sale] Invalid color "${color}", ignoring`);
+  return undefined;
 }
 
 /**
@@ -93,4 +178,6 @@ export const DEFAULT_CONFIG = {
   popupId: 'js_popup_sale',
   // Close popup on CTA click
   closeOnCtaClick: true,
+  // Debug mode
+  debug: false,
 };

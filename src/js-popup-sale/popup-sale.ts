@@ -3,6 +3,8 @@ import {
   parseMarkdown, 
   DEFAULT_CONFIG, 
   validateEnum,
+  clampNumber,
+  validateColor,
   VALID_TRIGGERS,
   VALID_THEMES,
   VALID_POSITIONS,
@@ -36,27 +38,40 @@ interface PopupConfig {
   popupId?: string;
   // Behavior
   closeOnCtaClick?: boolean;
+  // Debug mode
+  debug?: boolean;
+  // Callbacks
+  onShow?: () => void;
+  onHide?: () => void;
+  onCtaClick?: () => void;
 }
 
 // Animation duration constant (ms)
 const ANIMATION_DURATION = 300;
 
 class JSPopupSale {
-  private config: Required<PopupConfig>;
+  private config: Required<Omit<PopupConfig, 'onShow' | 'onHide' | 'onCtaClick'>> & Pick<PopupConfig, 'onShow' | 'onHide' | 'onCtaClick'>;
   private overlay: HTMLElement | null = null;
   private shadowRoot: ShadowRoot | null = null;
   private storageKey = 'js_popup_sale_dismissed';
   private scrollHandler: (() => void) | null = null;
   private exitIntentHandler: ((e: MouseEvent) => void) | null = null;
   private keyHandler: ((e: KeyboardEvent) => void) | null = null;
+  private focusTrapHandler: ((e: KeyboardEvent) => void) | null = null;
   private isVisible: boolean = false;
   private scrollTicking: boolean = false;
+  private previousActiveElement: Element | null = null;
 
   constructor(config: PopupConfig = {}) {
-    // Захист від NaN в dismissDays
+    // Validate numeric values with clamping
+    const delay = clampNumber(config.delay, 100, 60000, DEFAULT_CONFIG.delay);
+    const scrollPercent = clampNumber(config.scrollPercent, 1, 100, DEFAULT_CONFIG.scrollPercent);
+    const buttonRadius = clampNumber(config.buttonRadius, 0, 100, DEFAULT_CONFIG.buttonRadius);
+    
+    // Validate dismissDays (allow 0 for "always show")
     let dismissDays = config.dismissDays !== undefined ? config.dismissDays : DEFAULT_CONFIG.dismissDays;
-    if (isNaN(dismissDays)) {
-      console.warn('[JS Popup Sale] Invalid dismissDays value, using default:', DEFAULT_CONFIG.dismissDays);
+    if (isNaN(dismissDays) || dismissDays < 0) {
+      this.warn('Invalid dismissDays value, using default:', DEFAULT_CONFIG.dismissDays);
       dismissDays = DEFAULT_CONFIG.dismissDays;
     }
     
@@ -67,10 +82,15 @@ class JSPopupSale {
     const layout = validateEnum(config.layout, VALID_LAYOUTS, DEFAULT_CONFIG.layout);
     const contentAlign = validateEnum(config.contentAlign, VALID_ALIGNS, DEFAULT_CONFIG.contentAlign);
     
+    // Validate colors
+    const primaryColor = validateColor(config.primaryColor) || DEFAULT_CONFIG.primaryColor;
+    const backgroundColor = validateColor(config.backgroundColor) || DEFAULT_CONFIG.backgroundColor;
+    const textColor = validateColor(config.textColor) || DEFAULT_CONFIG.textColor;
+    
     // Limit features array size
     let features = Array.isArray(config.features) ? config.features : DEFAULT_CONFIG.features;
     if (features.length > MAX_FEATURES) {
-      console.warn(`[JS Popup Sale] Too many features (${features.length}), limiting to ${MAX_FEATURES}`);
+      this.warn(`Too many features (${features.length}), limiting to ${MAX_FEATURES}`);
       features = features.slice(0, MAX_FEATURES);
     }
     
@@ -84,7 +104,30 @@ class JSPopupSale {
       contentAlign,
       features,
       dismissDays,
-    } as Required<PopupConfig>;
+      delay,
+      scrollPercent,
+      buttonRadius,
+      primaryColor,
+      backgroundColor,
+      textColor,
+      // Callbacks (optional, not required)
+      onShow: config.onShow,
+      onHide: config.onHide,
+      onCtaClick: config.onCtaClick,
+    };
+  }
+  
+  // Logging helpers (only log when debug mode is enabled)
+  private log(...args: unknown[]): void {
+    if (this.config.debug) {
+      console.log('[JS Popup Sale]', ...args);
+    }
+  }
+  
+  private warn(...args: unknown[]): void {
+    if (this.config?.debug !== false) {
+      console.warn('[JS Popup Sale]', ...args);
+    }
   }
 
   init(): void {
@@ -93,7 +136,7 @@ class JSPopupSale {
       this.cleanup();
       
       if (!this.shouldShow()) {
-        console.log('[JS Popup Sale] Popup dismissed by user');
+        this.log('Popup dismissed by user');
         return;
       }
 
@@ -117,6 +160,10 @@ class JSPopupSale {
     if (this.keyHandler) {
       document.removeEventListener('keydown', this.keyHandler);
       this.keyHandler = null;
+    }
+    if (this.focusTrapHandler && this.shadowRoot) {
+      this.shadowRoot.removeEventListener('keydown', this.focusTrapHandler);
+      this.focusTrapHandler = null;
     }
     this.scrollTicking = false;
   }
@@ -181,9 +228,9 @@ class JSPopupSale {
         popup_id: this.config.popupId,
         ...extra
       });
-      console.log(`[JS Popup Sale] Tracked: ${eventName}`, extra || '');
+      this.log(`Tracked: ${eventName}`, extra || '');
     } catch (e) {
-      console.warn('[JS Popup Sale] Tracking failed:', e);
+      this.warn('Tracking failed:', e);
     }
   }
 
@@ -368,6 +415,10 @@ class JSPopupSale {
         // Track CTA click and optionally close popup
         cta.addEventListener('click', () => {
           this.trackEvent('js_popup_sale_primary_click');
+          
+          // Call onCtaClick callback
+          this.config.onCtaClick?.();
+          
           if (this.config.closeOnCtaClick !== false) {
             this.dismiss();
           }
@@ -383,9 +434,12 @@ class JSPopupSale {
     
     const trimmedUrl = url.trim().toLowerCase();
     
-    // Block all potentially unsafe protocols
-    if (trimmedUrl.startsWith('javascript:') || trimmedUrl.startsWith('data:')) {
-      console.warn('[JS Popup Sale] Unsafe URL blocked:', url);
+    // Whitelist approach: only allow http(s) and relative paths
+    const isRelative = !trimmedUrl.includes(':');
+    const isHttp = trimmedUrl.startsWith('http://') || trimmedUrl.startsWith('https://');
+    
+    if (!isRelative && !isHttp) {
+      this.warn('URL blocked (only http/https or relative paths allowed):', url);
       return '';
     }
     
@@ -473,17 +527,63 @@ class JSPopupSale {
       
       if (this.overlay) {
         this.isVisible = true;
+        
+        // Save current focus for restoration
+        this.previousActiveElement = document.activeElement;
+        
         this.overlay.style.display = 'flex';
         // Trigger reflow for animation
         void this.overlay.offsetHeight;
         this.overlay.classList.add('show');
         
+        // Setup focus trap and focus first element
+        this.setupFocusTrap();
+        
         // Track popup shown
         this.trackEvent('js_popup_sale_shown');
+        
+        // Call onShow callback
+        this.config.onShow?.();
       }
     } catch (e) {
       this.trackError('show', e);
     }
+  }
+  
+  private setupFocusTrap(): void {
+    if (!this.shadowRoot) return;
+    
+    const focusableSelector = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+    const focusableElements = this.shadowRoot.querySelectorAll(focusableSelector);
+    
+    if (focusableElements.length === 0) return;
+    
+    const firstFocusable = focusableElements[0] as HTMLElement;
+    const lastFocusable = focusableElements[focusableElements.length - 1] as HTMLElement;
+    
+    // Focus first element
+    firstFocusable?.focus();
+    
+    // Setup tab trap
+    this.focusTrapHandler = (e: KeyboardEvent) => {
+      if (e.key !== 'Tab') return;
+      
+      if (e.shiftKey) {
+        // Shift + Tab
+        if (this.shadowRoot?.activeElement === firstFocusable) {
+          e.preventDefault();
+          lastFocusable?.focus();
+        }
+      } else {
+        // Tab
+        if (this.shadowRoot?.activeElement === lastFocusable) {
+          e.preventDefault();
+          firstFocusable?.focus();
+        }
+      }
+    };
+    
+    this.shadowRoot.addEventListener('keydown', this.focusTrapHandler);
   }
 
   hide(): void {
@@ -494,11 +594,27 @@ class JSPopupSale {
       if (this.overlay) {
         this.isVisible = false;
         this.overlay.classList.remove('show');
+        
+        // Clean up focus trap
+        if (this.focusTrapHandler && this.shadowRoot) {
+          this.shadowRoot.removeEventListener('keydown', this.focusTrapHandler);
+          this.focusTrapHandler = null;
+        }
+        
+        // Restore focus to previous element
+        if (this.previousActiveElement && this.previousActiveElement instanceof HTMLElement) {
+          this.previousActiveElement.focus();
+        }
+        this.previousActiveElement = null;
+        
         setTimeout(() => {
           if (this.overlay) {
             this.overlay.style.display = 'none';
           }
         }, ANIMATION_DURATION);
+        
+        // Call onHide callback
+        this.config.onHide?.();
       }
     } catch (e) {
       this.trackError('hide', e);
@@ -509,9 +625,9 @@ class JSPopupSale {
     if (this.config.dismissDays > 0) {
       const dismissUntil = Date.now() + (this.config.dismissDays * 24 * 60 * 60 * 1000);
       this.safeSetItem(this.storageKey, dismissUntil.toString());
-      console.log(`[JS Popup Sale] Dismissed for ${this.config.dismissDays} days`);
+      this.log(`Dismissed for ${this.config.dismissDays} days`);
     } else {
-      console.log('[JS Popup Sale] Dismissed (dismissDays=0, will show again on next trigger)');
+      this.log('Dismissed (dismissDays=0, will show again on next trigger)');
     }
     this.hide();
   }
@@ -600,15 +716,19 @@ const currentScriptRef = document.currentScript as HTMLScriptElement | null;
 // Auto-initialize з підтримкою GTM та fallback стратегіями
 function autoInit(savedScript?: HTMLScriptElement | null) {
   try {
-    console.log('[JS Popup Sale] AutoInit started');
+    // Only log if debug mode is explicitly enabled
+    const debugMode = (window as unknown as { JSPopupSaleConfig?: PopupConfig }).JSPopupSaleConfig?.debug === true;
+    const log = (...args: unknown[]) => { if (debugMode) console.log('[JS Popup Sale]', ...args); };
+    
+    log('AutoInit started');
     
     // ПРІОРИТЕТ 1: Перевірка глобальної змінної window.JSPopupSaleConfig (для GTM)
     if ((window as unknown as { JSPopupSaleConfig?: PopupConfig }).JSPopupSaleConfig) {
       const config = (window as unknown as { JSPopupSaleConfig: PopupConfig }).JSPopupSaleConfig;
-      console.log('[JS Popup Sale] ==========================================');
-      console.log('[JS Popup Sale] ✓ Found config via window.JSPopupSaleConfig');
-      console.log('[JS Popup Sale] Config:', config);
-      console.log('[JS Popup Sale] ==========================================');
+      log('==========================================');
+      log('✓ Found config via window.JSPopupSaleConfig');
+      log('Config:', config);
+      log('==========================================');
       
       const widget = new JSPopupSale(config);
       widget.init();
@@ -626,29 +746,29 @@ function autoInit(savedScript?: HTMLScriptElement | null) {
     
     // ПРІОРИТЕТ 2: Функція пошуку скрипта з data-* атрибутами
     const findScript = (): HTMLScriptElement | null => {
-      console.log('[JS Popup Sale] Searching for script tag...');
+      log('Searching for script tag...');
       
       // Стратегія 1: Збережений currentScript (переданий як параметр)
       if (savedScript && savedScript.dataset && hasValidConfig(savedScript.dataset)) {
-        console.log('[JS Popup Sale] ✓ Found script via savedScript');
+        log('✓ Found script via savedScript');
         return savedScript;
       }
       
       // Стратегія 2: Пошук ВСІХ скриптів з js-popup-sale.js (для GTM)
       const allScripts = Array.from(document.querySelectorAll('script'));
-      console.log(`[JS Popup Sale] Checking ${allScripts.length} script tags...`);
+      log(`Checking ${allScripts.length} script tags...`);
       
       for (const candidate of allScripts) {
         const scriptEl = candidate as HTMLScriptElement;
         const src = scriptEl.src || scriptEl.getAttribute('data-gtmsrc') || '';
         
         if (src.includes('js-popup-sale')) {
-          console.log('[JS Popup Sale] Found js-popup-sale script, checking dataset...', scriptEl.dataset);
+          log('Found js-popup-sale script, checking dataset...', scriptEl.dataset);
           if (hasValidConfig(scriptEl.dataset || {})) {
-            console.log('[JS Popup Sale] ✓ Found script via src/data-gtmsrc with valid config');
+            log('✓ Found script via src/data-gtmsrc with valid config');
             return scriptEl;
           } else {
-            console.warn('[JS Popup Sale] Script found but dataset is invalid or empty');
+            if (debugMode) console.warn('[JS Popup Sale] Script found but dataset is invalid or empty');
           }
         }
       }
@@ -657,14 +777,14 @@ function autoInit(savedScript?: HTMLScriptElement | null) {
       const markedScripts = document.querySelectorAll('script[data-js-popup-sale]');
       if (markedScripts.length > 0) {
         const candidate = markedScripts[markedScripts.length - 1] as HTMLScriptElement;
-        console.log('[JS Popup Sale] Found marked script, checking dataset...', candidate.dataset);
+        log('Found marked script, checking dataset...', candidate.dataset);
         if (hasValidConfig(candidate.dataset || {})) {
-          console.log('[JS Popup Sale] ✓ Found script via data-js-popup-sale marker');
+          log('✓ Found script via data-js-popup-sale marker');
           return candidate;
         }
       }
       
-      console.warn('[JS Popup Sale] ✗ No valid script tag found');
+      if (debugMode) console.warn('[JS Popup Sale] ✗ No valid script tag found');
       return null;
     };
     
@@ -672,14 +792,16 @@ function autoInit(savedScript?: HTMLScriptElement | null) {
     
     // Якщо скрипт не знайдено або немає корисної конфігурації
     if (!script || !hasValidConfig(script.dataset || {})) {
-      console.warn('[JS Popup Sale] ==========================================');
-      console.warn('[JS Popup Sale] Script tag not found or has no valid configuration.');
-      console.warn('[JS Popup Sale] ==========================================');
-      console.warn('[JS Popup Sale] For GTM: ensure your script tag has data-* attributes:');
-      console.warn('[JS Popup Sale]   <script src="..." data-trigger="delay" data-title="..." ...>');
-      console.warn('[JS Popup Sale] Or add data-js-popup-sale marker to your script tag');
-      console.warn('[JS Popup Sale] For manual use: call window.showJSPopupSale({...config})');
-      console.warn('[JS Popup Sale] ==========================================');
+      if (debugMode) {
+        console.warn('[JS Popup Sale] ==========================================');
+        console.warn('[JS Popup Sale] Script tag not found or has no valid configuration.');
+        console.warn('[JS Popup Sale] ==========================================');
+        console.warn('[JS Popup Sale] For GTM: ensure your script tag has data-* attributes:');
+        console.warn('[JS Popup Sale]   <script src="..." data-trigger="delay" data-title="..." ...>');
+        console.warn('[JS Popup Sale] Or add data-js-popup-sale marker to your script tag');
+        console.warn('[JS Popup Sale] For manual use: call window.showJSPopupSale({...config})');
+        console.warn('[JS Popup Sale] ==========================================');
+      }
       
       // Експортуємо клас та helper функції для ручної ініціалізації
       (window as unknown as { JSPopupSale: typeof JSPopupSale }).JSPopupSale = JSPopupSale;
@@ -687,7 +809,7 @@ function autoInit(savedScript?: HTMLScriptElement | null) {
       // Helper функції для створення і показу попапу без autoInit
       (window as unknown as { showJSPopupSale: (config?: Partial<PopupConfig>) => JSPopupSale }).showJSPopupSale = (customConfig?: Partial<PopupConfig>) => {
         const config = customConfig || {};
-        console.log('[JS Popup Sale] Manual showJSPopupSale called with config:', config);
+        if (config.debug) console.log('[JS Popup Sale] Manual showJSPopupSale called with config:', config);
         const widget = new JSPopupSale(config);
         widget.init();
         widget.show();
@@ -700,9 +822,9 @@ function autoInit(savedScript?: HTMLScriptElement | null) {
     // Парсинг конфігурації з захистом від помилок
     const config: PopupConfig = parseConfigFromScript(script);
     
-    console.log('[JS Popup Sale] ==========================================');
-    console.log('[JS Popup Sale] ✓ Initializing with config:', config);
-    console.log('[JS Popup Sale] ==========================================');
+    log('==========================================');
+    log('✓ Initializing with config:', config);
+    log('==========================================');
     
     const widget = new JSPopupSale(config);
     widget.init();

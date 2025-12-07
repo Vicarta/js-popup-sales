@@ -500,11 +500,60 @@ const JsPopupSaleDemo = () => {
                   <h3 className="font-semibold mb-2">Markdown Support</h3>
                   <ul className="text-sm text-muted-foreground space-y-1">
                     <li><code>**text**</code> — bold text</li>
-                    <li><code>_text_</code> — italic</li>
+                    <li><code>*text*</code> or <code>_text_</code> — italic</li>
+                    <li><code>***text***</code> — bold italic</li>
+                    <li><code>*italic **bold** italic*</code> — nested formatting</li>
                     <li><code>~~text~~</code> — strikethrough</li>
                     <li><code>[text](url)</code> — link</li>
                     <li>Emoji supported natively 🚀✨🎉</li>
                   </ul>
+                </div>
+
+                {/* Debug Mode Documentation */}
+                <div className="p-4 bg-yellow-500/10 border border-yellow-500/20 rounded-lg">
+                  <h3 className="font-semibold mb-2 flex items-center gap-2">
+                    🐛 Debug Mode
+                  </h3>
+                  <p className="text-sm text-muted-foreground mb-2">
+                    Enable debug mode to see detailed logs in the browser console:
+                  </p>
+                  <div className="bg-background rounded p-2">
+                    <code className="text-xs">debug: true</code>
+                  </div>
+                  <p className="text-xs text-muted-foreground mt-2">
+                    When disabled (default), no console logs are produced in production.
+                  </p>
+                </div>
+
+                {/* Callbacks Documentation */}
+                <div className="p-4 bg-green-500/10 border border-green-500/20 rounded-lg">
+                  <h3 className="font-semibold mb-2 flex items-center gap-2">
+                    🔗 Callbacks API
+                  </h3>
+                  <p className="text-sm text-muted-foreground mb-2">
+                    Execute custom JavaScript when popup events occur:
+                  </p>
+                  <div className="space-y-2 text-sm">
+                    <div className="bg-background rounded p-2">
+                      <code className="font-semibold">onShow: () =&gt; {'{...}'}</code>
+                      <p className="text-xs text-muted-foreground mt-1">Called when popup is displayed</p>
+                    </div>
+                    <div className="bg-background rounded p-2">
+                      <code className="font-semibold">onHide: () =&gt; {'{...}'}</code>
+                      <p className="text-xs text-muted-foreground mt-1">Called when popup is hidden</p>
+                    </div>
+                    <div className="bg-background rounded p-2">
+                      <code className="font-semibold">onCtaClick: () =&gt; {'{...}'}</code>
+                      <p className="text-xs text-muted-foreground mt-1">Called when CTA button is clicked</p>
+                    </div>
+                  </div>
+                  <div className="mt-3 bg-muted rounded p-2">
+                    <pre className="text-xs overflow-x-auto"><code>{`window.JSPopupSaleConfig = {
+  // ...other options
+  onShow: () => console.log('Popup shown!'),
+  onCtaClick: () => gtag('event', 'cta_click')
+};`}</code></pre>
+                  </div>
                 </div>
 
                 <div>
@@ -542,7 +591,7 @@ const JsPopupSaleDemo = () => {
                       <code className="text-orange-600 font-semibold">js_popup_sale_closed</code>
                       <p className="text-xs text-muted-foreground mt-1">
                         Fired when popup is closed. Includes <code className="bg-muted px-1 rounded">close_type</code>: 
-                        <span className="ml-1">"cross" (X button) or "outside" (click outside)</span>
+                        <span className="ml-1">"cross", "outside", or "escape"</span>
                       </p>
                     </div>
                     <div className="bg-background rounded p-2">
