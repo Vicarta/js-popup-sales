@@ -7,6 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { Card } from '@/components/ui/card';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Copy, Check, Eye } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
@@ -34,6 +35,9 @@ const JsPopupSaleDemo = () => {
     textColor: '',
     buttonRadius: '10',
     contentAlign: 'left',
+    // GTM tracking
+    enableTracking: false,
+    popupId: 'js_popup_sale',
   });
 
   const generateCode = () => {
@@ -62,6 +66,12 @@ const JsPopupSaleDemo = () => {
     if (config.textColor) configObj.textColor = config.textColor;
     configObj.buttonRadius = parseInt(config.buttonRadius);
     configObj.contentAlign = config.contentAlign;
+    
+    // GTM tracking parameters
+    if (config.enableTracking) {
+      configObj.enableTracking = true;
+      configObj.popupId = config.popupId;
+    }
     
     // Format JSON for readability
     const configJson = JSON.stringify(configObj, null, 2)
@@ -114,6 +124,8 @@ const JsPopupSaleDemo = () => {
         textColor: config.textColor || undefined,
         buttonRadius: parseInt(config.buttonRadius),
         contentAlign: config.contentAlign as 'left' | 'center' | 'right',
+        enableTracking: config.enableTracking,
+        popupId: config.popupId,
       });
       widget.init();
       widget.show();
@@ -356,6 +368,36 @@ const JsPopupSaleDemo = () => {
                     </SelectContent>
                   </Select>
                 </div>
+
+                {/* GTM Tracking Section */}
+                <div className="pt-4 border-t">
+                  <h3 className="font-semibold mb-3">GTM Tracking</h3>
+                  
+                  <div className="flex items-center space-x-2 mb-3">
+                    <Checkbox 
+                      id="enableTracking"
+                      checked={config.enableTracking}
+                      onCheckedChange={(checked) => setConfig({...config, enableTracking: checked as boolean})}
+                    />
+                    <Label htmlFor="enableTracking" className="cursor-pointer">
+                      Enable dataLayer tracking
+                    </Label>
+                  </div>
+                  
+                  {config.enableTracking && (
+                    <div>
+                      <Label>Popup ID</Label>
+                      <Input 
+                        value={config.popupId}
+                        onChange={(e) => setConfig({...config, popupId: e.target.value})}
+                        placeholder="js_popup_sale"
+                      />
+                      <p className="text-xs text-muted-foreground mt-1">
+                        Unique identifier for this popup in dataLayer events
+                      </p>
+                    </div>
+                  )}
+                </div>
               </div>
 
               <div className="grid grid-cols-2 gap-3">
@@ -454,6 +496,42 @@ const JsPopupSaleDemo = () => {
                     <div className="text-xs text-muted-foreground mt-2">Or create new: <code>new JSPopupSale(config).init()</code></div>
                   </div>
                 </div>
+
+                {/* dataLayer Events Documentation */}
+                <div className="p-4 bg-purple-500/10 border border-purple-500/20 rounded-lg">
+                  <h3 className="font-semibold mb-2 flex items-center gap-2">
+                    📊 dataLayer Events
+                  </h3>
+                  <p className="text-sm text-muted-foreground mb-3">
+                    When tracking is enabled, the following events are pushed to <code className="bg-muted px-1 py-0.5 rounded">window.dataLayer</code>:
+                  </p>
+                  <div className="space-y-3 text-sm">
+                    <div className="bg-background rounded p-2">
+                      <code className="text-green-600 font-semibold">js_popup_sale_shown</code>
+                      <p className="text-xs text-muted-foreground mt-1">Fired when popup is displayed</p>
+                    </div>
+                    <div className="bg-background rounded p-2">
+                      <code className="text-blue-600 font-semibold">js_popup_sale_primary_click</code>
+                      <p className="text-xs text-muted-foreground mt-1">Fired when user clicks the CTA button</p>
+                    </div>
+                    <div className="bg-background rounded p-2">
+                      <code className="text-orange-600 font-semibold">js_popup_sale_closed</code>
+                      <p className="text-xs text-muted-foreground mt-1">
+                        Fired when popup is closed. Includes <code className="bg-muted px-1 rounded">close_type</code>: 
+                        <span className="ml-1">"cross" (X button) or "outside" (click outside)</span>
+                      </p>
+                    </div>
+                    <div className="bg-background rounded p-2">
+                      <code className="text-red-600 font-semibold">js_popup_sale_error</code>
+                      <p className="text-xs text-muted-foreground mt-1">
+                        Fired on error. Includes <code className="bg-muted px-1 rounded">error_type</code> and <code className="bg-muted px-1 rounded">error_message</code>
+                      </p>
+                    </div>
+                  </div>
+                  <div className="mt-3 text-xs text-muted-foreground">
+                    All events include <code className="bg-muted px-1 py-0.5 rounded">popup_id</code> for identification
+                  </div>
+                </div>
               </div>
             </Card>
           </div>
@@ -518,7 +596,9 @@ const JsPopupSaleDemo = () => {
     position: "bottom-left",
     layout: "horizontal",
     inheritFont: false,
-    primaryColor: "#f97316"
+    primaryColor: "#f97316",
+    enableTracking: true,
+    popupId: "my_promo_popup"
   };
 </script>
 <script src="https://yourdomain.com/js-popup-sale.js"></script>`}</code></pre>
@@ -538,6 +618,8 @@ const JsPopupSaleDemo = () => {
   data-trigger="delay"
   data-image="https://example.com/image.png"
   data-title="Title"
+  data-enable-tracking="true"
+  data-popup-id="my_popup"
 ></script>`}</code></pre>
                       <p className="text-xs text-muted-foreground mt-2"><strong>But this will NOT work in GTM!</strong> Use window.JSPopupSaleConfig instead.</p>
                     </div>
@@ -652,27 +734,61 @@ const JsPopupSaleDemo = () => {
                 <div className="space-y-3">
                   <h3 className="text-lg font-semibold flex items-center gap-2">
                     <span className="flex items-center justify-center w-6 h-6 rounded-full bg-primary text-primary-foreground text-sm">5</span>
+                    Setting Up dataLayer Event Triggers in GA4
+                  </h3>
+                  <p className="ml-8 text-sm text-muted-foreground mb-2">
+                    To track popup events in Google Analytics 4, create these triggers in GTM:
+                  </p>
+                  <div className="ml-8 space-y-3">
+                    <div className="p-3 bg-purple-500/10 border border-purple-500/20 rounded-lg">
+                      <p className="text-sm font-semibold mb-2">Step 1: Create Custom Event Triggers</p>
+                      <ol className="text-xs space-y-1 text-muted-foreground">
+                        <li>1. Go to <strong>Triggers</strong> → <strong>New</strong></li>
+                        <li>2. Choose <strong>Custom Event</strong></li>
+                        <li>3. Event name: <code className="bg-muted px-1 rounded">js_popup_sale_shown</code> (or other event name)</li>
+                        <li>4. Save and repeat for each event you want to track</li>
+                      </ol>
+                    </div>
+                    <div className="p-3 bg-purple-500/10 border border-purple-500/20 rounded-lg">
+                      <p className="text-sm font-semibold mb-2">Step 2: Create GA4 Event Tag</p>
+                      <ol className="text-xs space-y-1 text-muted-foreground">
+                        <li>1. Go to <strong>Tags</strong> → <strong>New</strong></li>
+                        <li>2. Choose <strong>Google Analytics: GA4 Event</strong></li>
+                        <li>3. Add event parameters: <code className="bg-muted px-1 rounded">popup_id</code>, <code className="bg-muted px-1 rounded">close_type</code></li>
+                        <li>4. Link to your Custom Event trigger</li>
+                      </ol>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="space-y-3">
+                  <h3 className="text-lg font-semibold flex items-center gap-2">
+                    <span className="flex items-center justify-center w-6 h-6 rounded-full bg-primary text-primary-foreground text-sm">6</span>
                     Testing and Publishing
                   </h3>
                   <ol className="space-y-2 ml-8 text-sm">
                     <li className="flex gap-2">
-                      <span className="text-muted-foreground">5.1</span>
+                      <span className="text-muted-foreground">6.1</span>
                       <span>Save the tag: <strong>Save</strong></span>
                     </li>
                     <li className="flex gap-2">
-                      <span className="text-muted-foreground">5.2</span>
+                      <span className="text-muted-foreground">6.2</span>
                       <span>Enable preview mode: <strong>Preview</strong> in the top right corner</span>
                     </li>
                     <li className="flex gap-2">
-                      <span className="text-muted-foreground">5.3</span>
+                      <span className="text-muted-foreground">6.3</span>
                       <span>Open your website in a new tab and test the widget</span>
                     </li>
                     <li className="flex gap-2">
-                      <span className="text-muted-foreground">5.4</span>
+                      <span className="text-muted-foreground">6.4</span>
                       <span>In the GTM Debug window, verify the tag fired (<code className="bg-muted px-1 py-0.5 rounded text-xs">Tags Fired</code>)</span>
                     </li>
                     <li className="flex gap-2">
-                      <span className="text-muted-foreground">5.5</span>
+                      <span className="text-muted-foreground">6.5</span>
+                      <span>Check browser console for <code className="bg-muted px-1 py-0.5 rounded text-xs">[JS Popup Sale] Tracked:</code> messages</span>
+                    </li>
+                    <li className="flex gap-2">
+                      <span className="text-muted-foreground">6.6</span>
                       <span>If everything works: <strong>Submit</strong> → <strong>Publish</strong></span>
                     </li>
                   </ol>
@@ -688,6 +804,7 @@ const JsPopupSaleDemo = () => {
                     <li>• <strong>Audience segmentation</strong> — show different content to different users</li>
                     <li>• <strong>Quick updates</strong> — change text and settings without code releases</li>
                     <li>• <strong>Version history</strong> — GTM saves all changes with rollback capability</li>
+                    <li>• <strong>Built-in analytics</strong> — track popup events directly in GA4</li>
                   </ul>
                 </div>
 
@@ -696,10 +813,11 @@ const JsPopupSaleDemo = () => {
                     💡 Configuration Tips
                   </h3>
                   <ul className="text-sm space-y-2 ml-4">
-                    <li>• Use <code className="bg-muted px-1 py-0.5 rounded text-xs">data-dismiss-days="0"</code> during testing so the popup always shows</li>
+                    <li>• Use <code className="bg-muted px-1 py-0.5 rounded text-xs">dismissDays: 0</code> during testing so the popup always shows</li>
                     <li>• For production, set an optimal value (7-14 days) to avoid annoying users</li>
+                    <li>• Enable <code className="bg-muted px-1 py-0.5 rounded text-xs">enableTracking: true</code> to track popup performance</li>
+                    <li>• Use unique <code className="bg-muted px-1 py-0.5 rounded text-xs">popupId</code> for each popup variant in A/B tests</li>
                     <li>• Test the widget on different devices (desktop, mobile, tablets)</li>
-                    <li>• Track clicks via GTM Events to analyze effectiveness</li>
                     <li>• Create a backup of your GTM container before publishing changes</li>
                   </ul>
                 </div>
@@ -710,6 +828,7 @@ const JsPopupSaleDemo = () => {
                   </h3>
                   <ul className="text-sm space-y-2 ml-4">
                     <li>• <strong>🔍 Configuration check:</strong> Open browser console and look for <code className="bg-muted px-1 py-0.5 rounded text-xs">[JS Popup Sale] Found config via window.JSPopupSaleConfig</code> or <code className="bg-muted px-1 py-0.5 rounded text-xs">[JS Popup Sale] Initializing with config:</code> — this shows if config was loaded</li>
+                    <li>• <strong>📊 Tracking check:</strong> Look for <code className="bg-muted px-1 py-0.5 rounded text-xs">[JS Popup Sale] Tracked:</code> messages in console to verify events are firing</li>
                     <li>• <strong>🖼️ Image not showing:</strong> Make sure the <code className="bg-muted px-1 py-0.5 rounded text-xs">image</code> parameter is present in <code className="bg-muted px-1 py-0.5 rounded text-xs">window.JSPopupSaleConfig</code> and URL is correct (HTTPS)</li>
                     <li>• <strong>❌ Config not applied:</strong> For GTM, <strong>you must use window.JSPopupSaleConfig</strong>, not data-* attributes - GTM ignores data-* attributes!</li>
                     <li>• <strong>📝 JSON error:</strong> Check JSON syntax in window.JSPopupSaleConfig - use double quotes for keys and string values</li>
@@ -743,8 +862,8 @@ const JsPopupSaleDemo = () => {
                         <ul className="ml-4 mt-1">
                           <li>• <strong>MUST add</strong> the <code className="bg-muted px-1 py-0.5 rounded text-xs">data-js-popup-sale</code> attribute to the &lt;script&gt; tag</li>
                           <li>• Ensure all data attributes (data-trigger, data-title, data-cta-text, data-cta-url) are present</li>
-                          <li>• If popup was dismissed — clear localStorage or set <code className="bg-muted px-1 py-0.5 rounded text-xs">data-dismiss-days="0"</code></li>
-                          <li>• Wrong trigger — check <code className="bg-muted px-1 py-0.5 rounded text-xs">data-trigger</code> and related parameters</li>
+                          <li>• If popup was dismissed — clear localStorage or set <code className="bg-muted px-1 py-0.5 rounded text-xs">dismissDays: 0</code></li>
+                          <li>• Wrong trigger — check <code className="bg-muted px-1 py-0.5 rounded text-xs">trigger</code> and related parameters</li>
                           <li>• Script not loaded — check URL in Developer Tools → Network</li>
                         </ul>
                       </div>
@@ -754,14 +873,14 @@ const JsPopupSaleDemo = () => {
                       <div className="text-muted-foreground mt-1">
                         <strong>Causes:</strong>
                         <ul className="ml-4 mt-1">
-                          <li>• Missing <code className="bg-muted px-1 py-0.5 rounded text-xs">data-image</code> attribute in script tag — add it</li>
+                          <li>• Missing <code className="bg-muted px-1 py-0.5 rounded text-xs">image</code> parameter — add it to config</li>
                           <li>• Invalid image URL or image unavailable (404)</li>
                           <li>• CORS error — check if image is accessible from your domain</li>
                           <li>• Config not loaded (see console log)</li>
                         </ul>
                         <strong className="block mt-2">Solution:</strong>
                         <ul className="ml-4 mt-1">
-                          <li>• Add <code className="bg-muted px-1 py-0.5 rounded text-xs">data-image="https://yoursite.com/image.png"</code> to script tag</li>
+                          <li>• Add <code className="bg-muted px-1 py-0.5 rounded text-xs">image: "https://yoursite.com/image.png"</code> to config</li>
                           <li>• Test image URL in browser — it should open</li>
                           <li>• Use HTTPS URL for image</li>
                         </ul>
@@ -775,11 +894,20 @@ const JsPopupSaleDemo = () => {
                       </div>
                     </li>
                     <li>
+                      <div className="font-medium">❌ dataLayer events not appearing</div>
+                      <div className="text-muted-foreground mt-1">
+                        <strong>Cause:</strong> Tracking is disabled<br/>
+                        <strong>Solution:</strong> Add <code className="bg-muted px-1 py-0.5 rounded text-xs">enableTracking: true</code> to your config
+                      </div>
+                    </li>
+                    <li>
                       <div className="font-medium">💡 <strong>Console verification:</strong></div>
                       <div className="bg-muted rounded p-2 mt-1 font-mono text-xs">
                         <div>// Check function availability:</div>
                         <div className="text-green-600">console.log(typeof showJSPopupSale); // "function"</div>
                         <div className="text-green-600">console.log(typeof JSPopupSale); // "function"</div>
+                        <div className="mt-2">// Check dataLayer:</div>
+                        <div className="text-blue-600">console.log(window.dataLayer);</div>
                         <div className="mt-2">// Show popup manually:</div>
                         <div className="text-blue-600">showJSPopupSale();</div>
                       </div>

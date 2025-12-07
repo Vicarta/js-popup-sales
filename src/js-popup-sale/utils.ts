@@ -57,4 +57,7 @@ export const DEFAULT_CONFIG = {
   textColor: '',
   buttonRadius: 10,
   contentAlign: 'left' as const,
+  // GTM dataLayer tracking
+  enableTracking: false,
+  popupId: 'js_popup_sale',
 };
