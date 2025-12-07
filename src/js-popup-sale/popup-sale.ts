@@ -24,6 +24,8 @@ interface PopupConfig {
   // GTM dataLayer tracking
   enableTracking?: boolean;
   popupId?: string;
+  // Behavior
+  closeOnCtaClick?: boolean;
 }
 
 class JSPopupSale {
@@ -291,9 +293,12 @@ class JSPopupSale {
         cta.target = '_blank';
         cta.innerHTML = parseMarkdown(this.config.ctaText);
         
-        // Track CTA click
+        // Track CTA click and optionally close popup
         cta.addEventListener('click', () => {
           this.trackEvent('js_popup_sale_primary_click');
+          if (this.config.closeOnCtaClick !== false) {
+            this.dismiss();
+          }
         });
         
         container.appendChild(cta);
