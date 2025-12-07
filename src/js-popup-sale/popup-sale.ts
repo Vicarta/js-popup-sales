@@ -116,7 +116,7 @@ class JSPopupSale {
 
   // GTM dataLayer tracking
   private trackEvent(eventName: string, extra?: Record<string, any>): void {
-    if (!this.config.enableTracking) return;
+    if (this.config.enableTracking !== true) return;
     
     try {
       (window as any).dataLayer = (window as any).dataLayer || [];
