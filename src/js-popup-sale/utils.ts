@@ -17,7 +17,6 @@ function sanitizeHtml(html: string): string {
 export function parseMarkdown(text: string): string {
   if (!text) return '';
   
-  // Process in correct order to handle nested formatting
   let result = text;
   
   // Step 1: Strikethrough: ~~text~~
@@ -27,52 +26,22 @@ export function parseMarkdown(text: string): string {
   result = result.replace(/\*\*\*(.+?)\*\*\*/g, (_, content) => `<strong><em>${sanitizeHtml(content)}</em></strong>`);
   result = result.replace(/___(.+?)___/g, (_, content) => `<strong><em>${sanitizeHtml(content)}</em></strong>`);
   
-  // Step 3: Handle nested bold inside italic: *text **bold** text*
-  // This requires a more complex approach - process italic blocks that may contain bold
-  result = result.replace(/\*([^*]+(?:\*\*[^*]+\*\*[^*]*)*)\*/g, (match, content) => {
-    // Check if content contains **bold**
-    if (content.includes('**')) {
-      // Process bold inside, then wrap in italic
-      const processedContent = content.replace(/\*\*(.+?)\*\*/g, (_: string, boldContent: string) => 
-        `<strong>${sanitizeHtml(boldContent)}</strong>`
-      );
-      // Sanitize remaining text parts (split by tags)
-      const sanitizedContent = processedContent.replace(/([^<>]+)(?=<|$)/g, (textMatch: string) => {
-        if (textMatch.startsWith('<') || textMatch.includes('>')) return textMatch;
-        return sanitizeHtml(textMatch);
-      });
-      return `<em>${sanitizedContent}</em>`;
-    }
-    return `<em>${sanitizeHtml(content)}</em>`;
-  });
-  
-  // Step 4: Handle nested bold inside italic with underscores: _text __bold__ text_
-  result = result.replace(/_([^_]+(?:__[^_]+__[^_]*)*)_/g, (match, content) => {
-    if (content.includes('__')) {
-      const processedContent = content.replace(/__(.+?)__/g, (_: string, boldContent: string) => 
-        `<strong>${sanitizeHtml(boldContent)}</strong>`
-      );
-      const sanitizedContent = processedContent.replace(/([^<>]+)(?=<|$)/g, (textMatch: string) => {
-        if (textMatch.startsWith('<') || textMatch.includes('>')) return textMatch;
-        return sanitizeHtml(textMatch);
-      });
-      return `<em>${sanitizedContent}</em>`;
-    }
-    return `<em>${sanitizeHtml(content)}</em>`;
-  });
-  
-  // Step 5: Bold: **text** or __text__ (only remaining ones)
+  // Step 3: Bold first: **text** or __text__
   result = result.replace(/\*\*(.+?)\*\*/g, (_, content) => `<strong>${sanitizeHtml(content)}</strong>`);
   result = result.replace(/__(.+?)__/g, (_, content) => `<strong>${sanitizeHtml(content)}</strong>`);
   
-  // Step 6: Links: [text](url) - sanitize both text and URL
+  // Step 4: Italic: *text* or _text_ (now safe - bold already processed)
+  result = result.replace(/\*([^*]+)\*/g, (_, content) => `<em>${sanitizeHtml(content)}</em>`);
+  result = result.replace(/_([^_]+)_/g, (_, content) => `<em>${sanitizeHtml(content)}</em>`);
+  
+  // Step 5: Links: [text](url)
   result = result.replace(/\[(.+?)\]\((.+?)\)/g, (_, linkText, url) => {
     const sanitizedText = sanitizeHtml(linkText);
     const sanitizedUrl = sanitizeHtml(url);
     return `<a href="${sanitizedUrl}" target="_blank" rel="noopener noreferrer">${sanitizedText}</a>`;
   });
   
-  // Step 7: Line breaks
+  // Step 6: Line breaks
   result = result.replace(/\n/g, '<br>');
   
   return result;
