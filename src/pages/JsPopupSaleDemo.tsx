@@ -65,6 +65,8 @@ const JsPopupSaleDemo = () => {
       layout: config.layout,
       inheritFont: config.inheritFont === "true",
       primaryColor: config.primaryColor,
+      backgroundColor: config.backgroundColor,
+      textColor: config.textColor,
       buttonRadius: parseInt(config.buttonRadius),
       contentAlign: config.contentAlign,
       enableTracking: config.enableTracking,
@@ -73,15 +75,9 @@ const JsPopupSaleDemo = () => {
       debug: config.debug,
     };
 
-    // Add optional values only if they have content
+    // Add optional image only if it has content
     if (config.image) {
       configObj.image = config.image;
-    }
-    if (config.backgroundColor) {
-      configObj.backgroundColor = config.backgroundColor;
-    }
-    if (config.textColor) {
-      configObj.textColor = config.textColor;
     }
 
     // Format JSON for readability
