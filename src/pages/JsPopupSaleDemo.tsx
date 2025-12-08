@@ -49,7 +49,7 @@ const JsPopupSaleDemo = () => {
   const generateCode = () => {
     const featuresArray = config.features.split("\n").filter((f) => f.trim());
 
-    // Generate full config with all parameters
+    // Generate full config with all parameters - always include all values
     const configObj: Record<string, unknown> = {
       trigger: config.trigger,
       delay: parseInt(config.delay),
@@ -60,14 +60,11 @@ const JsPopupSaleDemo = () => {
       features: featuresArray,
       ctaText: config.ctaText,
       ctaUrl: config.ctaUrl,
-      image: config.image || undefined,
       theme: config.theme,
       position: config.position,
       layout: config.layout,
       inheritFont: config.inheritFont === "true",
-      primaryColor: config.primaryColor || undefined,
-      backgroundColor: config.backgroundColor || undefined,
-      textColor: config.textColor || undefined,
+      primaryColor: config.primaryColor,
       buttonRadius: parseInt(config.buttonRadius),
       contentAlign: config.contentAlign,
       enableTracking: config.enableTracking,
@@ -76,12 +73,16 @@ const JsPopupSaleDemo = () => {
       debug: config.debug,
     };
 
-    // Remove undefined values for cleaner output
-    Object.keys(configObj).forEach(key => {
-      if (configObj[key] === undefined) {
-        delete configObj[key];
-      }
-    });
+    // Add optional values only if they have content
+    if (config.image) {
+      configObj.image = config.image;
+    }
+    if (config.backgroundColor) {
+      configObj.backgroundColor = config.backgroundColor;
+    }
+    if (config.textColor) {
+      configObj.textColor = config.textColor;
+    }
 
     // Format JSON for readability
     const configJson = JSON.stringify(configObj, null, 2)
