@@ -275,7 +275,7 @@ const JsPopupSaleDemo = () => {
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="vertical">vertical</SelectItem>
+                      <SelectItem value="vertical - default">vertical</SelectItem>
                       <SelectItem value="horizontal">horizontal</SelectItem>
                     </SelectContent>
                   </Select>
@@ -289,7 +289,7 @@ const JsPopupSaleDemo = () => {
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="light">light</SelectItem>
+                        <SelectItem value="light - default">light</SelectItem>
                         <SelectItem value="dark">dark</SelectItem>
                       </SelectContent>
                     </Select>
@@ -302,7 +302,7 @@ const JsPopupSaleDemo = () => {
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="center">center</SelectItem>
+                        <SelectItem value="center">center - default</SelectItem>
                         <SelectItem value="top-left">top-left</SelectItem>
                         <SelectItem value="top-center">top-center</SelectItem>
                         <SelectItem value="top-right">top-right</SelectItem>
@@ -323,7 +323,7 @@ const JsPopupSaleDemo = () => {
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="false">false</SelectItem>
+                      <SelectItem value="false - default">false</SelectItem>
                       <SelectItem value="true">true</SelectItem>
                     </SelectContent>
                   </Select>
@@ -373,7 +373,7 @@ const JsPopupSaleDemo = () => {
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="left">Left</SelectItem>
+                      <SelectItem value="left - default">Left</SelectItem>
                       <SelectItem value="center">Center</SelectItem>
                       <SelectItem value="right">Right</SelectItem>
                     </SelectContent>
