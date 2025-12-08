@@ -162,21 +162,21 @@ const JsPopupSaleDemo = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background overflow-x-hidden">
       <Navigation />
 
-      <main className="container mx-auto px-4 py-12 lg:py-24">
+      <main className="w-full px-3 sm:px-4 lg:px-8 py-8 sm:py-12 lg:py-24">
         <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-8 lg:mb-12">
-            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-3 lg:mb-4">JS Popup Sale Configurator</h1>
-            <p className="text-muted-foreground text-sm sm:text-base lg:text-lg">
+          <div className="text-center mb-6 sm:mb-8 lg:mb-12">
+            <h1 className="text-xl sm:text-2xl lg:text-4xl font-bold mb-2 sm:mb-3 lg:mb-4">JS Popup Sale Configurator</h1>
+            <p className="text-muted-foreground text-xs sm:text-sm lg:text-lg px-2">
               Configure widget parameters and get the code to embed on your website
             </p>
           </div>
 
-          <div className="grid lg:grid-cols-2 gap-6 lg:gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-8">
             {/* Configuration */}
-            <Card className="p-4 sm:p-6 space-y-4 sm:space-y-6">
+            <Card className="p-3 sm:p-4 lg:p-6 space-y-3 sm:space-y-4 lg:space-y-6">
               <div>
                 <h2 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4">Configuration</h2>
               </div>
@@ -476,7 +476,7 @@ const JsPopupSaleDemo = () => {
             </Card>
 
             {/* Generated Code */}
-            <Card className="p-4 sm:p-6">
+            <Card className="p-3 sm:p-4 lg:p-6 overflow-hidden">
               <div className="mb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <h2 className="text-lg sm:text-xl font-semibold">Generated Code</h2>
                 <Button onClick={handleCopy} variant="outline" size="sm">
@@ -507,8 +507,8 @@ const JsPopupSaleDemo = () => {
                 </p>
               </div>
 
-              <div className="bg-muted rounded-lg p-3 sm:p-4 overflow-x-auto">
-                <pre className="text-xs sm:text-sm">
+              <div className="bg-muted rounded-lg p-3 sm:p-4 overflow-x-auto max-w-full">
+                <pre className="text-[10px] sm:text-xs lg:text-sm whitespace-pre-wrap break-all sm:whitespace-pre sm:break-normal">
                   <code>{generateCode()}</code>
                 </pre>
               </div>
@@ -522,8 +522,8 @@ const JsPopupSaleDemo = () => {
                   <p className="text-xs sm:text-sm text-muted-foreground">
                     First, add this script to <code>package.json</code>:
                   </p>
-                  <div className="bg-background rounded p-2 sm:p-3 mt-2 mb-2 overflow-x-auto">
-                    <code className="text-xs font-mono">
+                  <div className="bg-background rounded p-2 sm:p-3 mt-2 mb-2 overflow-x-auto max-w-full">
+                    <code className="text-[10px] sm:text-xs font-mono break-all">
                       "build:popup-sale": "vite build --config vite.js-popup-sale.config.ts"
                     </code>
                   </div>
@@ -588,8 +588,8 @@ const JsPopupSaleDemo = () => {
                       <p className="text-xs text-muted-foreground mt-1">Called when CTA button is clicked</p>
                     </div>
                   </div>
-                  <div className="mt-3 bg-muted rounded p-2 overflow-x-auto">
-                    <pre className="text-xs">
+                  <div className="mt-3 bg-muted rounded p-2 overflow-x-auto max-w-full">
+                    <pre className="text-[10px] sm:text-xs whitespace-pre-wrap break-all sm:whitespace-pre sm:break-normal">
                       <code>{`window.JSPopupSaleConfig = {
   // ...other options
   onShow: () => console.log('Popup shown!'),
