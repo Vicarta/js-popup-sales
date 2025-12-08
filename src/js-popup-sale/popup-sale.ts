@@ -24,7 +24,7 @@ interface PopupConfig {
   ctaText?: string;
   ctaUrl?: string;
   image?: string;
-  theme?: 'light' | 'dark';
+  theme?: 'light' | 'dark' | 'auto';
   position?: 'center' | 'top-left' | 'top-center' | 'top-right' | 'center-left' | 'center-right' | 'bottom-left' | 'bottom-center' | 'bottom-right';
   layout?: 'vertical' | 'horizontal';
   inheritFont?: boolean;
@@ -61,6 +61,7 @@ class JSPopupSale {
   private isVisible: boolean = false;
   private scrollTicking: boolean = false;
   private previousActiveElement: Element | null = null;
+  private resolvedTheme: 'light' | 'dark' = 'light';
 
   constructor(config: PopupConfig = {}) {
     // Validate numeric values with clamping
@@ -81,6 +82,13 @@ class JSPopupSale {
     const position = validateEnum(config.position, VALID_POSITIONS, DEFAULT_CONFIG.position);
     const layout = validateEnum(config.layout, VALID_LAYOUTS, DEFAULT_CONFIG.layout);
     const contentAlign = validateEnum(config.contentAlign, VALID_ALIGNS, DEFAULT_CONFIG.contentAlign);
+    
+    // Resolve 'auto' theme to actual theme based on system preference
+    if (theme === 'auto') {
+      this.resolvedTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    } else {
+      this.resolvedTheme = theme;
+    }
     
     // Validate colors
     const primaryColor = validateColor(config.primaryColor) || DEFAULT_CONFIG.primaryColor;
@@ -307,7 +315,7 @@ class JSPopupSale {
       
       // Create popup with custom CSS variables
       const popup = document.createElement('div');
-      popup.className = `js-popup-sale theme-${this.config.theme} layout-${this.config.layout} align-${this.config.contentAlign}`;
+      popup.className = `js-popup-sale theme-${this.resolvedTheme} layout-${this.config.layout} align-${this.config.contentAlign}`;
       
       // ARIA attributes for accessibility
       popup.setAttribute('role', 'dialog');

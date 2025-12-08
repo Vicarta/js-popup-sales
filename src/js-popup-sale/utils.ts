@@ -11,8 +11,8 @@ function sanitizeHtml(html: string): string {
 
 /**
  * Lightweight markdown parser with XSS protection
- * Supports: **bold**, *italic*, ***bold italic***, ~~strikethrough~~, [links](url)
- * Also supports nested bold inside italic: *italic **bold** italic*
+ * Supports: **bold**, _italic_, **_bold italic_**, ~~strikethrough~~, [links](url)
+ * Note: *text* is NOT supported for italic - use _text_ instead
  */
 export function parseMarkdown(text: string): string {
   if (!text) return '';
@@ -22,16 +22,16 @@ export function parseMarkdown(text: string): string {
   // Step 1: Strikethrough: ~~text~~
   result = result.replace(/~~(.+?)~~/g, (_, content) => `<del>${sanitizeHtml(content)}</del>`);
   
-  // Step 2: Bold-italic: ***text*** or ___text___
+  // Step 2: Bold-italic: **_text_** or _**text**_ or ***text*** or ___text___
+  result = result.replace(/\*\*_(.+?)_\*\*/g, (_, content) => `<strong><em>${sanitizeHtml(content)}</em></strong>`);
+  result = result.replace(/_\*\*(.+?)\*\*_/g, (_, content) => `<strong><em>${sanitizeHtml(content)}</em></strong>`);
   result = result.replace(/\*\*\*(.+?)\*\*\*/g, (_, content) => `<strong><em>${sanitizeHtml(content)}</em></strong>`);
   result = result.replace(/___(.+?)___/g, (_, content) => `<strong><em>${sanitizeHtml(content)}</em></strong>`);
   
-  // Step 3: Bold first: **text** or __text__
+  // Step 3: Bold: **text**
   result = result.replace(/\*\*(.+?)\*\*/g, (_, content) => `<strong>${sanitizeHtml(content)}</strong>`);
-  result = result.replace(/__(.+?)__/g, (_, content) => `<strong>${sanitizeHtml(content)}</strong>`);
   
-  // Step 4: Italic: *text* or _text_ (now safe - bold already processed)
-  result = result.replace(/\*([^*]+)\*/g, (_, content) => `<em>${sanitizeHtml(content)}</em>`);
+  // Step 4: Italic: _text_ only (NOT *text*)
   result = result.replace(/_([^_]+)_/g, (_, content) => `<em>${sanitizeHtml(content)}</em>`);
   
   // Step 5: Links: [text](url)
@@ -51,7 +51,7 @@ export function parseMarkdown(text: string): string {
  * Valid enum values for popup configuration
  */
 export const VALID_TRIGGERS = ['delay', 'scroll', 'exit-intent', 'manual'] as const;
-export const VALID_THEMES = ['light', 'dark'] as const;
+export const VALID_THEMES = ['light', 'dark', 'auto'] as const;
 export const VALID_POSITIONS = ['center', 'top-left', 'top-center', 'top-right', 'center-left', 'center-right', 'bottom-left', 'bottom-center', 'bottom-right'] as const;
 export const VALID_LAYOUTS = ['vertical', 'horizontal'] as const;
 export const VALID_ALIGNS = ['left', 'center', 'right'] as const;
