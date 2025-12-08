@@ -420,8 +420,14 @@ class JSPopupSale {
         cta.rel = 'noopener noreferrer';
         cta.innerHTML = parseMarkdown(this.config.ctaText);
         
-        // Track CTA click and optionally close popup
-        cta.addEventListener('click', () => {
+        // Track CTA click with delay for GTM processing before navigation
+        cta.addEventListener('click', (e) => {
+          e.preventDefault();
+          
+          const url = cta.getAttribute('href');
+          const target = cta.getAttribute('target');
+          
+          // Track event first
           this.trackEvent('js_popup_sale_primary_click');
           
           // Call onCtaClick callback
@@ -430,6 +436,17 @@ class JSPopupSale {
           if (this.config.closeOnCtaClick !== false) {
             this.dismiss();
           }
+          
+          // Delay navigation to allow GTM to process the event
+          setTimeout(() => {
+            if (url) {
+              if (target === '_blank') {
+                window.open(url, '_blank', 'noopener,noreferrer');
+              } else {
+                window.location.href = url;
+              }
+            }
+          }, 150);
         });
         
         container.appendChild(cta);
