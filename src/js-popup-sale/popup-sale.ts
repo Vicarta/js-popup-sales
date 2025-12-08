@@ -28,7 +28,7 @@ interface PopupConfig {
   position?: 'center' | 'top-left' | 'top-center' | 'top-right' | 'center-left' | 'center-right' | 'bottom-left' | 'bottom-center' | 'bottom-right';
   layout?: 'vertical' | 'horizontal';
   inheritFont?: boolean;
-  primaryColor?: string;
+  buttonColor?: string;
   backgroundColor?: string;
   textColor?: string;
   buttonRadius?: number;
@@ -91,7 +91,7 @@ class JSPopupSale {
     }
     
     // Validate colors
-    const primaryColor = validateColor(config.primaryColor) || DEFAULT_CONFIG.primaryColor;
+    const buttonColor = validateColor(config.buttonColor) || DEFAULT_CONFIG.buttonColor;
     const backgroundColor = validateColor(config.backgroundColor) || DEFAULT_CONFIG.backgroundColor;
     const textColor = validateColor(config.textColor) || DEFAULT_CONFIG.textColor;
     
@@ -115,7 +115,7 @@ class JSPopupSale {
       delay,
       scrollPercent,
       buttonRadius,
-      primaryColor,
+      buttonColor,
       backgroundColor,
       textColor,
       // Callbacks (optional, not required)
@@ -323,7 +323,7 @@ class JSPopupSale {
       popup.setAttribute('aria-labelledby', 'js-popup-sale-title');
       
       // Apply custom colors via CSS variables
-      if (this.config.primaryColor) popup.style.setProperty('--popup-primary', this.config.primaryColor);
+      if (this.config.buttonColor) popup.style.setProperty('--popup-primary', this.config.buttonColor);
       if (this.config.backgroundColor) popup.style.setProperty('--popup-bg', this.config.backgroundColor);
       if (this.config.textColor) popup.style.setProperty('--popup-text', this.config.textColor);
       if (this.config.buttonRadius !== undefined) popup.style.setProperty('--popup-button-radius', `${this.config.buttonRadius}px`);
@@ -707,7 +707,7 @@ function parseConfigFromScript(script: HTMLScriptElement): PopupConfig {
     position: data.position as PopupConfig['position'],
     layout: data.layout as PopupConfig['layout'],
     inheritFont: data.inheritFont === 'true',
-    primaryColor: data.primaryColor,
+    buttonColor: data.buttonColor,
     backgroundColor: data.backgroundColor,
     textColor: data.textColor,
     buttonRadius: safeParseInt(data.buttonRadius),
