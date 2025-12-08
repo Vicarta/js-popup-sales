@@ -137,9 +137,9 @@ export const DEFAULT_CONFIG = {
   position: 'center' as const,
   layout: 'vertical' as const,
   inheritFont: false,
-  primaryColor: '#f97316',
-  backgroundColor: '',
-  textColor: '',
+  buttonColor: '#f97316',
+  backgroundColor: '#ffffff',
+  textColor: '#1a1a1a',
   buttonRadius: 10,
   contentAlign: 'left' as const,
   // GTM dataLayer tracking

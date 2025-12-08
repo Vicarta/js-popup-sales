@@ -30,9 +30,9 @@ const JsPopupSaleDemo = () => {
     position: "center",
     layout: "vertical",
     inheritFont: "false",
-    primaryColor: "#f97316",
-    backgroundColor: "",
-    textColor: "",
+    buttonColor: "#f97316",
+    backgroundColor: "#ffffff",
+    textColor: "#1a1a1a",
     buttonRadius: "10",
     contentAlign: "left",
     // GTM tracking
@@ -64,7 +64,7 @@ const JsPopupSaleDemo = () => {
       position: config.position,
       layout: config.layout,
       inheritFont: config.inheritFont === "true",
-      primaryColor: config.primaryColor,
+      buttonColor: config.buttonColor,
       backgroundColor: config.backgroundColor,
       textColor: config.textColor,
       buttonRadius: parseInt(config.buttonRadius),
@@ -143,7 +143,7 @@ const JsPopupSaleDemo = () => {
           | "bottom-right",
         layout: config.layout as "vertical" | "horizontal",
         inheritFont: config.inheritFont === "true",
-        primaryColor: config.primaryColor || undefined,
+        buttonColor: config.buttonColor || undefined,
         backgroundColor: config.backgroundColor || undefined,
         textColor: config.textColor || undefined,
         buttonRadius: parseInt(config.buttonRadius),
@@ -342,14 +342,14 @@ const JsPopupSaleDemo = () => {
                 <div>
                   <Label>Button Color (HEX)</Label>
                   <Input
-                    value={config.primaryColor}
-                    onChange={(e) => setConfig({ ...config, primaryColor: e.target.value })}
+                    value={config.buttonColor}
+                    onChange={(e) => setConfig({ ...config, buttonColor: e.target.value })}
                     placeholder="#f97316"
                   />
                 </div>
 
                 <div>
-                  <Label>Background Color (HEX, optional)</Label>
+                  <Label>Background Color (HEX)</Label>
                   <Input
                     value={config.backgroundColor}
                     onChange={(e) => setConfig({ ...config, backgroundColor: e.target.value })}
@@ -358,7 +358,7 @@ const JsPopupSaleDemo = () => {
                 </div>
 
                 <div>
-                  <Label>Text Color (HEX, optional)</Label>
+                  <Label>Text Color (HEX)</Label>
                   <Input
                     value={config.textColor}
                     onChange={(e) => setConfig({ ...config, textColor: e.target.value })}
@@ -742,7 +742,7 @@ const JsPopupSaleDemo = () => {
     position: "bottom-left",
     layout: "horizontal",
     inheritFont: false,
-    primaryColor: "#f97316",
+    buttonColor: "#f97316",
     enableTracking: true,
     popupId: "my_promo_popup"
   };

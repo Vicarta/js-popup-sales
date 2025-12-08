@@ -59,9 +59,9 @@ Upload `js-popup-sale.js` to your CDN or static hosting.
     position: "center",
     layout: "vertical",
     inheritFont: false,
-    primaryColor: "#f97316",
-    backgroundColor: "",
-    textColor: "",
+    buttonColor: "#f97316",
+    backgroundColor: "#ffffff",
+    textColor: "#1a1a1a",
     buttonRadius: 10,
     contentAlign: "left",
     enableTracking: true,
@@ -110,9 +110,9 @@ Upload `js-popup-sale.js` to your CDN or static hosting.
 | `position` | string | `"center"` | See positions below |
 | `layout` | string | `"vertical"` | `"vertical"`, `"horizontal"` |
 | `inheritFont` | boolean | `false` | Use website font instead of Inter |
-| `primaryColor` | string | `"#f97316"` | Button color (HEX, RGB, HSL) |
-| `backgroundColor` | string | — | Popup background color |
-| `textColor` | string | — | Text color |
+| `buttonColor` | string | `"#f97316"` | Button color (HEX, RGB, HSL) |
+| `backgroundColor` | string | `"#ffffff"` | Popup background color |
+| `textColor` | string | `"#1a1a1a"` | Text color |
 | `buttonRadius` | number | `10` | Button border radius in px (0-100) |
 | `contentAlign` | string | `"left"` | `"left"`, `"center"`, `"right"` |
 | `enableTracking` | boolean | `false` | Enable GTM dataLayer events |
