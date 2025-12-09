@@ -305,14 +305,6 @@ class JSPopupSale {
       this.overlay.className = `js-popup-sale-overlay position-${this.config.position}`;
       this.overlay.style.display = 'none';
       
-      // Click on overlay (outside popup) to close
-      this.overlay.addEventListener('click', (e) => {
-        if (e.target === this.overlay) {
-          this.trackEvent('js_popup_sale_closed', { close_type: 'outside' });
-          this.dismiss();
-        }
-      });
-      
       // Create popup with custom CSS variables
       const popup = document.createElement('div');
       popup.className = `js-popup-sale theme-${this.resolvedTheme} layout-${this.config.layout} align-${this.config.contentAlign}`;
