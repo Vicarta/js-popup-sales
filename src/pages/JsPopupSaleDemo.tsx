@@ -163,7 +163,7 @@ const JsPopupSaleDemo = () => {
       <header className="border-b border-border py-4 px-4">
         <div className="container mx-auto flex items-center justify-between">
           <Link to="/" className="text-xl font-bold hover:text-primary transition-colors">
-            JS Popup Sale
+            JS Popup Sale Demo
           </Link>
           <a
             href="https://github.com/Vicarta/js-popup-sale"
@@ -179,9 +179,9 @@ const JsPopupSaleDemo = () => {
       <main className="flex-1 w-full px-3 sm:px-4 lg:px-8 py-8 sm:py-12 lg:py-24">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-6 sm:mb-8 lg:mb-12">
-            <h1 className="text-xl sm:text-2xl lg:text-4xl font-bold mb-2 sm:mb-3 lg:mb-4">JS Popup Sale Configurator</h1>
+            <h1 className="text-xl sm:text-2xl lg:text-4xl font-bold mb-2 sm:mb-3 lg:mb-4">JS Popup Sale Demo</h1>
             <p className="text-muted-foreground text-xs sm:text-sm lg:text-lg px-2">
-              Configure widget parameters and get the code to embed on your website
+              Configure widget parameters and get the code to embed on your website for free
             </p>
           </div>
 
@@ -513,9 +513,7 @@ const JsPopupSaleDemo = () => {
                   onChange={(e) => setConfig({ ...config, domain: e.target.value })}
                   placeholder="yourdomain.com"
                 />
-                <p className="text-xs text-muted-foreground mt-1">
-                  Domain where js-popup-sale.js is hosted
-                </p>
+                <p className="text-xs text-muted-foreground mt-1">Domain where js-popup-sale.js is hosted</p>
               </div>
 
               <div className="bg-muted rounded-lg p-3 sm:p-4 overflow-x-auto max-w-full">
@@ -526,7 +524,9 @@ const JsPopupSaleDemo = () => {
 
               <div className="mt-4 sm:mt-6 space-y-4">
                 <div className="p-3 sm:p-4 bg-primary/5 border border-primary/20 rounded-lg">
-                  <h3 className="font-semibold mb-2 flex items-center gap-2 text-sm sm:text-base">📦 Building the Widget</h3>
+                  <h3 className="font-semibold mb-2 flex items-center gap-2 text-sm sm:text-base">
+                    📦 Building the Widget
+                  </h3>
                   <div className="bg-background rounded p-2 sm:p-3 mb-2">
                     <code className="text-xs sm:text-sm font-mono">npm run build:popup-sale</code>
                   </div>
@@ -613,9 +613,7 @@ const JsPopupSaleDemo = () => {
                 <div>
                   <h3 className="font-semibold mb-2 text-sm sm:text-base">Programmatic Control</h3>
                   <div className="bg-muted rounded p-2 sm:p-3 space-y-2 text-xs sm:text-sm">
-                    <div className="font-medium text-muted-foreground mb-1">
-                      Via global functions (recommended):
-                    </div>
+                    <div className="font-medium text-muted-foreground mb-1">Via global functions (recommended):</div>
                     <div>
                       <code>showJSPopupSale()</code> — show popup
                     </div>
@@ -642,7 +640,9 @@ const JsPopupSaleDemo = () => {
 
                 {/* dataLayer Events Documentation */}
                 <div className="p-3 sm:p-4 bg-purple-500/10 border border-purple-500/20 rounded-lg">
-                  <h3 className="font-semibold mb-2 flex items-center gap-2 text-sm sm:text-base">📊 dataLayer Events</h3>
+                  <h3 className="font-semibold mb-2 flex items-center gap-2 text-sm sm:text-base">
+                    📊 dataLayer Events
+                  </h3>
                   <p className="text-xs sm:text-sm text-muted-foreground mb-3">
                     When tracking is enabled, the following events are pushed to{" "}
                     <code className="bg-muted px-1 py-0.5 rounded">window.dataLayer</code>:
@@ -766,7 +766,9 @@ const JsPopupSaleDemo = () => {
                     </div>
 
                     <div className="p-3 bg-yellow-500/10 border border-yellow-500/20 rounded-lg">
-                      <p className="text-xs sm:text-sm font-semibold mb-2">⚠️ Why data-* attributes don't work in GTM?</p>
+                      <p className="text-xs sm:text-sm font-semibold mb-2">
+                        ⚠️ Why data-* attributes don't work in GTM?
+                      </p>
                       <p className="text-xs text-muted-foreground mb-2">
                         GTM dynamically creates <code className="bg-muted px-1 py-0.5 rounded">&lt;script&gt;</code>{" "}
                         elements and <strong>ignores all data-* attributes</strong>. Therefore, using{" "}
@@ -976,8 +978,7 @@ const JsPopupSaleDemo = () => {
                 <h3 className="font-semibold mb-2 text-sm sm:text-base">GTM not working?</h3>
                 <ul className="text-xs sm:text-sm text-muted-foreground space-y-1 list-disc list-inside">
                   <li>
-                    Data-* attributes <strong>don't work</strong> in GTM — use{" "}
-                    <code>window.JSPopupSaleConfig</code>
+                    Data-* attributes <strong>don't work</strong> in GTM — use <code>window.JSPopupSaleConfig</code>
                   </li>
                   <li>Ensure script loads AFTER config is set</li>
                   <li>Use GTM Preview mode to debug tag firing</li>
