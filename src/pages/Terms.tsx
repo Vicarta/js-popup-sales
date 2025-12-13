@@ -7,7 +7,7 @@ const Terms = () => {
       <header className="border-b border-border py-4 px-4">
         <div className="container mx-auto">
           <Link to="/" className="text-xl font-bold hover:text-primary transition-colors">
-            JS Popup Sale
+            JS Popup Sales
           </Link>
         </div>
       </header>
@@ -18,7 +18,7 @@ const Terms = () => {
           <p className="text-center text-sm sm:text-base text-muted-foreground mb-8 sm:mb-12">Last Updated: December 2024</p>
           
           <p className="text-sm sm:text-base md:text-lg leading-relaxed text-muted-foreground mb-8">
-            By accessing this demo website or downloading the software ("JS Popup Sale"), you agree to be bound by these Terms of Use.
+            By accessing this demo website or downloading the software ("JS Popup Sales"), you agree to be bound by these Terms of Use.
           </p>
 
           <div className="space-y-6 sm:space-y-8">

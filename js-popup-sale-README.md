@@ -1,4 +1,4 @@
-# JS Popup Sale Widget
+# JS Popup Sales Widget
 
 A lightweight, customizable popup widget for promotional messages, lead capture, and announcements. Built with vanilla JavaScript, zero dependencies, and Shadow DOM for style isolation.
 

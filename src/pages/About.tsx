@@ -8,7 +8,7 @@ const About = () => {
       <header className="border-b border-border py-4 px-4">
         <div className="container mx-auto">
           <Link to="/" className="text-xl font-bold hover:text-primary transition-colors">
-            JS Popup Sale
+            JS Popup Sales
           </Link>
         </div>
       </header>
@@ -29,7 +29,7 @@ const About = () => {
 
           <div className="prose prose-lg max-w-none space-y-6">
             <p className="text-lg leading-relaxed text-muted-foreground">
-              JS Popup Sale is a lightweight, customizable popup widget designed to help website owners increase
+              JS Popup Sales is a lightweight, customizable popup widget designed to help website owners increase
               conversions without the complexity of heavy marketing tools.
             </p>
             <p className="text-lg leading-relaxed text-muted-foreground">

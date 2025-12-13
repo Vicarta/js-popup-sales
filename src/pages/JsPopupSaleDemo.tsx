@@ -90,7 +90,7 @@ const JsPopupSaleDemo = () => {
     const domain = config.domain.trim() || "yourdomain.com";
 
     // Generate code with window.JSPopupSaleConfig
-    let code = `<!-- JS Popup Sale - GTM Recommended Method -->
+    let code = `<!-- JS Popup Sales - GTM Recommended Method -->
 <script>
   window.JSPopupSaleConfig = ${configJson};
   
@@ -163,7 +163,7 @@ const JsPopupSaleDemo = () => {
       <header className="border-b border-border py-4 px-4">
         <div className="container mx-auto flex items-center justify-between">
           <Link to="/" className="text-xl font-bold hover:text-primary transition-colors">
-            JS Popup Sale Demo
+            JS Popup Sales Demo
           </Link>
           <a
             href="https://github.com/Vicarta/js-popup-sale"
@@ -179,7 +179,7 @@ const JsPopupSaleDemo = () => {
       <main className="flex-1 w-full px-3 sm:px-4 lg:px-8 py-8 sm:py-12 lg:py-24">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-6 sm:mb-8 lg:mb-12">
-            <h1 className="text-xl sm:text-2xl lg:text-4xl font-bold mb-2 sm:mb-3 lg:mb-4">JS Popup Sale Demo</h1>
+            <h1 className="text-xl sm:text-2xl lg:text-4xl font-bold mb-2 sm:mb-3 lg:mb-4">JS Popup Sales Demo</h1>
             <p className="text-muted-foreground text-xs sm:text-sm lg:text-lg px-2">
               Configure widget parameters and get the code to embed on your website for free
             </p>

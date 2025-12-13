@@ -128,14 +128,14 @@ class JSPopupSale {
   // Logging helpers (only log when debug mode is enabled)
   private log(...args: unknown[]): void {
     if (this.config.debug) {
-      console.log('[JS Popup Sale]', ...args);
+      console.log('[JS Popup Sales]', ...args);
     }
   }
   
   private warn(...args: unknown[]): void {
     // Safe check: config may not be initialized yet in constructor
     if (this.config?.debug === false) return;
-    console.warn('[JS Popup Sale]', ...args);
+    console.warn('[JS Popup Sales]', ...args);
   }
 
   init(): void {
@@ -204,7 +204,7 @@ class JSPopupSale {
     try {
       return localStorage.getItem(key);
     } catch (e) {
-      console.warn('[JS Popup Sale] localStorage.getItem failed:', e);
+      console.warn('[JS Popup Sales] localStorage.getItem failed:', e);
       return null;
     }
   }
@@ -213,7 +213,7 @@ class JSPopupSale {
     try {
       localStorage.setItem(key, value);
     } catch (e) {
-      console.warn('[JS Popup Sale] localStorage.setItem failed:', e);
+      console.warn('[JS Popup Sales] localStorage.setItem failed:', e);
     }
   }
   
@@ -221,7 +221,7 @@ class JSPopupSale {
     try {
       localStorage.removeItem(key);
     } catch (e) {
-      console.warn('[JS Popup Sale] localStorage.removeItem failed:', e);
+      console.warn('[JS Popup Sales] localStorage.removeItem failed:', e);
     }
   }
 
@@ -244,7 +244,7 @@ class JSPopupSale {
 
   // Error tracking to dataLayer
   private trackError(errorType: string, error: unknown): void {
-    console.error(`[JS Popup Sale] ${errorType} error:`, error);
+    console.error(`[JS Popup Sales] ${errorType} error:`, error);
     
     try {
       (window as unknown as { dataLayer: unknown[] }).dataLayer = (window as unknown as { dataLayer: unknown[] }).dataLayer || [];
@@ -669,7 +669,7 @@ function safeParseInt(value: string | undefined, defaultValue?: number): number 
   const parsed = parseInt(value, 10);
   if (isNaN(parsed)) {
     if (defaultValue !== undefined) {
-      console.warn('[JS Popup Sale] Invalid number value, using default:', value, '→', defaultValue);
+      console.warn('[JS Popup Sales] Invalid number value, using default:', value, '→', defaultValue);
     }
     return defaultValue;
   }
@@ -692,11 +692,11 @@ function parseConfigFromScript(script: HTMLScriptElement): PopupConfig {
     try {
       features = JSON.parse(data.features);
       if (!Array.isArray(features)) {
-        console.warn('[JS Popup Sale] Invalid features JSON (not an array):', data.features);
+        console.warn('[JS Popup Sales] Invalid features JSON (not an array):', data.features);
         features = undefined;
       }
     } catch (e) {
-      console.warn('[JS Popup Sale] Invalid features JSON:', data.features, e);
+      console.warn('[JS Popup Sales] Invalid features JSON:', data.features, e);
       features = undefined;
     }
   }
@@ -736,7 +736,7 @@ function autoInit(savedScript?: HTMLScriptElement | null) {
   try {
     // Only log if debug mode is explicitly enabled
     const debugMode = (window as unknown as { JSPopupSaleConfig?: PopupConfig }).JSPopupSaleConfig?.debug === true;
-    const log = (...args: unknown[]) => { if (debugMode) console.log('[JS Popup Sale]', ...args); };
+    const log = (...args: unknown[]) => { if (debugMode) console.log('[JS Popup Sales]', ...args); };
     
     log('AutoInit started');
     
@@ -786,7 +786,7 @@ function autoInit(savedScript?: HTMLScriptElement | null) {
             log('✓ Found script via src/data-gtmsrc with valid config');
             return scriptEl;
           } else {
-            if (debugMode) console.warn('[JS Popup Sale] Script found but dataset is invalid or empty');
+            if (debugMode) console.warn('[JS Popup Sales] Script found but dataset is invalid or empty');
           }
         }
       }
@@ -802,7 +802,7 @@ function autoInit(savedScript?: HTMLScriptElement | null) {
         }
       }
       
-      if (debugMode) console.warn('[JS Popup Sale] ✗ No valid script tag found');
+      if (debugMode) console.warn('[JS Popup Sales] ✗ No valid script tag found');
       return null;
     };
     
@@ -811,14 +811,14 @@ function autoInit(savedScript?: HTMLScriptElement | null) {
     // Якщо скрипт не знайдено або немає корисної конфігурації
     if (!script || !hasValidConfig(script.dataset || {})) {
       if (debugMode) {
-        console.warn('[JS Popup Sale] ==========================================');
-        console.warn('[JS Popup Sale] Script tag not found or has no valid configuration.');
-        console.warn('[JS Popup Sale] ==========================================');
-        console.warn('[JS Popup Sale] For GTM: ensure your script tag has data-* attributes:');
-        console.warn('[JS Popup Sale]   <script src="..." data-trigger="delay" data-title="..." ...>');
-        console.warn('[JS Popup Sale] Or add data-js-popup-sale marker to your script tag');
-        console.warn('[JS Popup Sale] For manual use: call window.showJSPopupSale({...config})');
-        console.warn('[JS Popup Sale] ==========================================');
+        console.warn('[JS Popup Sales] ==========================================');
+        console.warn('[JS Popup Sales] Script tag not found or has no valid configuration.');
+        console.warn('[JS Popup Sales] ==========================================');
+        console.warn('[JS Popup Sales] For GTM: ensure your script tag has data-* attributes:');
+        console.warn('[JS Popup Sales]   <script src="..." data-trigger="delay" data-title="..." ...>');
+        console.warn('[JS Popup Sales] Or add data-js-popup-sale marker to your script tag');
+        console.warn('[JS Popup Sales] For manual use: call window.showJSPopupSale({...config})');
+        console.warn('[JS Popup Sales] ==========================================');
       }
       
       // Експортуємо клас та helper функції для ручної ініціалізації
@@ -827,7 +827,7 @@ function autoInit(savedScript?: HTMLScriptElement | null) {
       // Helper функції для створення і показу попапу без autoInit
       (window as unknown as { showJSPopupSale: (config?: Partial<PopupConfig>) => JSPopupSale }).showJSPopupSale = (customConfig?: Partial<PopupConfig>) => {
         const config = customConfig || {};
-        if (config.debug) console.log('[JS Popup Sale] Manual showJSPopupSale called with config:', config);
+        if (config.debug) console.log('[JS Popup Sales] Manual showJSPopupSale called with config:', config);
         const widget = new JSPopupSale(config);
         widget.init();
         widget.show();
@@ -856,7 +856,7 @@ function autoInit(savedScript?: HTMLScriptElement | null) {
     (window as unknown as { hideJSPopupSale: () => void }).hideJSPopupSale = () => widget?.hide();
     (window as unknown as { dismissJSPopupSale: () => void }).dismissJSPopupSale = () => widget?.dismiss();
   } catch (e) {
-    console.error('[JS Popup Sale] Init error:', e);
+    console.error('[JS Popup Sales] Init error:', e);
     // Send error to dataLayer
     try {
       (window as unknown as { dataLayer: unknown[] }).dataLayer = (window as unknown as { dataLayer: unknown[] }).dataLayer || [];

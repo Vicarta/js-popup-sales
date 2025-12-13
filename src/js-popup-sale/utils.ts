@@ -68,7 +68,7 @@ export function validateEnum<T extends string>(
     return value as T;
   }
   if (value) {
-    console.warn(`[JS Popup Sale] Invalid value "${value}", using default: ${defaultValue}`);
+    console.warn(`[JS Popup Sales] Invalid value "${value}", using default: ${defaultValue}`);
   }
   return defaultValue;
 }
@@ -96,7 +96,7 @@ export function validateColor(color: string | undefined): string | undefined {
     if (CSS.supports('color', trimmed)) {
       return trimmed;
     }
-    console.warn(`[JS Popup Sale] Invalid color "${color}", ignoring`);
+    console.warn(`[JS Popup Sales] Invalid color "${color}", ignoring`);
     return undefined;
   }
   
@@ -110,7 +110,7 @@ export function validateColor(color: string | undefined): string | undefined {
     return trimmed;
   }
   
-  console.warn(`[JS Popup Sale] Invalid color "${color}", ignoring`);
+  console.warn(`[JS Popup Sales] Invalid color "${color}", ignoring`);
   return undefined;
 }
 
