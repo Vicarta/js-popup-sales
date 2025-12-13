@@ -1,73 +1,89 @@
-# Welcome to your Lovable project
+# JS Popup Sales
 
-## Project info
+A lightweight, customizable popup widget designed to help website owners increase conversions without the complexity of heavy marketing tools.
 
-**URL**: https://lovable.dev/projects/048a6dfa-aa8d-4710-b631-8624f1fef026
+Built with simplicity in mind, it requires no dependencies and works seamlessly with any website. Whether you're promoting a product, collecting leads, or announcing a sale — this widget has you covered.
 
-## How can I edit this code?
+## Features
 
-There are several ways of editing your application.
+- 🪶 **Lightweight** — No dependencies, minimal footprint
+- 🎨 **Customizable** — Themes, layouts, positions, and more
+- 📱 **Responsive** — Works on all devices
+- 🔒 **Secure** — XSS protection with HTML sanitization
+- ⚡ **Easy Integration** — Single script tag to add to any website
 
-**Use Lovable**
+## Installation
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/048a6dfa-aa8d-4710-b631-8624f1fef026) and start prompting.
+### Via CDN
 
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+```html
+<script src="https://your-cdn.com/popup-sales.min.js"></script>
 ```
 
-**Edit a file directly in GitHub**
+### Via npm
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+```bash
+npm install js-popup-sales
+```
 
-**Use GitHub Codespaces**
+## Usage
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+```javascript
+PopupSales.init({
+  title: "Special Offer!",
+  description: "Get 20% off your first order",
+  ctaText: "Shop Now",
+  ctaUrl: "https://example.com/shop",
+  theme: "light",
+  position: "bottom-right",
+  trigger: "delay",
+  triggerDelay: 3000
+});
+```
 
-## What technologies are used for this project?
+## Configuration Options
 
-This project is built with:
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `title` | string | - | Popup title |
+| `description` | string | - | Popup description (supports markdown) |
+| `ctaText` | string | - | Call-to-action button text |
+| `ctaUrl` | string | - | CTA button link |
+| `theme` | string | `"light"` | `"light"` or `"dark"` |
+| `position` | string | `"bottom-right"` | `"bottom-right"`, `"bottom-left"`, `"top-right"`, `"top-left"` |
+| `layout` | string | `"horizontal"` | `"horizontal"` or `"vertical"` |
+| `trigger` | string | `"delay"` | `"delay"`, `"scroll"`, `"exit"` |
+| `triggerDelay` | number | `3000` | Delay in ms (for delay trigger) |
+| `imageUrl` | string | - | Optional image URL |
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+## Development
 
-## How can I deploy this project?
+```bash
+# Install dependencies
+npm install
 
-Simply open [Lovable](https://lovable.dev/projects/048a6dfa-aa8d-4710-b631-8624f1fef026) and click on Share -> Publish.
+# Start development server
+npm run dev
 
-## Can I connect a custom domain to my Lovable project?
+# Build for production
+npm run build
 
-Yes, you can!
+# Build standalone widget
+npm run build:widget
+```
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+## Demo
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+Visit the [demo page](/demo) to see the widget in action with live configuration.
+
+## License
+
+MIT
+
+## Author
+
+**Oleh Savytskyi** — Creator
+
+---
+
+The project is open-source and free to use. Contributions and feedback are always welcome!
