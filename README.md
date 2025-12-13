@@ -295,4 +295,6 @@ When disabled (default), no console logs are produced in production.
 
 ## License
 
-MIT
+MIT License with restrictions on sale. See [LICENSE](LICENSE) for details.
+
+You are free to use, modify, and distribute this software, but you may not sell it as a standalone product.
