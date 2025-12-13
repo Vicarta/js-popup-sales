@@ -25,7 +25,7 @@ const JsPopupSaleDemo = () => {
     features: "✅ Automatic scanning\n🤖 AI-powered analysis\n📧 Instant notifications",
     ctaText: "Try for free",
     ctaUrl: "https://aibizmate.com",
-    image: "https://js-popup-sale.pages.dev/blonde_red_dress_359x663.webp",
+    image: "https://js-popup-sales.pages.dev/blonde_red_dress_359x663.webp",
     theme: "light",
     position: "center",
     layout: "horizontal",
@@ -43,7 +43,7 @@ const JsPopupSaleDemo = () => {
     // Debug
     debug: false,
     // Domain for generated code
-    domain: "https://js-popup-sale.pages.dev",
+    domain: "https://js-popup-sales.pages.dev",
   });
 
   const generateCode = () => {
@@ -87,7 +87,7 @@ const JsPopupSaleDemo = () => {
       .join("\n");
 
     // Use configured domain
-    const domain = config.domain.trim().replace(/^https?:\/\//, '') || "js-popup-sale.pages.dev";
+    const domain = config.domain.trim().replace(/^https?:\/\//, '') || "js-popup-sales.pages.dev";
 
     // Generate code with window.JSPopupSalesConfig
     let code = `<!-- JS Popup Sales - GTM Recommended Method -->
@@ -511,7 +511,7 @@ const JsPopupSaleDemo = () => {
                 <Input
                   value={config.domain}
                   onChange={(e) => setConfig({ ...config, domain: e.target.value })}
-                  placeholder="https://js-popup-sale.pages.dev"
+                  placeholder="https://js-popup-sales.pages.dev"
                 />
                 <p className="text-xs text-muted-foreground mt-1">Domain where js-popup-sales.js is hosted</p>
               </div>
@@ -761,7 +761,7 @@ const JsPopupSaleDemo = () => {
     popupId: "my_promo_popup"
   };
 </script>
-<script src="https://js-popup-sale.pages.dev/js-popup-sales.js"></script>`}</code>
+<script src="https://js-popup-sales.pages.dev/js-popup-sales.js"></script>`}</code>
                       </pre>
                     </div>
 
@@ -787,7 +787,7 @@ const JsPopupSaleDemo = () => {
                       </p>
                       <pre className="text-xs bg-muted rounded p-2 overflow-x-auto">
                         <code>{`<script 
-  src="https://js-popup-sale.pages.dev/js-popup-sales.js"
+  src="https://js-popup-sales.pages.dev/js-popup-sales.js"
   data-js-popup-sales
   data-trigger="delay"
   data-image="https://example.com/image.png"
@@ -848,7 +848,7 @@ const JsPopupSaleDemo = () => {
                       <pre className="text-xs">
                         <code>{`<!-- Example using GTM variables -->
 <script 
-  src="https://js-popup-sale.pages.dev/js-popup-sales.js"
+  src="https://js-popup-sales.pages.dev/js-popup-sales.js"
   data-js-popup-sales
   data-trigger="{{PopupTrigger}}"
   data-delay="{{PopupDelay}}"
