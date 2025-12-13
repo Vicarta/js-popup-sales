@@ -1,6 +1,6 @@
 import { Footer } from "@/components/Footer";
 import { Link } from "react-router-dom";
-import founderImage from "@/assets/founder-color.jpg";
+import founderImage from "@/assets/founder-color.webp";
 
 const About = () => {
   return (
