@@ -337,7 +337,16 @@ class JSPopupSales {
       if (hasImage) {
         const imageContainer = document.createElement('div');
         imageContainer.className = 'js-popup-sales-image-container';
-        imageContainer.innerHTML = `<img src="${this.sanitizeUrl(this.config.image)}" alt="" class="js-popup-sales-image">`;
+        const img = document.createElement('img');
+        img.src = this.sanitizeUrl(this.config.image) || '';
+        img.alt = '';
+        img.className = 'js-popup-sales-image';
+        // Handle image load error - apply no-image styles
+        img.onerror = () => {
+          imageContainer.remove();
+          popup.classList.add('no-image');
+        };
+        imageContainer.appendChild(img);
         popup.appendChild(imageContainer);
       }
       
