@@ -286,7 +286,7 @@ export const popupStyles = `
 
 .js-popup-sales.layout-horizontal.no-image .js-popup-sales-cta {
   display: block !important;
-  width: fit-content !important;
+  width: 100% !important;
   margin: 0 auto !important;
 }
 
