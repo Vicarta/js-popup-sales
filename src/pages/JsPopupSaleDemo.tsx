@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -159,10 +159,24 @@ const JsPopupSaleDemo = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background overflow-x-hidden">
-      <Navigation />
+    <div className="min-h-screen bg-background overflow-x-hidden flex flex-col">
+      <header className="border-b border-border py-4 px-4">
+        <div className="container mx-auto flex items-center justify-between">
+          <Link to="/" className="text-xl font-bold hover:text-primary transition-colors">
+            JS Popup Sale
+          </Link>
+          <a
+            href="https://github.com/Vicarta/js-popup-sale"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+          >
+            GitHub →
+          </a>
+        </div>
+      </header>
 
-      <main className="w-full px-3 sm:px-4 lg:px-8 py-8 sm:py-12 lg:py-24">
+      <main className="flex-1 w-full px-3 sm:px-4 lg:px-8 py-8 sm:py-12 lg:py-24">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-6 sm:mb-8 lg:mb-12">
             <h1 className="text-xl sm:text-2xl lg:text-4xl font-bold mb-2 sm:mb-3 lg:mb-4">JS Popup Sale Configurator</h1>
