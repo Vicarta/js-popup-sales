@@ -528,14 +528,14 @@ const JsPopupSaleDemo = () => {
                     📦 Building JS Popup Sales
                   </h3>
                   <div className="bg-background rounded p-2 sm:p-3 mb-2">
-                    <code className="text-xs sm:text-sm font-mono">npm run build:popup-sales</code>
+                    <code className="text-xs sm:text-sm font-mono">npm run build:js-popup-sales</code>
                   </div>
                   <p className="text-xs sm:text-sm text-muted-foreground">
                     First, add this script to <code>package.json</code>:
                   </p>
                   <div className="bg-background rounded p-2 sm:p-3 mt-2 mb-2 overflow-x-auto max-w-full">
                     <code className="text-[10px] sm:text-xs font-mono break-all">
-                      "build:popup-sales": "vite build --config vite.js-popup-sales.config.ts"
+                      "build:js-popup-sales": "vite build --config vite.js-popup-sales.config.ts"
                     </code>
                   </div>
                   <p className="text-xs sm:text-sm text-muted-foreground">
