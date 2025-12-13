@@ -274,6 +274,21 @@ export const popupStyles = `
   overflow-wrap: break-word;
 }
 
+/* Horizontal layout without image - center content */
+.js-popup-sales.layout-horizontal.no-image {
+  max-width: 420px;
+}
+
+.js-popup-sales.layout-horizontal.no-image .js-popup-sales-content {
+  padding: 40px 32px 32px;
+  text-align: center;
+}
+
+.js-popup-sales.layout-horizontal.no-image .js-popup-sales-features {
+  display: inline-block;
+  text-align: left;
+}
+
 /* Accessibility: Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   .js-popup-sales-overlay,
