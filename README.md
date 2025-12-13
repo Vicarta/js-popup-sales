@@ -1,89 +1,298 @@
-# JS Popup Sales
+# JS Popup Sales Widget
 
-A lightweight, customizable popup widget designed to help website owners increase conversions without the complexity of heavy marketing tools.
-
-Built with simplicity in mind, it requires no dependencies and works seamlessly with any website. Whether you're promoting a product, collecting leads, or announcing a sale — this widget has you covered.
+A lightweight, customizable popup widget for promotional messages, lead capture, and announcements. Built with vanilla JavaScript, zero dependencies, and Shadow DOM for style isolation.
 
 ## Features
 
-- 🪶 **Lightweight** — No dependencies, minimal footprint
-- 🎨 **Customizable** — Themes, layouts, positions, and more
-- 📱 **Responsive** — Works on all devices
-- 🔒 **Secure** — XSS protection with HTML sanitization
-- ⚡ **Easy Integration** — Single script tag to add to any website
+- 🎨 **Customizable themes** — Light, Dark, or Auto (system preference)
+- 📍 **9 position options** — Center, corners, and edges
+- 📐 **2 layouts** — Vertical (image on top) or Horizontal (image on left)
+- ✍️ **Markdown support** — Bold, italic, strikethrough, links
+- 📊 **GTM integration** — dataLayer events for analytics
+- ⌨️ **Accessibility** — ARIA attributes, focus trap, keyboard navigation
+- 🎯 **Multiple triggers** — Delay, scroll percentage, exit-intent, manual
+- 🔒 **Shadow DOM** — Isolated styles, no CSS conflicts
+- 📱 **Responsive** — Mobile-friendly with landscape support
 
 ## Installation
 
-### Via CDN
+### Build the widget
 
-```html
-<script src="https://your-cdn.com/popup-sales.min.js"></script>
+1. Add build script to `package.json`:
+
+```json
+{
+  "scripts": {
+    "build:popup-sales": "vite build --config vite.js-popup-sales.config.ts"
+  }
+}
 ```
 
-### Via npm
+2. Run the build:
 
 ```bash
-npm install js-popup-sales
+npm run build:popup-sales
 ```
+
+3. Output: `dist-js-popup-sales/js-popup-sales.js`
+
+### Deploy
+
+Upload `js-popup-sales.js` to your CDN or static hosting.
 
 ## Usage
 
-```javascript
-PopupSales.init({
-  title: "Special Offer!",
-  description: "Get 20% off your first order",
-  ctaText: "Shop Now",
-  ctaUrl: "https://example.com/shop",
-  theme: "light",
-  position: "bottom-right",
-  trigger: "delay",
-  triggerDelay: 3000
-});
+### Method 1: Global Config (Recommended for GTM)
+
+```html
+<script>
+  window.JSPopupSalesConfig = {
+    trigger: "delay",
+    delay: 3000,
+    dismissDays: 7,
+    title: "Don't lose customers! 🚀",
+    subtitle: "**AIbizMate** helps you find _missed leads_ in your inbox",
+    features: ["✅ Automatic scanning", "🤖 AI-powered analysis", "📧 Instant notifications"],
+    ctaText: "Try for free",
+    ctaUrl: "https://aibizmate.com",
+    theme: "light",
+    position: "center",
+    layout: "vertical",
+    inheritFont: false,
+    buttonColor: "#f97316",
+    backgroundColor: "#ffffff",
+    textColor: "#1a1a1a",
+    buttonRadius: 10,
+    contentAlign: "left",
+    enableTracking: true,
+    popupId: "js_popup_sales",
+    closeOnCtaClick: true,
+    debug: false
+  };
+</script>
+<script src="https://yourdomain.com/js-popup-sales.js"></script>
 ```
+
+### Method 2: Data Attributes (Direct HTML only, NOT for GTM)
+
+```html
+<script 
+  src="https://yourdomain.com/js-popup-sales.js"
+  data-js-popup-sales
+  data-trigger="delay"
+  data-delay="3000"
+  data-title="Special Offer! 🎉"
+  data-subtitle="Get 50% off today"
+  data-cta-text="Shop Now"
+  data-cta-url="https://example.com"
+  data-theme="auto"
+  data-position="bottom-right"
+></script>
+```
+
+**⚠️ Note:** Data attributes do NOT work in Google Tag Manager. Use Method 1 for GTM.
 
 ## Configuration Options
 
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
-| `title` | string | - | Popup title |
-| `description` | string | - | Popup description (supports markdown) |
-| `ctaText` | string | - | Call-to-action button text |
-| `ctaUrl` | string | - | CTA button link |
-| `theme` | string | `"light"` | `"light"` or `"dark"` |
-| `position` | string | `"bottom-right"` | `"bottom-right"`, `"bottom-left"`, `"top-right"`, `"top-left"` |
-| `layout` | string | `"horizontal"` | `"horizontal"` or `"vertical"` |
-| `trigger` | string | `"delay"` | `"delay"`, `"scroll"`, `"exit"` |
-| `triggerDelay` | number | `3000` | Delay in ms (for delay trigger) |
-| `imageUrl` | string | - | Optional image URL |
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `trigger` | string | `"delay"` | `"delay"`, `"scroll"`, `"exit-intent"`, `"manual"` |
+| `delay` | number | `3000` | Delay in ms (100-60000) |
+| `scrollPercent` | number | `50` | Scroll percentage trigger (1-100) |
+| `dismissDays` | number | `7` | Days to hide after dismiss (0 = always show) |
+| `title` | string | `"Don't lose customers! 🚀"` | Popup title (supports markdown) |
+| `subtitle` | string | — | Subtitle text (supports markdown) |
+| `features` | string[] | — | List of features (supports markdown) |
+| `ctaText` | string | `"Try for free"` | CTA button text |
+| `ctaUrl` | string | — | CTA button URL |
+| `image` | string | — | Image URL |
+| `theme` | string | `"light"` | `"light"`, `"dark"`, `"auto"` |
+| `position` | string | `"center"` | See positions below |
+| `layout` | string | `"vertical"` | `"vertical"`, `"horizontal"` |
+| `inheritFont` | boolean | `false` | Use website font instead of Inter |
+| `buttonColor` | string | `"#f97316"` | Button color (HEX, RGB, HSL) |
+| `backgroundColor` | string | `"#ffffff"` | Popup background color |
+| `textColor` | string | `"#1a1a1a"` | Text color |
+| `buttonRadius` | number | `10` | Button border radius in px (0-100) |
+| `contentAlign` | string | `"left"` | `"left"`, `"center"`, `"right"` |
+| `enableTracking` | boolean | `false` | Enable GTM dataLayer events |
+| `popupId` | string | `"js_popup_sales"` | Unique ID for tracking |
+| `closeOnCtaClick` | boolean | `true` | Close popup when CTA clicked |
+| `debug` | boolean | `false` | Enable console logging |
 
-## Development
+### Positions
 
-```bash
-# Install dependencies
-npm install
+- `center` (default)
+- `top-left`, `top-center`, `top-right`
+- `center-left`, `center-right`
+- `bottom-left`, `bottom-center`, `bottom-right`
 
-# Start development server
-npm run dev
+### Theme: Auto
 
-# Build for production
-npm run build
+When `theme: "auto"`, the widget detects system preference using `prefers-color-scheme` media query:
+- Dark mode system → Dark theme
+- Light mode system → Light theme (default)
 
-# Build standalone widget
-npm run build:widget
+## Markdown Support
+
+The widget supports a subset of Markdown in title, subtitle, features, and CTA text:
+
+| Syntax | Result |
+|--------|--------|
+| `**text**` | **bold** |
+| `_text_` | _italic_ |
+| `**_text_**` | **_bold italic_** |
+| `~~text~~` | ~~strikethrough~~ |
+| `[text](url)` | [link](url) |
+| Emoji | 🚀✨🎉 (native support) |
+
+**Note:** `*text*` is NOT supported for italic. Use `_text_` instead.
+
+## Callbacks API
+
+Execute custom JavaScript when popup events occur:
+
+```javascript
+window.JSPopupSalesConfig = {
+  // ...other options
+  onShow: () => {
+    console.log('Popup shown!');
+  },
+  onHide: () => {
+    console.log('Popup hidden!');
+  },
+  onCtaClick: () => {
+    gtag('event', 'cta_click', { popup_id: 'my_popup' });
+  }
+};
 ```
 
-## Demo
+## Programmatic Control
 
-Visit the [demo page](/demo) to see the widget in action with live configuration.
+### Global Functions (Recommended)
+
+```javascript
+// Show popup
+showJSPopupSales();
+
+// Show with custom config override
+showJSPopupSales({ title: 'New Title!' });
+
+// Hide popup
+hideJSPopupSales();
+
+// Dismiss popup (respects dismissDays)
+dismissJSPopupSales();
+```
+
+### Instance Control
+
+```javascript
+// Access the auto-initialized instance
+jsPopupSalesInstance.show();
+jsPopupSalesInstance.hide();
+jsPopupSalesInstance.dismiss();
+
+// Create a new instance manually
+const popup = new JSPopupSales({ trigger: 'manual', title: 'Hello!' });
+popup.init();
+popup.show();
+```
+
+## GTM Integration
+
+### dataLayer Events
+
+When `enableTracking: true`, these events are pushed to `window.dataLayer`:
+
+| Event | Description | Extra Data |
+|-------|-------------|------------|
+| `js_popup_sales_shown` | Popup displayed | — |
+| `js_popup_sales_primary_click` | CTA button clicked | — |
+| `js_popup_sales_closed` | Popup closed | `close_type`: "cross", "outside", "escape" |
+| `js_popup_sales_error` | Error occurred | `error_type`, `error_message` |
+
+All events include `popup_id` for identification.
+
+### GTM Tag Setup
+
+1. Create a new **Custom HTML** tag
+2. Paste the code with `window.JSPopupSalesConfig`
+3. Set trigger (e.g., "All Pages" or specific page)
+4. Publish container
+
+### GTM Variables for Dynamic Content
+
+Create GTM variables (Constants or Data Layer Variables) and use them:
+
+```html
+<script>
+  window.JSPopupSalesConfig = {
+    title: "{{Popup Title}}",
+    ctaUrl: "{{Popup CTA URL}}",
+    delay: {{Popup Delay}}
+  };
+</script>
+<script src="https://yourdomain.com/js-popup-sales.js"></script>
+```
+
+## Debug Mode
+
+Enable debug mode to see detailed logs in browser console:
+
+```javascript
+window.JSPopupSalesConfig = {
+  debug: true,
+  // ...other options
+};
+```
+
+When disabled (default), no console logs are produced in production.
+
+## Image Guidelines
+
+| Layout | Recommended Size | Aspect Ratio |
+|--------|------------------|--------------|
+| Vertical | 480 × 200 px | 2.4:1 |
+| Horizontal | 150 × 350 px | 1:2.3 |
+
+## Accessibility
+
+- ARIA `role="dialog"` and `aria-modal="true"`
+- `aria-labelledby` references popup title
+- Focus trap when popup is open
+- `Escape` key closes popup
+- `prefers-reduced-motion` support
+- Links have `rel="noopener noreferrer"`
+
+## Browser Support
+
+- Chrome 60+
+- Firefox 55+
+- Safari 11+
+- Edge 79+
+
+## Troubleshooting
+
+### Popup doesn't appear
+
+1. Check browser console for errors
+2. Enable `debug: true` to see logs
+3. Reset dismiss: `localStorage.removeItem('js_popup_sales_dismissed')`
+4. Verify script URL is accessible
+
+### Styles are broken
+
+- The widget uses Shadow DOM — external CSS cannot affect it
+- Check if `inheritFont: true` is causing font issues
+- Verify custom colors are valid CSS colors
+
+### GTM issues
+
+- Data attributes don't work in GTM — use `window.JSPopupSalesConfig`
+- Ensure script loads after config is set
+- Check GTM preview mode for tag firing
 
 ## License
 
 MIT
-
-## Author
-
-**Oleh Savytskyi** — Creator
-
----
-
-The project is open-source and free to use. Contributions and feedback are always welcome!
