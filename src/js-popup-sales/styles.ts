@@ -276,32 +276,32 @@ export const popupStyles = `
 
 /* Horizontal layout without image - center content */
 .js-popup-sales.layout-horizontal.no-image {
-  max-width: 420px;
+  max-width: 420px !important;
+  display: block !important;
 }
 
 .js-popup-sales.layout-horizontal.no-image .js-popup-sales-content {
-  padding: 40px 32px 32px;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  padding: 40px 32px 32px !important;
+  text-align: center !important;
 }
 
 .js-popup-sales.layout-horizontal.no-image .js-popup-sales-title,
 .js-popup-sales.layout-horizontal.no-image .js-popup-sales-subtitle {
-  text-align: center;
-  width: 100%;
+  text-align: center !important;
 }
 
 .js-popup-sales.layout-horizontal.no-image .js-popup-sales-features {
   display: inline-block;
   text-align: left;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .js-popup-sales.layout-horizontal.no-image .js-popup-sales-cta {
-  width: auto;
+  width: auto !important;
   min-width: 200px;
-  display: inline-block;
+  display: inline-block !important;
+  margin: 0 auto;
 }
 
 /* Accessibility: Reduced motion */
