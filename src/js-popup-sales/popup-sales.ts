@@ -307,7 +307,8 @@ class JSPopupSales {
       
       // Create popup with custom CSS variables
       const popup = document.createElement('div');
-      popup.className = `js-popup-sales theme-${this.resolvedTheme} layout-${this.config.layout} align-${this.config.contentAlign}`;
+      const hasImage = this.config.layout === 'horizontal' && this.config.image && this.sanitizeUrl(this.config.image);
+      popup.className = `js-popup-sales theme-${this.resolvedTheme} layout-${this.config.layout} align-${this.config.contentAlign}${!hasImage && this.config.layout === 'horizontal' ? ' no-image' : ''}`;
       
       // ARIA attributes for accessibility
       popup.setAttribute('role', 'dialog');
@@ -333,14 +334,11 @@ class JSPopupSales {
       popup.appendChild(closeBtn);
       
       // Add image for horizontal layout
-      if (this.config.layout === 'horizontal' && this.config.image) {
-        const safeImageUrl = this.sanitizeUrl(this.config.image);
-        if (safeImageUrl) {
-          const imageContainer = document.createElement('div');
-          imageContainer.className = 'js-popup-sales-image-container';
-          imageContainer.innerHTML = `<img src="${safeImageUrl}" alt="" class="js-popup-sales-image">`;
-          popup.appendChild(imageContainer);
-        }
+      if (hasImage) {
+        const imageContainer = document.createElement('div');
+        imageContainer.className = 'js-popup-sales-image-container';
+        imageContainer.innerHTML = `<img src="${this.sanitizeUrl(this.config.image)}" alt="" class="js-popup-sales-image">`;
+        popup.appendChild(imageContainer);
       }
       
       // Build content
