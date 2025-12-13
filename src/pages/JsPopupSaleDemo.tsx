@@ -120,7 +120,7 @@ const JsPopupSaleDemo = () => {
     if (existing) existing.remove();
 
     // Import and show widget
-    import("@/js-popup-sales/popup-sale").then(({ JSPopupSales }) => {
+    import("@/js-popup-sales/popup-sales").then(({ JSPopupSales }) => {
       const widget = new JSPopupSales({
         trigger: "manual",
         dismissDays: parseInt(config.dismissDays),
@@ -535,11 +535,11 @@ const JsPopupSaleDemo = () => {
                   </p>
                   <div className="bg-background rounded p-2 sm:p-3 mt-2 mb-2 overflow-x-auto max-w-full">
                     <code className="text-[10px] sm:text-xs font-mono break-all">
-                      "build:popup-sales": "vite build --config vite.js-popup-sale.config.ts"
+                      "build:popup-sales": "vite build --config vite.js-popup-sales.config.ts"
                     </code>
                   </div>
                   <p className="text-xs sm:text-sm text-muted-foreground">
-                    Output: <code className="font-mono">dist-js-popup-sale/js-popup-sales.js</code>
+                    Output: <code className="font-mono">dist-js-popup-sales/js-popup-sales.js</code>
                   </p>
                 </div>
 
