@@ -1,11 +1,6 @@
 import { Link } from 'react-router-dom';
-import { useLanguage } from '@/contexts/LanguageContext';
-import { useTranslation } from '@/lib/i18n';
 
 export const Footer = () => {
-  const { language } = useLanguage();
-  const t = useTranslation(language);
-
   return (
     <footer className="bg-card border-t border-border py-6 sm:py-8 mt-12 sm:mt-16 md:mt-20">
       <div className="container mx-auto px-4">
@@ -18,19 +13,21 @@ export const Footer = () => {
               to="/terms"
               className="text-muted-foreground hover:text-foreground text-sm transition-colors"
             >
-              {t.footer.terms}
+              Terms of Use
             </Link>
-            <Link
-              to="/privacy"
+            <a
+              href="https://github.com/Vicarta/js-popup-sale/issues"
+              target="_blank"
+              rel="noopener noreferrer"
               className="text-muted-foreground hover:text-foreground text-sm transition-colors"
             >
-              {t.footer.privacy}
-            </Link>
+              Support
+            </a>
             <Link
-              to="/support"
+              to="/about"
               className="text-muted-foreground hover:text-foreground text-sm transition-colors"
             >
-              {t.footer.support}
+              About
             </Link>
           </div>
         </div>
