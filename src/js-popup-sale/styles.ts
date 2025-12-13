@@ -12,7 +12,7 @@ export const popupStyles = `
   --popup-button-radius: 10px;
 }
 
-.js-popup-sale-overlay {
+.js-popup-sales-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -28,12 +28,12 @@ export const popupStyles = `
   transition: opacity 0.3s ease;
 }
 
-.js-popup-sale-overlay.show {
+.js-popup-sales-overlay.show {
   opacity: 1;
 }
 
 /* Position variants - consolidated using CSS variables */
-.js-popup-sale-overlay[class*="position-"]:not(.js-popup-sale-overlay.position-center) {
+.js-popup-sales-overlay[class*="position-"]:not(.js-popup-sales-overlay.position-center) {
   padding: 20px;
   background: transparent;
   backdrop-filter: none;
@@ -48,7 +48,7 @@ export const popupStyles = `
 .position-bottom-center { align-items: flex-end; justify-content: center; }
 .position-bottom-right { align-items: flex-end; justify-content: flex-end; }
 
-.js-popup-sale {
+.js-popup-sales {
   position: relative;
   background: var(--popup-bg, white);
   color: var(--popup-text, #1a1a1a);
@@ -64,16 +64,16 @@ export const popupStyles = `
   font-size: 14px;
 }
 
-.js-popup-sale-overlay.show .js-popup-sale {
+.js-popup-sales-overlay.show .js-popup-sales {
   transform: scale(1) translateY(0);
 }
 
-.js-popup-sale.theme-dark {
+.js-popup-sales.theme-dark {
   background: #1a1a1a;
   color: #ffffff;
 }
 
-.js-popup-sale-close {
+.js-popup-sales-close {
   position: absolute;
   top: 16px;
   right: 16px;
@@ -90,37 +90,37 @@ export const popupStyles = `
   z-index: 10;
 }
 
-.js-popup-sale-close:hover {
+.js-popup-sales-close:hover {
   background: rgba(0, 0, 0, 0.1);
   transform: scale(1.05);
 }
 
-.theme-dark .js-popup-sale-close {
+.theme-dark .js-popup-sales-close {
   background: rgba(255, 255, 255, 0.1);
 }
 
-.theme-dark .js-popup-sale-close:hover {
+.theme-dark .js-popup-sales-close:hover {
   background: rgba(255, 255, 255, 0.15);
 }
 
-.js-popup-sale-close svg {
+.js-popup-sales-close svg {
   width: 18px;
   height: 18px;
   stroke: #333;
   stroke-width: 2;
 }
 
-.theme-dark .js-popup-sale-close svg {
+.theme-dark .js-popup-sales-close svg {
   stroke: #fff;
 }
 
-.js-popup-sale-content {
+.js-popup-sales-content {
   padding: 40px 32px 32px;
   overflow-y: auto;
   max-height: 90vh;
 }
 
-.js-popup-sale-image {
+.js-popup-sales-image {
   width: 100%;
   height: auto;
   max-height: 300px;
@@ -129,7 +129,7 @@ export const popupStyles = `
   margin-bottom: 24px;
 }
 
-.js-popup-sale-title {
+.js-popup-sales-title {
   font-size: 22px;
   font-weight: 600;
   line-height: 1.3;
@@ -137,28 +137,28 @@ export const popupStyles = `
   color: #1a1a1a;
 }
 
-.theme-dark .js-popup-sale-title {
+.theme-dark .js-popup-sales-title {
   color: #ffffff;
 }
 
-.js-popup-sale-subtitle {
+.js-popup-sales-subtitle {
   font-size: 14px;
   line-height: 1.5;
   color: #666;
   margin-bottom: 16px;
 }
 
-.theme-dark .js-popup-sale-subtitle {
+.theme-dark .js-popup-sales-subtitle {
   color: #a0a0a0;
 }
 
-.js-popup-sale-features {
+.js-popup-sales-features {
   list-style: none;
   margin: 0 0 20px 0;
   padding: 0;
 }
 
-.js-popup-sale-features li {
+.js-popup-sales-features li {
   padding: 8px 0;
   padding-left: 24px;
   position: relative;
@@ -167,11 +167,11 @@ export const popupStyles = `
   color: #333;
 }
 
-.theme-dark .js-popup-sale-features li {
+.theme-dark .js-popup-sales-features li {
   color: #d0d0d0;
 }
 
-.js-popup-sale-features li:before {
+.js-popup-sales-features li:before {
   content: '✓';
   position: absolute;
   left: 0;
@@ -181,25 +181,25 @@ export const popupStyles = `
 }
 
 /* Content alignment - wrapper for proper alignment */
-.js-popup-sale.align-center .js-popup-sale-content {
+.js-popup-sales.align-center .js-popup-sales-content {
   text-align: center;
 }
 
-.js-popup-sale.align-center .js-popup-sale-features {
+.js-popup-sales.align-center .js-popup-sales-features {
   display: inline-block;
   text-align: left;
 }
 
-.js-popup-sale.align-right .js-popup-sale-content {
+.js-popup-sales.align-right .js-popup-sales-content {
   text-align: right;
 }
 
-.js-popup-sale.align-right .js-popup-sale-features {
+.js-popup-sales.align-right .js-popup-sales-features {
   display: inline-block;
   text-align: left;
 }
 
-.js-popup-sale-cta {
+.js-popup-sales-cta {
   display: block;
   width: 100%;
   padding: 14px 24px;
@@ -216,39 +216,39 @@ export const popupStyles = `
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
-.js-popup-sale-cta:hover {
+.js-popup-sales-cta:hover {
   opacity: 0.9;
   transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
-.js-popup-sale-content a {
+.js-popup-sales-content a {
   color: var(--popup-primary, #f97316);
   text-decoration: underline;
 }
 
-.js-popup-sale-content strong {
+.js-popup-sales-content strong {
   font-weight: 600;
 }
 
-.js-popup-sale-content em {
+.js-popup-sales-content em {
   font-style: italic;
 }
 
-.js-popup-sale-content del {
+.js-popup-sales-content del {
   text-decoration: line-through;
   opacity: 0.7;
 }
 
 /* Horizontal layout */
-.js-popup-sale.layout-horizontal {
+.js-popup-sales.layout-horizontal {
   max-width: 520px;
   display: flex;
   flex-direction: row;
   padding: 0;
 }
 
-.js-popup-sale.layout-horizontal .js-popup-sale-image-container {
+.js-popup-sales.layout-horizontal .js-popup-sales-image-container {
   flex-shrink: 0;
   display: flex;
   align-items: center;
@@ -257,7 +257,7 @@ export const popupStyles = `
   overflow: hidden;
 }
 
-.js-popup-sale.layout-horizontal .js-popup-sale-image {
+.js-popup-sales.layout-horizontal .js-popup-sales-image {
   width: auto;
   height: 100%;
   object-fit: contain;
@@ -266,7 +266,7 @@ export const popupStyles = `
   margin: 0 16px 0 0;
 }
 
-.js-popup-sale.layout-horizontal .js-popup-sale-content {
+.js-popup-sales.layout-horizontal .js-popup-sales-content {
   flex: 1;
   min-width: 0;
   padding: 32px 32px 32px 0;
@@ -276,111 +276,111 @@ export const popupStyles = `
 
 /* Accessibility: Reduced motion */
 @media (prefers-reduced-motion: reduce) {
-  .js-popup-sale-overlay,
-  .js-popup-sale,
-  .js-popup-sale-close,
-  .js-popup-sale-cta {
+  .js-popup-sales-overlay,
+  .js-popup-sales,
+  .js-popup-sales-close,
+  .js-popup-sales-cta {
     transition: none !important;
     animation: none !important;
   }
   
-  .js-popup-sale {
+  .js-popup-sales {
     transform: none !important;
   }
   
-  .js-popup-sale-overlay.show .js-popup-sale {
+  .js-popup-sales-overlay.show .js-popup-sales {
     transform: none !important;
   }
 }
 
 @media (max-width: 640px) {
-  .js-popup-sale.layout-horizontal {
+  .js-popup-sales.layout-horizontal {
     flex-direction: column;
     max-width: none;
   }
   
   /* Hide image for horizontal layout on mobile */
-  .js-popup-sale.layout-horizontal .js-popup-sale-image-container {
+  .js-popup-sales.layout-horizontal .js-popup-sales-image-container {
     display: none;
   }
   
-  .js-popup-sale.layout-horizontal .js-popup-sale-content {
+  .js-popup-sales.layout-horizontal .js-popup-sales-content {
     width: 100%;
     padding: 32px 24px 24px 24px;
   }
   
   /* General mobile styles */
-  .js-popup-sale {
+  .js-popup-sales {
     width: 95%;
     max-width: none;
     border-radius: 12px;
   }
   
-  .js-popup-sale-content {
+  .js-popup-sales-content {
     padding: 32px 24px 24px;
   }
   
-  .js-popup-sale-title {
+  .js-popup-sales-title {
     font-size: 20px;
   }
   
-  .js-popup-sale-overlay.position-bottom-right {
+  .js-popup-sales-overlay.position-bottom-right {
     padding: 12px;
   }
 }
 
 /* Landscape mobile - compact mode */
 @media (max-height: 500px) and (orientation: landscape) {
-  .js-popup-sale {
+  .js-popup-sales {
     max-height: 95vh;
     border-radius: 10px;
   }
   
-  .js-popup-sale-content {
+  .js-popup-sales-content {
     padding: 16px 20px 16px;
     overflow-y: auto;
     max-height: calc(95vh - 20px);
   }
   
   /* Hide image in landscape */
-  .js-popup-sale-image,
-  .js-popup-sale-image-container {
+  .js-popup-sales-image,
+  .js-popup-sales-image-container {
     display: none !important;
   }
   
-  .js-popup-sale-close {
+  .js-popup-sales-close {
     top: 8px;
     right: 8px;
     width: 28px;
     height: 28px;
   }
   
-  .js-popup-sale-title {
+  .js-popup-sales-title {
     font-size: 18px;
     margin-bottom: 6px;
   }
   
-  .js-popup-sale-subtitle {
+  .js-popup-sales-subtitle {
     font-size: 13px;
     margin-bottom: 10px;
   }
   
-  .js-popup-sale-features {
+  .js-popup-sales-features {
     margin-bottom: 12px;
   }
   
-  .js-popup-sale-features li {
+  .js-popup-sales-features li {
     padding: 4px 0;
     padding-left: 20px;
     font-size: 13px;
   }
   
-  .js-popup-sale-cta {
+  .js-popup-sales-cta {
     padding: 10px 20px;
     font-size: 14px;
   }
   
-  .js-popup-sale.layout-horizontal .js-popup-sale-content {
+  .js-popup-sales.layout-horizontal .js-popup-sales-content {
     padding: 16px 20px 16px 20px;
   }
 }

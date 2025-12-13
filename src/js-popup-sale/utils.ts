@@ -144,7 +144,7 @@ export const DEFAULT_CONFIG = {
   contentAlign: 'left' as const,
   // GTM dataLayer tracking
   enableTracking: false,
-  popupId: 'js_popup_sale',
+  popupId: 'js_popup_sales',
   // Close popup on CTA click
   closeOnCtaClick: true,
   // Debug mode
