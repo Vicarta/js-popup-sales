@@ -120,7 +120,7 @@ const JsPopupSaleDemo = () => {
     if (existing) existing.remove();
 
     // Import and show widget
-    import("@/js-popup-sale/popup-sale").then(({ JSPopupSales }) => {
+    import("@/js-popup-sales/popup-sale").then(({ JSPopupSales }) => {
       const widget = new JSPopupSales({
         trigger: "manual",
         dismissDays: parseInt(config.dismissDays),
