@@ -76,7 +76,7 @@ Upload `js-popup-sales.js` to your CDN or static hosting.
 ### Method 2: Data Attributes (Direct HTML only, NOT for GTM)
 
 ```html
-<script 
+<script
   src="https://yourdomain.com/js-popup-sales.js"
   data-js-popup-sales
   data-trigger="delay"
@@ -94,31 +94,31 @@ Upload `js-popup-sales.js` to your CDN or static hosting.
 
 ## Configuration Options
 
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `trigger` | string | `"delay"` | `"delay"`, `"scroll"`, `"exit-intent"`, `"manual"` |
-| `delay` | number | `3000` | Delay in ms (100-60000) |
-| `scrollPercent` | number | `50` | Scroll percentage trigger (1-100) |
-| `dismissDays` | number | `7` | Days to hide after dismiss (0 = always show) |
-| `title` | string | `"Don't lose customers! 🚀"` | Popup title (supports markdown) |
-| `subtitle` | string | — | Subtitle text (supports markdown) |
-| `features` | string[] | — | List of features (supports markdown) |
-| `ctaText` | string | `"Try for free"` | CTA button text |
-| `ctaUrl` | string | — | CTA button URL |
-| `image` | string | — | Image URL |
-| `theme` | string | `"light"` | `"light"`, `"dark"`, `"auto"` |
-| `position` | string | `"center"` | See positions below |
-| `layout` | string | `"vertical"` | `"vertical"`, `"horizontal"` |
-| `inheritFont` | boolean | `false` | Use website font instead of Inter |
-| `buttonColor` | string | `"#f97316"` | Button color (HEX, RGB, HSL) |
-| `backgroundColor` | string | `"#ffffff"` | Popup background color |
-| `textColor` | string | `"#1a1a1a"` | Text color |
-| `buttonRadius` | number | `10` | Button border radius in px (0-100) |
-| `contentAlign` | string | `"left"` | `"left"`, `"center"`, `"right"` |
-| `enableTracking` | boolean | `false` | Enable GTM dataLayer events |
-| `popupId` | string | `"js_popup_sales"` | Unique ID for tracking |
-| `closeOnCtaClick` | boolean | `true` | Close popup when CTA clicked |
-| `debug` | boolean | `false` | Enable console logging |
+| Parameter         | Type     | Default                      | Description                                        |
+| ----------------- | -------- | ---------------------------- | -------------------------------------------------- |
+| `trigger`         | string   | `"delay"`                    | `"delay"`, `"scroll"`, `"exit-intent"`, `"manual"` |
+| `delay`           | number   | `3000`                       | Delay in ms (100-60000)                            |
+| `scrollPercent`   | number   | `50`                         | Scroll percentage trigger (1-100)                  |
+| `dismissDays`     | number   | `7`                          | Days to hide after dismiss (0 = always show)       |
+| `title`           | string   | `"Don't lose customers! 🚀"` | Popup title (supports markdown)                    |
+| `subtitle`        | string   | —                            | Subtitle text (supports markdown)                  |
+| `features`        | string[] | —                            | List of features (supports markdown)               |
+| `ctaText`         | string   | `"Try for free"`             | CTA button text                                    |
+| `ctaUrl`          | string   | —                            | CTA button URL                                     |
+| `image`           | string   | —                            | Image URL                                          |
+| `theme`           | string   | `"light"`                    | `"light"`, `"dark"`, `"auto"`                      |
+| `position`        | string   | `"center"`                   | See positions below                                |
+| `layout`          | string   | `"vertical"`                 | `"vertical"`, `"horizontal"`                       |
+| `inheritFont`     | boolean  | `false`                      | Use website font instead of Inter                  |
+| `buttonColor`     | string   | `"#f97316"`                  | Button color (HEX, RGB, HSL)                       |
+| `backgroundColor` | string   | `"#ffffff"`                  | Popup background color                             |
+| `textColor`       | string   | `"#1a1a1a"`                  | Text color                                         |
+| `buttonRadius`    | number   | `10`                         | Button border radius in px (0-100)                 |
+| `contentAlign`    | string   | `"left"`                     | `"left"`, `"center"`, `"right"`                    |
+| `enableTracking`  | boolean  | `false`                      | Enable GTM dataLayer events                        |
+| `popupId`         | string   | `"js_popup_sales"`           | Unique ID for tracking                             |
+| `closeOnCtaClick` | boolean  | `true`                       | Close popup when CTA clicked                       |
+| `debug`           | boolean  | `false`                      | Enable console logging                             |
 
 ### Positions
 
@@ -130,6 +130,7 @@ Upload `js-popup-sales.js` to your CDN or static hosting.
 ### Theme: Auto
 
 When `theme: "auto"`, the widget detects system preference using `prefers-color-scheme` media query:
+
 - Dark mode system → Dark theme
 - Light mode system → Light theme (default)
 
@@ -137,14 +138,14 @@ When `theme: "auto"`, the widget detects system preference using `prefers-color-
 
 The widget supports a subset of Markdown in title, subtitle, features, and CTA text:
 
-| Syntax | Result |
-|--------|--------|
-| `**text**` | **bold** |
-| `_text_` | _italic_ |
-| `**_text_**` | **_bold italic_** |
-| `~~text~~` | ~~strikethrough~~ |
-| `[text](url)` | [link](url) |
-| Emoji | 🚀✨🎉 (native support) |
+| Syntax        | Result                  |
+| ------------- | ----------------------- |
+| `**text**`    | **bold**                |
+| `_text_`      | _italic_                |
+| `**_text_**`  | **_bold italic_**       |
+| `~~text~~`    | ~~strikethrough~~       |
+| `[text](url)` | [link](url)             |
+| Emoji         | 🚀✨🎉 (native support) |
 
 **Note:** `*text*` is NOT supported for italic. Use `_text_` instead.
 
@@ -205,12 +206,12 @@ popup.show();
 
 When `enableTracking: true`, these events are pushed to `window.dataLayer`:
 
-| Event | Description | Extra Data |
-|-------|-------------|------------|
-| `js_popup_sales_shown` | Popup displayed | — |
-| `js_popup_sales_primary_click` | CTA button clicked | — |
-| `js_popup_sales_closed` | Popup closed | `close_type`: "cross", "outside", "escape" |
-| `js_popup_sales_error` | Error occurred | `error_type`, `error_message` |
+| Event                          | Description        | Extra Data                                 |
+| ------------------------------ | ------------------ | ------------------------------------------ |
+| `js_popup_sales_shown`         | Popup displayed    | —                                          |
+| `js_popup_sales_primary_click` | CTA button clicked | —                                          |
+| `js_popup_sales_closed`        | Popup closed       | `close_type`: "cross", "outside", "escape" |
+| `js_popup_sales_error`         | Error occurred     | `error_type`, `error_message`              |
 
 All events include `popup_id` for identification.
 
@@ -251,10 +252,10 @@ When disabled (default), no console logs are produced in production.
 
 ## Image Guidelines
 
-| Layout | Recommended Size | Aspect Ratio |
-|--------|------------------|--------------|
-| Vertical | 480 × 200 px | 2.4:1 |
-| Horizontal | 150 × 350 px | 1:2.3 |
+| Layout     | Recommended Size | Aspect Ratio |
+| ---------- | ---------------- | ------------ |
+| Vertical   | 480 × 200 px     | 2.4:1        |
+| Horizontal | 150 × 350 px     | 1:2.3        |
 
 ## Accessibility
 
@@ -298,3 +299,5 @@ When disabled (default), no console logs are produced in production.
 MIT License with restrictions on sale. See [LICENSE](LICENSE) for details.
 
 You are free to use, modify, and distribute this software, but you may not sell it as a standalone product.
+
+The project was vibecoded with Lovable
