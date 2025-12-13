@@ -269,7 +269,7 @@ export const popupStyles = `
 .js-popup-sales.layout-horizontal .js-popup-sales-content {
   flex: 1;
   min-width: 0;
-  padding: 32px 32px 32px 0;
+  padding: 32px 32px 32px 32px;
   word-wrap: break-word;
   overflow-wrap: break-word;
 }
