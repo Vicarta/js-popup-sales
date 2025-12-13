@@ -1,4 +1,4 @@
-// Utility functions for popup sale widget
+// Utility functions for popup sales widget
 
 /**
  * Sanitize HTML to prevent XSS attacks
@@ -120,7 +120,7 @@ export function validateColor(color: string | undefined): string | undefined {
 export const MAX_FEATURES = 20;
 
 /**
- * Default configuration for popup sale widget
+ * Default configuration for popup sales widget
  */
 export const DEFAULT_CONFIG = {
   trigger: 'delay' as const,
