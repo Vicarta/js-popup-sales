@@ -37,7 +37,7 @@ const JsPopupSaleDemo = () => {
     contentAlign: "left",
     // GTM tracking
     enableTracking: false,
-    popupId: "js_popup_sale",
+    popupId: "js_popup_sales",
     // Behavior
     closeOnCtaClick: true,
     // Debug
@@ -89,15 +89,15 @@ const JsPopupSaleDemo = () => {
     // Use configured domain
     const domain = config.domain.trim().replace(/^https?:\/\//, '') || "js-popup-sale.pages.dev";
 
-    // Generate code with window.JSPopupSaleConfig
+    // Generate code with window.JSPopupSalesConfig
     let code = `<!-- JS Popup Sales - GTM Recommended Method -->
 <script>
-  window.JSPopupSaleConfig = ${configJson};
+  window.JSPopupSalesConfig = ${configJson};
   
   // Optional: Callbacks (uncomment to use)
-  // window.JSPopupSaleConfig.onShow = () => console.log('Popup shown!');
-  // window.JSPopupSaleConfig.onHide = () => console.log('Popup hidden!');
-  // window.JSPopupSaleConfig.onCtaClick = () => gtag('event', 'cta_click');
+  // window.JSPopupSalesConfig.onShow = () => console.log('Popup shown!');
+  // window.JSPopupSalesConfig.onHide = () => console.log('Popup hidden!');
+  // window.JSPopupSalesConfig.onCtaClick = () => gtag('event', 'cta_click');
 </script>
 <script src="https://${domain}/js-popup-sales.js"></script>`;
 
@@ -116,12 +116,12 @@ const JsPopupSaleDemo = () => {
 
   const handlePreview = () => {
     // Clear any existing widget
-    const existing = document.getElementById("js-popup-sale-container");
+    const existing = document.getElementById("js-popup-sales-container");
     if (existing) existing.remove();
 
     // Import and show widget
-    import("@/js-popup-sale/popup-sale").then(({ JSPopupSale }) => {
-      const widget = new JSPopupSale({
+    import("@/js-popup-sale/popup-sale").then(({ JSPopupSales }) => {
+      const widget = new JSPopupSales({
         trigger: "manual",
         dismissDays: parseInt(config.dismissDays),
         title: config.title,
@@ -166,7 +166,7 @@ const JsPopupSaleDemo = () => {
             JS Popup Sales Demo
           </Link>
           <a
-            href="https://github.com/Vicarta/js-popup-sale"
+            href="https://github.com/Vicarta/js-popup-sales"
             target="_blank"
             rel="noopener noreferrer"
             className="text-sm text-muted-foreground hover:text-foreground transition-colors"
@@ -454,7 +454,7 @@ const JsPopupSaleDemo = () => {
                       <Input
                         value={config.popupId}
                         onChange={(e) => setConfig({ ...config, popupId: e.target.value })}
-                        placeholder="js_popup_sale"
+                        placeholder="js_popup_sales"
                       />
                       <p className="text-xs text-muted-foreground mt-1">
                         Unique identifier for this popup in dataLayer events
@@ -471,7 +471,7 @@ const JsPopupSaleDemo = () => {
                 </Button>
                 <Button
                   onClick={() => {
-                    localStorage.removeItem("js_popup_sale_dismissed");
+                    localStorage.removeItem("js_popup_sales_dismissed");
                     toast({
                       title: "Dismiss reset",
                       description: "The widget will now show again",
@@ -528,14 +528,14 @@ const JsPopupSaleDemo = () => {
                     📦 Building JS Popup Sales
                   </h3>
                   <div className="bg-background rounded p-2 sm:p-3 mb-2">
-                    <code className="text-xs sm:text-sm font-mono">npm run build:popup-sale</code>
+                    <code className="text-xs sm:text-sm font-mono">npm run build:popup-sales</code>
                   </div>
                   <p className="text-xs sm:text-sm text-muted-foreground">
                     First, add this script to <code>package.json</code>:
                   </p>
                   <div className="bg-background rounded p-2 sm:p-3 mt-2 mb-2 overflow-x-auto max-w-full">
                     <code className="text-[10px] sm:text-xs font-mono break-all">
-                      "build:popup-sale": "vite build --config vite.js-popup-sale.config.ts"
+                      "build:popup-sales": "vite build --config vite.js-popup-sale.config.ts"
                     </code>
                   </div>
                   <p className="text-xs sm:text-sm text-muted-foreground">
@@ -601,7 +601,7 @@ const JsPopupSaleDemo = () => {
                   </div>
                   <div className="mt-3 bg-muted rounded p-2 overflow-x-auto max-w-full">
                     <pre className="text-[10px] sm:text-xs whitespace-pre-wrap break-all sm:whitespace-pre sm:break-normal">
-                      <code>{`window.JSPopupSaleConfig = {
+                      <code>{`window.JSPopupSalesConfig = {
   // ...other options
   onShow: () => console.log('Popup shown!'),
   onCtaClick: () => gtag('event', 'cta_click')
@@ -615,25 +615,25 @@ const JsPopupSaleDemo = () => {
                   <div className="bg-muted rounded p-2 sm:p-3 space-y-2 text-xs sm:text-sm">
                     <div className="font-medium text-muted-foreground mb-1">Via global functions (recommended):</div>
                     <div>
-                      <code>showJSPopupSale()</code> — show popup
+                      <code>showJSPopupSales()</code> — show popup
                     </div>
                     <div>
-                      <code>hideJSPopupSale()</code> — hide popup
+                      <code>hideJSPopupSales()</code> — hide popup
                     </div>
                     <div>
-                      <code>dismissJSPopupSale()</code> — dismiss forever
+                      <code>dismissJSPopupSales()</code> — dismiss forever
                     </div>
                     <div className="font-medium text-muted-foreground mt-3 mb-1">
                       Via instance (if autoInit worked):
                     </div>
                     <div>
-                      <code>jsPopupSaleInstance.show()</code>
+                      <code>jsPopupSalesInstance.show()</code>
                     </div>
                     <div>
-                      <code>jsPopupSaleInstance.hide()</code>
+                      <code>jsPopupSalesInstance.hide()</code>
                     </div>
                     <div className="text-xs text-muted-foreground mt-2">
-                      Or create new: <code>new JSPopupSale(config).init()</code>
+                      Or create new: <code>new JSPopupSales(config).init()</code>
                     </div>
                   </div>
                 </div>
@@ -649,22 +649,22 @@ const JsPopupSaleDemo = () => {
                   </p>
                   <div className="space-y-2 sm:space-y-3 text-xs sm:text-sm">
                     <div className="bg-background rounded p-2">
-                      <code className="text-green-600 font-semibold">js_popup_sale_shown</code>
+                      <code className="text-green-600 font-semibold">js_popup_sales_shown</code>
                       <p className="text-xs text-muted-foreground mt-1">Fired when popup is displayed</p>
                     </div>
                     <div className="bg-background rounded p-2">
-                      <code className="text-blue-600 font-semibold">js_popup_sale_primary_click</code>
+                      <code className="text-blue-600 font-semibold">js_popup_sales_primary_click</code>
                       <p className="text-xs text-muted-foreground mt-1">Fired when user clicks the CTA button</p>
                     </div>
                     <div className="bg-background rounded p-2">
-                      <code className="text-orange-600 font-semibold">js_popup_sale_closed</code>
+                      <code className="text-orange-600 font-semibold">js_popup_sales_closed</code>
                       <p className="text-xs text-muted-foreground mt-1">
                         Fired when popup is closed. Includes <code className="bg-muted px-1 rounded">close_type</code>:
                         <span className="ml-1">"cross", "outside", or "escape"</span>
                       </p>
                     </div>
                     <div className="bg-background rounded p-2">
-                      <code className="text-red-600 font-semibold">js_popup_sale_error</code>
+                      <code className="text-red-600 font-semibold">js_popup_sales_error</code>
                       <p className="text-xs text-muted-foreground mt-1">
                         Fired on error. Includes <code className="bg-muted px-1 rounded">error_type</code> and{" "}
                         <code className="bg-muted px-1 rounded">error_message</code>
@@ -712,7 +712,7 @@ const JsPopupSaleDemo = () => {
                     <li className="flex gap-2">
                       <span className="text-muted-foreground">1.3</span>
                       <span>
-                        Name the tag, e.g.: <code className="bg-muted px-2 py-0.5 rounded">"JS Popup Sale Widget"</code>
+                        Name the tag, e.g.: <code className="bg-muted px-2 py-0.5 rounded">"JS Popup Sales Widget"</code>
                       </span>
                     </li>
                     <li className="flex gap-2">
@@ -737,12 +737,12 @@ const JsPopupSaleDemo = () => {
                         ✅ Recommended method for GTM (used in generated code above):
                       </p>
                       <p className="text-xs text-muted-foreground mb-2">
-                        Use <code className="bg-muted px-1 py-0.5 rounded">window.JSPopupSaleConfig</code> - this
+                        Use <code className="bg-muted px-1 py-0.5 rounded">window.JSPopupSalesConfig</code> - this
                         ensures all parameters are passed correctly:
                       </p>
                       <pre className="text-xs bg-muted rounded p-2 overflow-x-auto">
                         <code>{`<script>
-  window.JSPopupSaleConfig = {
+  window.JSPopupSalesConfig = {
     trigger: "delay",
     delay: 3000,
     dismissDays: 0,
@@ -772,7 +772,7 @@ const JsPopupSaleDemo = () => {
                       <p className="text-xs text-muted-foreground mb-2">
                         GTM dynamically creates <code className="bg-muted px-1 py-0.5 rounded">&lt;script&gt;</code>{" "}
                         elements and <strong>ignores all data-* attributes</strong>. Therefore, using{" "}
-                        <code className="bg-muted px-1 py-0.5 rounded">window.JSPopupSaleConfig</code> is the only
+                        <code className="bg-muted px-1 py-0.5 rounded">window.JSPopupSalesConfig</code> is the only
                         reliable way for GTM.
                       </p>
                     </div>
@@ -788,7 +788,7 @@ const JsPopupSaleDemo = () => {
                       <pre className="text-xs bg-muted rounded p-2 overflow-x-auto">
                         <code>{`<script 
   src="https://js-popup-sale.pages.dev/js-popup-sales.js"
-  data-js-popup-sale
+  data-js-popup-sales
   data-trigger="delay"
   data-image="https://example.com/image.png"
   data-title="Title"
@@ -797,7 +797,7 @@ const JsPopupSaleDemo = () => {
 ></script>`}</code>
                       </pre>
                       <p className="text-xs text-muted-foreground mt-2">
-                        <strong>But this will NOT work in GTM!</strong> Use window.JSPopupSaleConfig instead.
+                        <strong>But this will NOT work in GTM!</strong> Use window.JSPopupSalesConfig instead.
                       </p>
                     </div>
                     <div className="p-3 bg-blue-500/10 border border-blue-500/20 rounded-lg">
@@ -810,16 +810,16 @@ const JsPopupSaleDemo = () => {
                       <pre className="text-xs bg-muted rounded p-2 mt-2 overflow-x-auto">
                         <code>{`<script>
   // Show popup
-  if (typeof showJSPopupSale === 'function') {
-    showJSPopupSale();
+  if (typeof showJSPopupSales === 'function') {
+    showJSPopupSales();
   }
 </script>`}</code>
                       </pre>
                       <p className="text-xs text-muted-foreground mt-2">Or create new with custom config:</p>
                       <pre className="text-xs bg-muted rounded p-2 mt-1 overflow-x-auto">
                         <code>{`<script>
-  if (typeof showJSPopupSale === 'function') {
-    showJSPopupSale({
+  if (typeof showJSPopupSales === 'function') {
+    showJSPopupSales({
       title: 'Special offer!',
       ctaUrl: 'https://example.com/special'
     });
@@ -849,7 +849,7 @@ const JsPopupSaleDemo = () => {
                         <code>{`<!-- Example using GTM variables -->
 <script 
   src="https://js-popup-sale.pages.dev/js-popup-sales.js"
-  data-js-popup-sale
+  data-js-popup-sales
   data-trigger="{{PopupTrigger}}"
   data-delay="{{PopupDelay}}"
   data-title="{{PopupTitle}}"
@@ -956,7 +956,7 @@ const JsPopupSaleDemo = () => {
                     Enable <code>debug: true</code> to see detailed logs
                   </li>
                   <li>
-                    Reset dismiss: <code>localStorage.removeItem('js_popup_sale_dismissed')</code>
+                    Reset dismiss: <code>localStorage.removeItem('js_popup_sales_dismissed')</code>
                   </li>
                   <li>Verify script URL is accessible (no 404)</li>
                   <li>Check if ad blockers are interfering</li>
@@ -978,7 +978,7 @@ const JsPopupSaleDemo = () => {
                 <h3 className="font-semibold mb-2 text-sm sm:text-base">GTM not working?</h3>
                 <ul className="text-xs sm:text-sm text-muted-foreground space-y-1 list-disc list-inside">
                   <li>
-                    Data-* attributes <strong>don't work</strong> in GTM — use <code>window.JSPopupSaleConfig</code>
+                    Data-* attributes <strong>don't work</strong> in GTM — use <code>window.JSPopupSalesConfig</code>
                   </li>
                   <li>Ensure script loads AFTER config is set</li>
                   <li>Use GTM Preview mode to debug tag firing</li>

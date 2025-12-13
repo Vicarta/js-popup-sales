@@ -23,7 +23,7 @@ A lightweight, customizable popup widget for promotional messages, lead capture,
 ```json
 {
   "scripts": {
-    "build:popup-sale": "vite build --config vite.js-popup-sale.config.ts"
+    "build:popup-sales": "vite build --config vite.js-popup-sale.config.ts"
   }
 }
 ```
@@ -31,14 +31,14 @@ A lightweight, customizable popup widget for promotional messages, lead capture,
 2. Run the build:
 
 ```bash
-npm run build:popup-sale
+npm run build:popup-sales
 ```
 
-3. Output: `dist-js-popup-sale/js-popup-sale.js`
+3. Output: `dist-js-popup-sale/js-popup-sales.js`
 
 ### Deploy
 
-Upload `js-popup-sale.js` to your CDN or static hosting.
+Upload `js-popup-sales.js` to your CDN or static hosting.
 
 ## Usage
 
@@ -46,7 +46,7 @@ Upload `js-popup-sale.js` to your CDN or static hosting.
 
 ```html
 <script>
-  window.JSPopupSaleConfig = {
+  window.JSPopupSalesConfig = {
     trigger: "delay",
     delay: 3000,
     dismissDays: 7,
@@ -65,20 +65,20 @@ Upload `js-popup-sale.js` to your CDN or static hosting.
     buttonRadius: 10,
     contentAlign: "left",
     enableTracking: true,
-    popupId: "js_popup_sale",
+    popupId: "js_popup_sales",
     closeOnCtaClick: true,
     debug: false
   };
 </script>
-<script src="https://yourdomain.com/js-popup-sale.js"></script>
+<script src="https://yourdomain.com/js-popup-sales.js"></script>
 ```
 
 ### Method 2: Data Attributes (Direct HTML only, NOT for GTM)
 
 ```html
 <script 
-  src="https://yourdomain.com/js-popup-sale.js"
-  data-js-popup-sale
+  src="https://yourdomain.com/js-popup-sales.js"
+  data-js-popup-sales
   data-trigger="delay"
   data-delay="3000"
   data-title="Special Offer! 🎉"
@@ -116,7 +116,7 @@ Upload `js-popup-sale.js` to your CDN or static hosting.
 | `buttonRadius` | number | `10` | Button border radius in px (0-100) |
 | `contentAlign` | string | `"left"` | `"left"`, `"center"`, `"right"` |
 | `enableTracking` | boolean | `false` | Enable GTM dataLayer events |
-| `popupId` | string | `"js_popup_sale"` | Unique ID for tracking |
+| `popupId` | string | `"js_popup_sales"` | Unique ID for tracking |
 | `closeOnCtaClick` | boolean | `true` | Close popup when CTA clicked |
 | `debug` | boolean | `false` | Enable console logging |
 
@@ -153,7 +153,7 @@ The widget supports a subset of Markdown in title, subtitle, features, and CTA t
 Execute custom JavaScript when popup events occur:
 
 ```javascript
-window.JSPopupSaleConfig = {
+window.JSPopupSalesConfig = {
   // ...other options
   onShow: () => {
     console.log('Popup shown!');
@@ -173,28 +173,28 @@ window.JSPopupSaleConfig = {
 
 ```javascript
 // Show popup
-showJSPopupSale();
+showJSPopupSales();
 
 // Show with custom config override
-showJSPopupSale({ title: 'New Title!' });
+showJSPopupSales({ title: 'New Title!' });
 
 // Hide popup
-hideJSPopupSale();
+hideJSPopupSales();
 
 // Dismiss popup (respects dismissDays)
-dismissJSPopupSale();
+dismissJSPopupSales();
 ```
 
 ### Instance Control
 
 ```javascript
 // Access the auto-initialized instance
-jsPopupSaleInstance.show();
-jsPopupSaleInstance.hide();
-jsPopupSaleInstance.dismiss();
+jsPopupSalesInstance.show();
+jsPopupSalesInstance.hide();
+jsPopupSalesInstance.dismiss();
 
 // Create a new instance manually
-const popup = new JSPopupSale({ trigger: 'manual', title: 'Hello!' });
+const popup = new JSPopupSales({ trigger: 'manual', title: 'Hello!' });
 popup.init();
 popup.show();
 ```
@@ -207,17 +207,17 @@ When `enableTracking: true`, these events are pushed to `window.dataLayer`:
 
 | Event | Description | Extra Data |
 |-------|-------------|------------|
-| `js_popup_sale_shown` | Popup displayed | — |
-| `js_popup_sale_primary_click` | CTA button clicked | — |
-| `js_popup_sale_closed` | Popup closed | `close_type`: "cross", "outside", "escape" |
-| `js_popup_sale_error` | Error occurred | `error_type`, `error_message` |
+| `js_popup_sales_shown` | Popup displayed | — |
+| `js_popup_sales_primary_click` | CTA button clicked | — |
+| `js_popup_sales_closed` | Popup closed | `close_type`: "cross", "outside", "escape" |
+| `js_popup_sales_error` | Error occurred | `error_type`, `error_message` |
 
 All events include `popup_id` for identification.
 
 ### GTM Tag Setup
 
 1. Create a new **Custom HTML** tag
-2. Paste the code with `window.JSPopupSaleConfig`
+2. Paste the code with `window.JSPopupSalesConfig`
 3. Set trigger (e.g., "All Pages" or specific page)
 4. Publish container
 
@@ -227,13 +227,13 @@ Create GTM variables (Constants or Data Layer Variables) and use them:
 
 ```html
 <script>
-  window.JSPopupSaleConfig = {
+  window.JSPopupSalesConfig = {
     title: "{{Popup Title}}",
     ctaUrl: "{{Popup CTA URL}}",
     delay: {{Popup Delay}}
   };
 </script>
-<script src="https://yourdomain.com/js-popup-sale.js"></script>
+<script src="https://yourdomain.com/js-popup-sales.js"></script>
 ```
 
 ## Debug Mode
@@ -241,7 +241,7 @@ Create GTM variables (Constants or Data Layer Variables) and use them:
 Enable debug mode to see detailed logs in browser console:
 
 ```javascript
-window.JSPopupSaleConfig = {
+window.JSPopupSalesConfig = {
   debug: true,
   // ...other options
 };
@@ -278,7 +278,7 @@ When disabled (default), no console logs are produced in production.
 
 1. Check browser console for errors
 2. Enable `debug: true` to see logs
-3. Reset dismiss: `localStorage.removeItem('js_popup_sale_dismissed')`
+3. Reset dismiss: `localStorage.removeItem('js_popup_sales_dismissed')`
 4. Verify script URL is accessible
 
 ### Styles are broken
@@ -289,7 +289,7 @@ When disabled (default), no console logs are produced in production.
 
 ### GTM issues
 
-- Data attributes don't work in GTM — use `window.JSPopupSaleConfig`
+- Data attributes don't work in GTM — use `window.JSPopupSalesConfig`
 - Ensure script loads after config is set
 - Check GTM preview mode for tag firing
 

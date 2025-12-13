@@ -49,11 +49,11 @@ interface PopupConfig {
 // Animation duration constant (ms)
 const ANIMATION_DURATION = 300;
 
-class JSPopupSale {
+class JSPopupSales {
   private config: Required<Omit<PopupConfig, 'onShow' | 'onHide' | 'onCtaClick'>> & Pick<PopupConfig, 'onShow' | 'onHide' | 'onCtaClick'>;
   private overlay: HTMLElement | null = null;
   private shadowRoot: ShadowRoot | null = null;
-  private storageKey = 'js_popup_sale_dismissed';
+  private storageKey = 'js_popup_sales_dismissed';
   private scrollHandler: (() => void) | null = null;
   private exitIntentHandler: ((e: MouseEvent) => void) | null = null;
   private keyHandler: ((e: KeyboardEvent) => void) | null = null;
@@ -249,8 +249,8 @@ class JSPopupSale {
     try {
       (window as unknown as { dataLayer: unknown[] }).dataLayer = (window as unknown as { dataLayer: unknown[] }).dataLayer || [];
       (window as unknown as { dataLayer: unknown[] }).dataLayer.push({
-        event: 'js_popup_sale_error',
-        popup_id: this.config?.popupId || 'js_popup_sale',
+        event: 'js_popup_sales_error',
+        popup_id: this.config?.popupId || 'js_popup_sales',
         error_type: errorType,
         error_message: (error as Error)?.message || String(error)
       });
@@ -262,7 +262,7 @@ class JSPopupSale {
   private setupKeyboardHandler(): void {
     this.keyHandler = (e: KeyboardEvent) => {
       if (e.key === 'Escape' && this.isVisible) {
-        this.trackEvent('js_popup_sale_closed', { close_type: 'escape' });
+        this.trackEvent('js_popup_sales_closed', { close_type: 'escape' });
         this.dismiss();
       }
     };
@@ -272,14 +272,14 @@ class JSPopupSale {
   private createPopup(): void {
     try {
       // Захист від повторної ініціалізації - видалити існуючий контейнер
-      const existing = document.getElementById('js-popup-sale-container');
+      const existing = document.getElementById('js-popup-sales-container');
       if (existing) {
         existing.remove();
       }
       
       // Create container
       const container = document.createElement('div');
-      container.id = 'js-popup-sale-container';
+      container.id = 'js-popup-sales-container';
       
       // Create shadow DOM for style isolation
       this.shadowRoot = container.attachShadow({ mode: 'open' });
@@ -295,24 +295,24 @@ class JSPopupSale {
           "font-family: 'Inter', -apple-system"
         );
       } else {
-        style.textContent = popupStyles + `\n.js-popup-sale { font-family: inherit !important; }`;
+        style.textContent = popupStyles + `\n.js-popup-sales { font-family: inherit !important; }`;
       }
       
       this.shadowRoot.appendChild(style);
       
       // Create overlay
       this.overlay = document.createElement('div');
-      this.overlay.className = `js-popup-sale-overlay position-${this.config.position}`;
+      this.overlay.className = `js-popup-sales-overlay position-${this.config.position}`;
       this.overlay.style.display = 'none';
       
       // Create popup with custom CSS variables
       const popup = document.createElement('div');
-      popup.className = `js-popup-sale theme-${this.resolvedTheme} layout-${this.config.layout} align-${this.config.contentAlign}`;
+      popup.className = `js-popup-sales theme-${this.resolvedTheme} layout-${this.config.layout} align-${this.config.contentAlign}`;
       
       // ARIA attributes for accessibility
       popup.setAttribute('role', 'dialog');
       popup.setAttribute('aria-modal', 'true');
-      popup.setAttribute('aria-labelledby', 'js-popup-sale-title');
+      popup.setAttribute('aria-labelledby', 'js-popup-sales-title');
       
       // Apply custom colors via CSS variables
       if (this.config.buttonColor) popup.style.setProperty('--popup-primary', this.config.buttonColor);
@@ -322,11 +322,11 @@ class JSPopupSale {
       
       // Close button
       const closeBtn = document.createElement('button');
-      closeBtn.className = 'js-popup-sale-close';
+      closeBtn.className = 'js-popup-sales-close';
       closeBtn.setAttribute('aria-label', 'Close popup');
       closeBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/></svg>';
       closeBtn.onclick = () => {
-        this.trackEvent('js_popup_sale_closed', { close_type: 'cross' });
+        this.trackEvent('js_popup_sales_closed', { close_type: 'cross' });
         this.dismiss();
       };
       
@@ -337,15 +337,15 @@ class JSPopupSale {
         const safeImageUrl = this.sanitizeUrl(this.config.image);
         if (safeImageUrl) {
           const imageContainer = document.createElement('div');
-          imageContainer.className = 'js-popup-sale-image-container';
-          imageContainer.innerHTML = `<img src="${safeImageUrl}" alt="" class="js-popup-sale-image">`;
+          imageContainer.className = 'js-popup-sales-image-container';
+          imageContainer.innerHTML = `<img src="${safeImageUrl}" alt="" class="js-popup-sales-image">`;
           popup.appendChild(imageContainer);
         }
       }
       
       // Build content
       const content = document.createElement('div');
-      content.className = 'js-popup-sale-content';
+      content.className = 'js-popup-sales-content';
       this.buildContent(content);
 
       
@@ -367,7 +367,7 @@ class JSPopupSale {
         const img = document.createElement('img');
         img.src = safeImageUrl;
         img.alt = '';
-        img.className = 'js-popup-sale-image';
+        img.className = 'js-popup-sales-image';
         container.appendChild(img);
       }
     }
@@ -375,8 +375,8 @@ class JSPopupSale {
     // Title
     if (this.config.title) {
       const title = document.createElement('h2');
-      title.className = 'js-popup-sale-title';
-      title.id = 'js-popup-sale-title';
+      title.className = 'js-popup-sales-title';
+      title.id = 'js-popup-sales-title';
       title.innerHTML = parseMarkdown(this.config.title);
       container.appendChild(title);
     }
@@ -384,7 +384,7 @@ class JSPopupSale {
     // Subtitle
     if (this.config.subtitle) {
       const subtitle = document.createElement('p');
-      subtitle.className = 'js-popup-sale-subtitle';
+      subtitle.className = 'js-popup-sales-subtitle';
       subtitle.innerHTML = parseMarkdown(this.config.subtitle);
       container.appendChild(subtitle);
     }
@@ -392,7 +392,7 @@ class JSPopupSale {
     // Features
     if (this.config.features.length > 0) {
       const ul = document.createElement('ul');
-      ul.className = 'js-popup-sale-features';
+      ul.className = 'js-popup-sales-features';
       this.config.features.forEach(feature => {
         const li = document.createElement('li');
         li.innerHTML = parseMarkdown(feature);
@@ -407,7 +407,7 @@ class JSPopupSale {
       if (safeCtaUrl) {
         const cta = document.createElement('a');
         cta.href = safeCtaUrl;
-        cta.className = 'js-popup-sale-cta';
+        cta.className = 'js-popup-sales-cta';
         cta.target = '_blank';
         cta.rel = 'noopener noreferrer';
         cta.innerHTML = parseMarkdown(this.config.ctaText);
@@ -420,7 +420,7 @@ class JSPopupSale {
           const target = cta.getAttribute('target');
           
           // Track event first
-          this.trackEvent('js_popup_sale_primary_click');
+          this.trackEvent('js_popup_sales_primary_click');
           
           // Call onCtaClick callback
           this.config.onCtaClick?.();
@@ -557,7 +557,7 @@ class JSPopupSale {
         this.setupFocusTrap();
         
         // Track popup shown
-        this.trackEvent('js_popup_sale_shown');
+        this.trackEvent('js_popup_sales_shown');
         
         // Call onShow callback
         this.config.onShow?.();
@@ -653,7 +653,7 @@ class JSPopupSale {
     // Clean up all event listeners
     this.cleanup();
     
-    const container = document.getElementById('js-popup-sale-container');
+    const container = document.getElementById('js-popup-sales-container');
     if (container) {
       container.remove();
     }
@@ -735,30 +735,30 @@ const currentScriptRef = document.currentScript as HTMLScriptElement | null;
 function autoInit(savedScript?: HTMLScriptElement | null) {
   try {
     // Only log if debug mode is explicitly enabled
-    const debugMode = (window as unknown as { JSPopupSaleConfig?: PopupConfig }).JSPopupSaleConfig?.debug === true;
+    const debugMode = (window as unknown as { JSPopupSalesConfig?: PopupConfig }).JSPopupSalesConfig?.debug === true;
     const log = (...args: unknown[]) => { if (debugMode) console.log('[JS Popup Sales]', ...args); };
     
     log('AutoInit started');
     
-    // ПРІОРИТЕТ 1: Перевірка глобальної змінної window.JSPopupSaleConfig (для GTM)
-    if ((window as unknown as { JSPopupSaleConfig?: PopupConfig }).JSPopupSaleConfig) {
-      const config = (window as unknown as { JSPopupSaleConfig: PopupConfig }).JSPopupSaleConfig;
+    // ПРІОРИТЕТ 1: Перевірка глобальної змінної window.JSPopupSalesConfig (для GTM)
+    if ((window as unknown as { JSPopupSalesConfig?: PopupConfig }).JSPopupSalesConfig) {
+      const config = (window as unknown as { JSPopupSalesConfig: PopupConfig }).JSPopupSalesConfig;
       log('==========================================');
-      log('✓ Found config via window.JSPopupSaleConfig');
+      log('✓ Found config via window.JSPopupSalesConfig');
       log('Config:', config);
       log('==========================================');
       
-      const widget = new JSPopupSale(config);
+      const widget = new JSPopupSales(config);
       widget.init();
       
       // Expose both class and instance to global scope
-      (window as unknown as { JSPopupSale: typeof JSPopupSale }).JSPopupSale = JSPopupSale;
-      (window as unknown as { jsPopupSaleInstance: JSPopupSale }).jsPopupSaleInstance = widget;
+      (window as unknown as { JSPopupSales: typeof JSPopupSales }).JSPopupSales = JSPopupSales;
+      (window as unknown as { jsPopupSalesInstance: JSPopupSales }).jsPopupSalesInstance = widget;
       
       // Helper методи для зручності
-      (window as unknown as { showJSPopupSale: () => void }).showJSPopupSale = () => widget?.show();
-      (window as unknown as { hideJSPopupSale: () => void }).hideJSPopupSale = () => widget?.hide();
-      (window as unknown as { dismissJSPopupSale: () => void }).dismissJSPopupSale = () => widget?.dismiss();
+      (window as unknown as { showJSPopupSales: () => void }).showJSPopupSales = () => widget?.show();
+      (window as unknown as { hideJSPopupSales: () => void }).hideJSPopupSales = () => widget?.hide();
+      (window as unknown as { dismissJSPopupSales: () => void }).dismissJSPopupSales = () => widget?.dismiss();
       return;
     }
     
@@ -772,7 +772,7 @@ function autoInit(savedScript?: HTMLScriptElement | null) {
         return savedScript;
       }
       
-      // Стратегія 2: Пошук ВСІХ скриптів з js-popup-sale.js (для GTM)
+      // Стратегія 2: Пошук ВСІХ скриптів з js-popup-sales.js (для GTM)
       const allScripts = Array.from(document.querySelectorAll('script'));
       log(`Checking ${allScripts.length} script tags...`);
       
@@ -780,8 +780,8 @@ function autoInit(savedScript?: HTMLScriptElement | null) {
         const scriptEl = candidate as HTMLScriptElement;
         const src = scriptEl.src || scriptEl.getAttribute('data-gtmsrc') || '';
         
-        if (src.includes('js-popup-sale')) {
-          log('Found js-popup-sale script, checking dataset...', scriptEl.dataset);
+        if (src.includes('js-popup-sales')) {
+          log('Found js-popup-sales script, checking dataset...', scriptEl.dataset);
           if (hasValidConfig(scriptEl.dataset || {})) {
             log('✓ Found script via src/data-gtmsrc with valid config');
             return scriptEl;
@@ -791,13 +791,13 @@ function autoInit(savedScript?: HTMLScriptElement | null) {
         }
       }
       
-      // Стратегія 3: Пошук за data-js-popup-sale маркером (fallback)
-      const markedScripts = document.querySelectorAll('script[data-js-popup-sale]');
+      // Стратегія 3: Пошук за data-js-popup-sales маркером (fallback)
+      const markedScripts = document.querySelectorAll('script[data-js-popup-sales]');
       if (markedScripts.length > 0) {
         const candidate = markedScripts[markedScripts.length - 1] as HTMLScriptElement;
         log('Found marked script, checking dataset...', candidate.dataset);
         if (hasValidConfig(candidate.dataset || {})) {
-          log('✓ Found script via data-js-popup-sale marker');
+          log('✓ Found script via data-js-popup-sales marker');
           return candidate;
         }
       }
@@ -816,22 +816,22 @@ function autoInit(savedScript?: HTMLScriptElement | null) {
         console.warn('[JS Popup Sales] ==========================================');
         console.warn('[JS Popup Sales] For GTM: ensure your script tag has data-* attributes:');
         console.warn('[JS Popup Sales]   <script src="..." data-trigger="delay" data-title="..." ...>');
-        console.warn('[JS Popup Sales] Or add data-js-popup-sale marker to your script tag');
-        console.warn('[JS Popup Sales] For manual use: call window.showJSPopupSale({...config})');
+        console.warn('[JS Popup Sales] Or add data-js-popup-sales marker to your script tag');
+        console.warn('[JS Popup Sales] For manual use: call window.showJSPopupSales({...config})');
         console.warn('[JS Popup Sales] ==========================================');
       }
       
       // Експортуємо клас та helper функції для ручної ініціалізації
-      (window as unknown as { JSPopupSale: typeof JSPopupSale }).JSPopupSale = JSPopupSale;
+      (window as unknown as { JSPopupSales: typeof JSPopupSales }).JSPopupSales = JSPopupSales;
       
       // Helper функції для створення і показу попапу без autoInit
-      (window as unknown as { showJSPopupSale: (config?: Partial<PopupConfig>) => JSPopupSale }).showJSPopupSale = (customConfig?: Partial<PopupConfig>) => {
+      (window as unknown as { showJSPopupSales: (config?: Partial<PopupConfig>) => JSPopupSales }).showJSPopupSales = (customConfig?: Partial<PopupConfig>) => {
         const config = customConfig || {};
-        if (config.debug) console.log('[JS Popup Sales] Manual showJSPopupSale called with config:', config);
-        const widget = new JSPopupSale(config);
+        if (config.debug) console.log('[JS Popup Sales] Manual showJSPopupSales called with config:', config);
+        const widget = new JSPopupSales(config);
         widget.init();
         widget.show();
-        (window as unknown as { jsPopupSaleInstance: JSPopupSale }).jsPopupSaleInstance = widget;
+        (window as unknown as { jsPopupSalesInstance: JSPopupSales }).jsPopupSalesInstance = widget;
         return widget;
       };
       return;
@@ -844,24 +844,24 @@ function autoInit(savedScript?: HTMLScriptElement | null) {
     log('✓ Initializing with config:', config);
     log('==========================================');
     
-    const widget = new JSPopupSale(config);
+    const widget = new JSPopupSales(config);
     widget.init();
     
     // Expose both class and instance to global scope
-    (window as unknown as { JSPopupSale: typeof JSPopupSale }).JSPopupSale = JSPopupSale;
-    (window as unknown as { jsPopupSaleInstance: JSPopupSale }).jsPopupSaleInstance = widget;
+    (window as unknown as { JSPopupSales: typeof JSPopupSales }).JSPopupSales = JSPopupSales;
+    (window as unknown as { jsPopupSalesInstance: JSPopupSales }).jsPopupSalesInstance = widget;
     
     // Helper методи для зручності
-    (window as unknown as { showJSPopupSale: () => void }).showJSPopupSale = () => widget?.show();
-    (window as unknown as { hideJSPopupSale: () => void }).hideJSPopupSale = () => widget?.hide();
-    (window as unknown as { dismissJSPopupSale: () => void }).dismissJSPopupSale = () => widget?.dismiss();
+    (window as unknown as { showJSPopupSales: () => void }).showJSPopupSales = () => widget?.show();
+    (window as unknown as { hideJSPopupSales: () => void }).hideJSPopupSales = () => widget?.hide();
+    (window as unknown as { dismissJSPopupSales: () => void }).dismissJSPopupSales = () => widget?.dismiss();
   } catch (e) {
     console.error('[JS Popup Sales] Init error:', e);
     // Send error to dataLayer
     try {
       (window as unknown as { dataLayer: unknown[] }).dataLayer = (window as unknown as { dataLayer: unknown[] }).dataLayer || [];
       (window as unknown as { dataLayer: unknown[] }).dataLayer.push({
-        event: 'js_popup_sale_error',
+        event: 'js_popup_sales_error',
         error_type: 'init',
         error_message: (e as Error)?.message || String(e)
       });
@@ -879,4 +879,4 @@ if (document.readyState === 'loading') {
   setTimeout(() => autoInit(currentScriptRef), 100);
 }
 
-export { JSPopupSale };
+export { JSPopupSales };
