@@ -19,16 +19,16 @@ const JsPopupSaleDemo = () => {
     trigger: "delay",
     delay: "3000",
     scrollPercent: "50",
-    dismissDays: "7",
+    dismissDays: "0",
     title: "Don't lose customers! 🚀",
-    subtitle: "**AIbizMate** helps you find _missed leads_ in your inbox",
+    subtitle: "**AIbizMate** helps you find _missed leads_ in your Spam and Inbox",
     features: "✅ Automatic scanning\n🤖 AI-powered analysis\n📧 Instant notifications",
     ctaText: "Try for free",
     ctaUrl: "https://aibizmate.com",
-    image: "",
+    image: "https://js-popup-sale.pages.dev/blonde_red_dress_359x663.webp",
     theme: "light",
     position: "center",
-    layout: "vertical",
+    layout: "horizontal",
     inheritFont: "false",
     buttonColor: "#f97316",
     backgroundColor: "#ffffff",
@@ -43,7 +43,7 @@ const JsPopupSaleDemo = () => {
     // Debug
     debug: false,
     // Domain for generated code
-    domain: "yourdomain.com",
+    domain: "https://js-popup-sale.pages.dev",
   });
 
   const generateCode = () => {
@@ -87,7 +87,7 @@ const JsPopupSaleDemo = () => {
       .join("\n");
 
     // Use configured domain
-    const domain = config.domain.trim() || "yourdomain.com";
+    const domain = config.domain.trim().replace(/^https?:\/\//, '') || "js-popup-sale.pages.dev";
 
     // Generate code with window.JSPopupSaleConfig
     let code = `<!-- JS Popup Sales - GTM Recommended Method -->
@@ -99,7 +99,7 @@ const JsPopupSaleDemo = () => {
   // window.JSPopupSaleConfig.onHide = () => console.log('Popup hidden!');
   // window.JSPopupSaleConfig.onCtaClick = () => gtag('event', 'cta_click');
 </script>
-<script src="https://${domain}/js-popup-sale.js"></script>`;
+<script src="https://${domain}/js-popup-sales.js"></script>`;
 
     return code;
   };
@@ -292,14 +292,14 @@ const JsPopupSaleDemo = () => {
                 </div>
 
                 <div>
-                  <Label>Layout: vertical (image on top) or horizontal (image on left)</Label>
+                <Label>Layout: vertical (image on top) or horizontal (image on left)</Label>
                   <Select value={config.layout} onValueChange={(v) => setConfig({ ...config, layout: v })}>
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="vertical">vertical (default)</SelectItem>
-                      <SelectItem value="horizontal">horizontal</SelectItem>
+                      <SelectItem value="horizontal">horizontal (default)</SelectItem>
+                      <SelectItem value="vertical">vertical</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -511,9 +511,9 @@ const JsPopupSaleDemo = () => {
                 <Input
                   value={config.domain}
                   onChange={(e) => setConfig({ ...config, domain: e.target.value })}
-                  placeholder="yourdomain.com"
+                  placeholder="https://js-popup-sale.pages.dev"
                 />
-                <p className="text-xs text-muted-foreground mt-1">Domain where js-popup-sale.js is hosted</p>
+                <p className="text-xs text-muted-foreground mt-1">Domain where js-popup-sales.js is hosted</p>
               </div>
 
               <div className="bg-muted rounded-lg p-3 sm:p-4 overflow-x-auto max-w-full">
@@ -525,7 +525,7 @@ const JsPopupSaleDemo = () => {
               <div className="mt-4 sm:mt-6 space-y-4">
                 <div className="p-3 sm:p-4 bg-primary/5 border border-primary/20 rounded-lg">
                   <h3 className="font-semibold mb-2 flex items-center gap-2 text-sm sm:text-base">
-                    📦 Building the Widget
+                    📦 Building JS Popup Sales
                   </h3>
                   <div className="bg-background rounded p-2 sm:p-3 mb-2">
                     <code className="text-xs sm:text-sm font-mono">npm run build:popup-sale</code>
@@ -539,7 +539,7 @@ const JsPopupSaleDemo = () => {
                     </code>
                   </div>
                   <p className="text-xs sm:text-sm text-muted-foreground">
-                    Output: <code className="font-mono">dist-js-popup-sale/js-popup-sale.js</code>
+                    Output: <code className="font-mono">dist-js-popup-sale/js-popup-sales.js</code>
                   </p>
                 </div>
 
@@ -761,7 +761,7 @@ const JsPopupSaleDemo = () => {
     popupId: "my_promo_popup"
   };
 </script>
-<script src="https://yourdomain.com/js-popup-sale.js"></script>`}</code>
+<script src="https://js-popup-sale.pages.dev/js-popup-sales.js"></script>`}</code>
                       </pre>
                     </div>
 
@@ -787,7 +787,7 @@ const JsPopupSaleDemo = () => {
                       </p>
                       <pre className="text-xs bg-muted rounded p-2 overflow-x-auto">
                         <code>{`<script 
-  src="https://yourdomain.com/js-popup-sale.js"
+  src="https://js-popup-sale.pages.dev/js-popup-sales.js"
   data-js-popup-sale
   data-trigger="delay"
   data-image="https://example.com/image.png"
@@ -848,7 +848,7 @@ const JsPopupSaleDemo = () => {
                       <pre className="text-xs">
                         <code>{`<!-- Example using GTM variables -->
 <script 
-  src="https://yourdomain.com/js-popup-sale.js"
+  src="https://js-popup-sale.pages.dev/js-popup-sales.js"
   data-js-popup-sale
   data-trigger="{{PopupTrigger}}"
   data-delay="{{PopupDelay}}"
