@@ -23,7 +23,7 @@ A lightweight, customizable popup widget for promotional messages, lead capture,
 ```json
 {
   "scripts": {
-    "build:popup-sales": "vite build --config vite.js-popup-sale.config.ts"
+    "build:popup-sales": "vite build --config vite.js-popup-sales.config.ts"
   }
 }
 ```
@@ -34,7 +34,7 @@ A lightweight, customizable popup widget for promotional messages, lead capture,
 npm run build:popup-sales
 ```
 
-3. Output: `dist-js-popup-sale/js-popup-sales.js`
+3. Output: `dist-js-popup-sales/js-popup-sales.js`
 
 ### Deploy
 

@@ -5,12 +5,12 @@ import path from "path";
 export default defineConfig({
   build: {
     lib: {
-      entry: path.resolve(__dirname, "src/js-popup-sale/popup-sale.ts"),
+      entry: path.resolve(__dirname, "src/js-popup-sales/popup-sales.ts"),
       name: "JSPopupSales",
       formats: ["iife"],
       fileName: () => "js-popup-sales.js",
     },
-    outDir: "dist-js-popup-sale",
+    outDir: "dist-js-popup-sales",
     minify: "terser",
     terserOptions: {
       compress: {
