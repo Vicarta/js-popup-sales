@@ -274,34 +274,20 @@ export const popupStyles = `
   overflow-wrap: break-word;
 }
 
-/* Horizontal layout without image - center content */
+/* Horizontal layout without image - equal padding, centered button */
 .js-popup-sales.layout-horizontal.no-image {
   max-width: 420px !important;
   display: block !important;
 }
 
 .js-popup-sales.layout-horizontal.no-image .js-popup-sales-content {
-  padding: 40px 32px 32px !important;
-  text-align: center !important;
-}
-
-.js-popup-sales.layout-horizontal.no-image .js-popup-sales-title,
-.js-popup-sales.layout-horizontal.no-image .js-popup-sales-subtitle {
-  text-align: center !important;
-}
-
-.js-popup-sales.layout-horizontal.no-image .js-popup-sales-features {
-  display: inline-block;
-  text-align: left;
-  margin-left: auto;
-  margin-right: auto;
+  padding: 40px 32px 32px 32px !important;
 }
 
 .js-popup-sales.layout-horizontal.no-image .js-popup-sales-cta {
-  width: auto !important;
-  min-width: 200px;
-  display: inline-block !important;
-  margin: 0 auto;
+  display: block !important;
+  width: fit-content !important;
+  margin: 0 auto !important;
 }
 
 /* Accessibility: Reduced motion */
