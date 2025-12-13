@@ -282,11 +282,26 @@ export const popupStyles = `
 .js-popup-sales.layout-horizontal.no-image .js-popup-sales-content {
   padding: 40px 32px 32px;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.js-popup-sales.layout-horizontal.no-image .js-popup-sales-title,
+.js-popup-sales.layout-horizontal.no-image .js-popup-sales-subtitle {
+  text-align: center;
+  width: 100%;
 }
 
 .js-popup-sales.layout-horizontal.no-image .js-popup-sales-features {
   display: inline-block;
   text-align: left;
+}
+
+.js-popup-sales.layout-horizontal.no-image .js-popup-sales-cta {
+  width: auto;
+  min-width: 200px;
+  display: inline-block;
 }
 
 /* Accessibility: Reduced motion */
