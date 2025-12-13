@@ -263,7 +263,7 @@ export const popupStyles = `
   object-fit: contain;
   object-position: left center;
   border-radius: 0;
-  margin: 0 16px 0 0;
+  margin: 0 8px 0 0;
 }
 
 .js-popup-sales.layout-horizontal .js-popup-sales-content {
