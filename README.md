@@ -2,6 +2,14 @@
 
 A lightweight, customizable pop-up widget for advertising messages and announcements. Built on vanilla JavaScript, with no dependencies and using Shadow DOM for style isolation.
 
+## DEMO & Live Configurator
+
+Try the live demo and configure the widget directly in your browser:
+https://js-popup-sales.pages.dev/
+
+You are also welcome to use the production-ready script hosted on Cloudflare:
+https://js-popup-sales.pages.dev/js-popup-sales.js
+
 ## Features
 
 - 🎨 **Customizable themes** — Light, Dark, or Auto (system preference)
