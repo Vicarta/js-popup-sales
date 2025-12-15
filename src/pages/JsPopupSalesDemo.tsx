@@ -10,11 +10,11 @@ import { Card } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Copy, Check, Eye } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-
 const JsPopupSaleDemo = () => {
-  const { toast } = useToast();
+  const {
+    toast
+  } = useToast();
   const [copied, setCopied] = useState(false);
-
   const [config, setConfig] = useState({
     trigger: "delay",
     delay: "3000",
@@ -43,11 +43,10 @@ const JsPopupSaleDemo = () => {
     // Debug
     debug: false,
     // Domain for generated code
-    domain: "https://js-popup-sales.pages.dev",
+    domain: "https://js-popup-sales.pages.dev"
   });
-
   const generateCode = () => {
-    const featuresArray = config.features.split("\n").filter((f) => f.trim());
+    const featuresArray = config.features.split("\n").filter(f => f.trim());
 
     // Generate full config with all parameters - always include all values
     const configObj: Record<string, unknown> = {
@@ -72,7 +71,7 @@ const JsPopupSaleDemo = () => {
       enableTracking: config.enableTracking,
       popupId: config.popupId,
       closeOnCtaClick: config.closeOnCtaClick,
-      debug: config.debug,
+      debug: config.debug
     };
 
     // Add optional image only if it has content
@@ -81,10 +80,7 @@ const JsPopupSaleDemo = () => {
     }
 
     // Format JSON for readability
-    const configJson = JSON.stringify(configObj, null, 2)
-      .split("\n")
-      .map((line, i) => (i === 0 ? line : "  " + line))
-      .join("\n");
+    const configJson = JSON.stringify(configObj, null, 2).split("\n").map((line, i) => i === 0 ? line : "  " + line).join("\n");
 
     // Use configured domain
     const domain = config.domain.trim().replace(/^https?:\/\//, "") || "js-popup-sales.pages.dev";
@@ -100,47 +96,37 @@ const JsPopupSaleDemo = () => {
   // window.JSPopupSalesConfig.onCtaClick = () => gtag('event', 'cta_click');
 </script>
 <script src="https://${domain}/js-popup-sales.js"></script>`;
-
     return code;
   };
-
   const handleCopy = () => {
     navigator.clipboard.writeText(generateCode());
     setCopied(true);
     toast({
       title: "Code copied!",
-      description: "You can now paste it on your website",
+      description: "You can now paste it on your website"
     });
     setTimeout(() => setCopied(false), 2000);
   };
-
   const handlePreview = () => {
     // Clear any existing widget
     const existing = document.getElementById("js-popup-sales-container");
     if (existing) existing.remove();
 
     // Import and show widget
-    import("@/js-popup-sales/popup-sales").then(({ JSPopupSales }) => {
+    import("@/js-popup-sales/popup-sales").then(({
+      JSPopupSales
+    }) => {
       const widget = new JSPopupSales({
         trigger: "manual",
         dismissDays: parseInt(config.dismissDays),
         title: config.title,
         subtitle: config.subtitle,
-        features: config.features.split("\n").filter((f) => f.trim()),
+        features: config.features.split("\n").filter(f => f.trim()),
         ctaText: config.ctaText,
         ctaUrl: config.ctaUrl,
         image: config.image || undefined,
         theme: config.theme as "light" | "dark" | "auto",
-        position: config.position as
-          | "center"
-          | "top-left"
-          | "top-center"
-          | "top-right"
-          | "center-left"
-          | "center-right"
-          | "bottom-left"
-          | "bottom-center"
-          | "bottom-right",
+        position: config.position as "center" | "top-left" | "top-center" | "top-right" | "center-left" | "center-right" | "bottom-left" | "bottom-center" | "bottom-right",
         layout: config.layout as "vertical" | "horizontal",
         inheritFont: config.inheritFont === "true",
         buttonColor: config.buttonColor || undefined,
@@ -151,26 +137,19 @@ const JsPopupSaleDemo = () => {
         enableTracking: config.enableTracking,
         popupId: config.popupId,
         closeOnCtaClick: config.closeOnCtaClick,
-        debug: config.debug,
+        debug: config.debug
       });
       widget.init();
       widget.show();
     });
   };
-
-  return (
-    <div className="min-h-screen bg-background overflow-x-hidden flex flex-col">
+  return <div className="min-h-screen bg-background overflow-x-hidden flex flex-col">
       <header className="border-b border-border py-4 px-4">
         <div className="container mx-auto flex items-center justify-between">
           <Link to="/" className="text-xl font-bold hover:text-primary transition-colors">
             JS Popup Sales Demo
           </Link>
-          <a
-            href="https://github.com/Vicarta/js-popup-sales"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-          >
+          <a href="https://github.com/Vicarta/js-popup-sales" target="_blank" rel="noopener noreferrer" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
             GitHub →
           </a>
         </div>
@@ -180,9 +159,7 @@ const JsPopupSaleDemo = () => {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-6 sm:mb-8 lg:mb-12">
             <h1 className="text-xl sm:text-2xl lg:text-4xl font-bold mb-2 sm:mb-3 lg:mb-4">JS Popup Sales Demo</h1>
-            <p className="text-muted-foreground text-xs sm:text-sm lg:text-lg px-2">
-              Configure widget parameters and get the code to embed on your website for free
-            </p>
+            <p className="text-muted-foreground text-xs sm:text-sm lg:text-lg px-2">Configure widget parameters and get the JavaScript code to embed on your website for free</p>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-8">
@@ -195,7 +172,10 @@ const JsPopupSaleDemo = () => {
               <div className="space-y-3 sm:space-y-4">
                 <div>
                   <Label>Display Trigger</Label>
-                  <Select value={config.trigger} onValueChange={(v) => setConfig({ ...config, trigger: v })}>
+                  <Select value={config.trigger} onValueChange={v => setConfig({
+                  ...config,
+                  trigger: v
+                })}>
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
@@ -208,92 +188,88 @@ const JsPopupSaleDemo = () => {
                   </Select>
                 </div>
 
-                {config.trigger === "delay" && (
-                  <div>
+                {config.trigger === "delay" && <div>
                     <Label>Delay (ms)</Label>
-                    <Input
-                      type="number"
-                      value={config.delay}
-                      onChange={(e) => setConfig({ ...config, delay: e.target.value })}
-                    />
-                  </div>
-                )}
+                    <Input type="number" value={config.delay} onChange={e => setConfig({
+                  ...config,
+                  delay: e.target.value
+                })} />
+                  </div>}
 
-                {config.trigger === "scroll" && (
-                  <div>
+                {config.trigger === "scroll" && <div>
                     <Label>Page Scroll (%)</Label>
-                    <Input
-                      type="number"
-                      value={config.scrollPercent}
-                      onChange={(e) => setConfig({ ...config, scrollPercent: e.target.value })}
-                    />
-                  </div>
-                )}
+                    <Input type="number" value={config.scrollPercent} onChange={e => setConfig({
+                  ...config,
+                  scrollPercent: e.target.value
+                })} />
+                  </div>}
 
                 <div>
                   <Label>Hide after dismiss (days)</Label>
-                  <Input
-                    type="number"
-                    value={config.dismissDays}
-                    onChange={(e) => setConfig({ ...config, dismissDays: e.target.value })}
-                  />
+                  <Input type="number" value={config.dismissDays} onChange={e => setConfig({
+                  ...config,
+                  dismissDays: e.target.value
+                })} />
                   <p className="text-xs text-muted-foreground mt-1">0 = always show</p>
                 </div>
 
                 <div>
                   <Label>Title (already bold, supports markdown and emoji)</Label>
-                  <Input
-                    value={config.title}
-                    onChange={(e) => setConfig({ ...config, title: e.target.value })}
-                    placeholder="**Bold** _italic_ and emoji 🚀"
-                  />
+                  <Input value={config.title} onChange={e => setConfig({
+                  ...config,
+                  title: e.target.value
+                })} placeholder="**Bold** _italic_ and emoji 🚀" />
                 </div>
 
                 <div>
                   <Label>Subtitle</Label>
-                  <Textarea
-                    value={config.subtitle}
-                    onChange={(e) => setConfig({ ...config, subtitle: e.target.value })}
-                    rows={2}
-                  />
+                  <Textarea value={config.subtitle} onChange={e => setConfig({
+                  ...config,
+                  subtitle: e.target.value
+                })} rows={2} />
                 </div>
 
                 <div>
                   <Label>Features (one per line)</Label>
-                  <Textarea
-                    value={config.features}
-                    onChange={(e) => setConfig({ ...config, features: e.target.value })}
-                    rows={4}
-                  />
+                  <Textarea value={config.features} onChange={e => setConfig({
+                  ...config,
+                  features: e.target.value
+                })} rows={4} />
                 </div>
 
                 <div>
                   <Label>Button Text</Label>
-                  <Input value={config.ctaText} onChange={(e) => setConfig({ ...config, ctaText: e.target.value })} />
+                  <Input value={config.ctaText} onChange={e => setConfig({
+                  ...config,
+                  ctaText: e.target.value
+                })} />
                 </div>
 
                 <div>
                   <Label>Button URL</Label>
-                  <Input value={config.ctaUrl} onChange={(e) => setConfig({ ...config, ctaUrl: e.target.value })} />
+                  <Input value={config.ctaUrl} onChange={e => setConfig({
+                  ...config,
+                  ctaUrl: e.target.value
+                })} />
                 </div>
 
                 <div>
                   <Label>Image URL (optional)</Label>
-                  <Input
-                    value={config.image}
-                    onChange={(e) => setConfig({ ...config, image: e.target.value })}
-                    placeholder="https://..."
-                  />
+                  <Input value={config.image} onChange={e => setConfig({
+                  ...config,
+                  image: e.target.value
+                })} placeholder="https://..." />
                   <p className="text-xs text-muted-foreground mt-1">
-                    {config.layout === "vertical"
-                      ? "Horizontal image (480×200 px, 2.4:1)"
-                      : "Vertical image (150×350 px, 1:2.3)"}
+                    {config.layout === "vertical" ? "Horizontal image (480×200 px, 2.4:1)" : "Vertical image (150×350 px, 1:2.3)"}
                   </p>
                 </div>
 
                 <div>
                   <Label>Layout: vertical (image on top) or horizontal (image on left)</Label>
-                  <Select value={config.layout} onValueChange={(v) => setConfig({ ...config, layout: v })}>
+                  <Select value={config.layout} onValueChange={v => setConfig({
+                  ...config,
+                  layout: v
+                })}>
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
@@ -307,7 +283,10 @@ const JsPopupSaleDemo = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                   <div>
                     <Label>Theme</Label>
-                    <Select value={config.theme} onValueChange={(v) => setConfig({ ...config, theme: v })}>
+                    <Select value={config.theme} onValueChange={v => setConfig({
+                    ...config,
+                    theme: v
+                  })}>
                       <SelectTrigger>
                         <SelectValue />
                       </SelectTrigger>
@@ -321,7 +300,10 @@ const JsPopupSaleDemo = () => {
 
                   <div>
                     <Label>Position</Label>
-                    <Select value={config.position} onValueChange={(v) => setConfig({ ...config, position: v })}>
+                    <Select value={config.position} onValueChange={v => setConfig({
+                    ...config,
+                    position: v
+                  })}>
                       <SelectTrigger>
                         <SelectValue />
                       </SelectTrigger>
@@ -342,7 +324,10 @@ const JsPopupSaleDemo = () => {
 
                 <div>
                   <Label>Use Website Font: false (Inter font will be used), true (font of the site will be used)</Label>
-                  <Select value={config.inheritFont} onValueChange={(v) => setConfig({ ...config, inheritFont: v })}>
+                  <Select value={config.inheritFont} onValueChange={v => setConfig({
+                  ...config,
+                  inheritFont: v
+                })}>
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
@@ -355,44 +340,42 @@ const JsPopupSaleDemo = () => {
 
                 <div>
                   <Label>Button Color (HEX)</Label>
-                  <Input
-                    value={config.buttonColor}
-                    onChange={(e) => setConfig({ ...config, buttonColor: e.target.value })}
-                    placeholder="#f97316"
-                  />
+                  <Input value={config.buttonColor} onChange={e => setConfig({
+                  ...config,
+                  buttonColor: e.target.value
+                })} placeholder="#f97316" />
                 </div>
 
                 <div>
                   <Label>Background Color (HEX)</Label>
-                  <Input
-                    value={config.backgroundColor}
-                    onChange={(e) => setConfig({ ...config, backgroundColor: e.target.value })}
-                    placeholder="#ffffff"
-                  />
+                  <Input value={config.backgroundColor} onChange={e => setConfig({
+                  ...config,
+                  backgroundColor: e.target.value
+                })} placeholder="#ffffff" />
                 </div>
 
                 <div>
                   <Label>Text Color (HEX)</Label>
-                  <Input
-                    value={config.textColor}
-                    onChange={(e) => setConfig({ ...config, textColor: e.target.value })}
-                    placeholder="#000000"
-                  />
+                  <Input value={config.textColor} onChange={e => setConfig({
+                  ...config,
+                  textColor: e.target.value
+                })} placeholder="#000000" />
                 </div>
 
                 <div>
                   <Label>Button Radius (px)</Label>
-                  <Input
-                    type="number"
-                    value={config.buttonRadius}
-                    onChange={(e) => setConfig({ ...config, buttonRadius: e.target.value })}
-                    placeholder="10"
-                  />
+                  <Input type="number" value={config.buttonRadius} onChange={e => setConfig({
+                  ...config,
+                  buttonRadius: e.target.value
+                })} placeholder="10" />
                 </div>
 
                 <div>
                   <Label>Content Alignment</Label>
-                  <Select value={config.contentAlign} onValueChange={(v) => setConfig({ ...config, contentAlign: v })}>
+                  <Select value={config.contentAlign} onValueChange={v => setConfig({
+                  ...config,
+                  contentAlign: v
+                })}>
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
@@ -410,22 +393,20 @@ const JsPopupSaleDemo = () => {
 
                   <div className="space-y-3">
                     <div className="flex items-center space-x-2">
-                      <Checkbox
-                        id="closeOnCtaClick"
-                        checked={config.closeOnCtaClick}
-                        onCheckedChange={(checked) => setConfig({ ...config, closeOnCtaClick: checked as boolean })}
-                      />
+                      <Checkbox id="closeOnCtaClick" checked={config.closeOnCtaClick} onCheckedChange={checked => setConfig({
+                      ...config,
+                      closeOnCtaClick: checked as boolean
+                    })} />
                       <Label htmlFor="closeOnCtaClick" className="cursor-pointer">
                         Close popup on CTA click
                       </Label>
                     </div>
 
                     <div className="flex items-center space-x-2">
-                      <Checkbox
-                        id="debug"
-                        checked={config.debug}
-                        onCheckedChange={(checked) => setConfig({ ...config, debug: checked as boolean })}
-                      />
+                      <Checkbox id="debug" checked={config.debug} onCheckedChange={checked => setConfig({
+                      ...config,
+                      debug: checked as boolean
+                    })} />
                       <Label htmlFor="debug" className="cursor-pointer">
                         Enable debug mode (console logs)
                       </Label>
@@ -438,29 +419,25 @@ const JsPopupSaleDemo = () => {
                   <h3 className="font-semibold mb-3">GTM Tracking</h3>
 
                   <div className="flex items-center space-x-2 mb-3">
-                    <Checkbox
-                      id="enableTracking"
-                      checked={config.enableTracking}
-                      onCheckedChange={(checked) => setConfig({ ...config, enableTracking: checked as boolean })}
-                    />
+                    <Checkbox id="enableTracking" checked={config.enableTracking} onCheckedChange={checked => setConfig({
+                    ...config,
+                    enableTracking: checked as boolean
+                  })} />
                     <Label htmlFor="enableTracking" className="cursor-pointer">
                       Enable dataLayer tracking
                     </Label>
                   </div>
 
-                  {config.enableTracking && (
-                    <div>
+                  {config.enableTracking && <div>
                       <Label>Popup ID</Label>
-                      <Input
-                        value={config.popupId}
-                        onChange={(e) => setConfig({ ...config, popupId: e.target.value })}
-                        placeholder="js_popup_sales"
-                      />
+                      <Input value={config.popupId} onChange={e => setConfig({
+                    ...config,
+                    popupId: e.target.value
+                  })} placeholder="js_popup_sales" />
                       <p className="text-xs text-muted-foreground mt-1">
                         Unique identifier for this popup in dataLayer events
                       </p>
-                    </div>
-                  )}
+                    </div>}
                 </div>
               </div>
 
@@ -469,18 +446,13 @@ const JsPopupSaleDemo = () => {
                   <Eye className="w-4 h-4 mr-2" />
                   Preview
                 </Button>
-                <Button
-                  onClick={() => {
-                    localStorage.removeItem("js_popup_sales_dismissed");
-                    toast({
-                      title: "Dismiss reset",
-                      description: "The widget will now show again",
-                    });
-                  }}
-                  variant="outline"
-                  className="w-full"
-                  size="lg"
-                >
+                <Button onClick={() => {
+                localStorage.removeItem("js_popup_sales_dismissed");
+                toast({
+                  title: "Dismiss reset",
+                  description: "The widget will now show again"
+                });
+              }} variant="outline" className="w-full" size="lg">
                   Reset Dismiss
                 </Button>
               </div>
@@ -491,28 +463,23 @@ const JsPopupSaleDemo = () => {
               <div className="mb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <h2 className="text-lg sm:text-xl font-semibold">Generated Code</h2>
                 <Button onClick={handleCopy} variant="outline" size="sm">
-                  {copied ? (
-                    <>
+                  {copied ? <>
                       <Check className="w-4 h-4 mr-2" />
                       Copied
-                    </>
-                  ) : (
-                    <>
+                    </> : <>
                       <Copy className="w-4 h-4 mr-2" />
                       Copy
-                    </>
-                  )}
+                    </>}
                 </Button>
               </div>
 
               {/* Domain Input */}
               <div className="mb-4">
                 <Label>Script Domain</Label>
-                <Input
-                  value={config.domain}
-                  onChange={(e) => setConfig({ ...config, domain: e.target.value })}
-                  placeholder="https://js-popup-sales.pages.dev"
-                />
+                <Input value={config.domain} onChange={e => setConfig({
+                ...config,
+                domain: e.target.value
+              })} placeholder="https://js-popup-sales.pages.dev" />
                 <p className="text-xs text-muted-foreground mt-1">Domain where js-popup-sales.js is hosted</p>
               </div>
 
@@ -992,8 +959,6 @@ const JsPopupSaleDemo = () => {
       </main>
 
       <Footer />
-    </div>
-  );
+    </div>;
 };
-
 export default JsPopupSaleDemo;
