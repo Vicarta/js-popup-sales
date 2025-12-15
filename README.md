@@ -1,6 +1,6 @@
 # JS Popup Sales Widget
 
-A lightweight, customizable popup widget for promotional messages, lead capture, and announcements. Built with vanilla JavaScript, zero dependencies, and Shadow DOM for style isolation.
+A lightweight, customizable JavaScript pop-up widget for advertising messages and announcements. Built on vanilla JavaScript, with no dependencies and using Shadow DOM for style isolation.
 
 ## Features
 
@@ -31,7 +31,7 @@ A lightweight, customizable popup widget for promotional messages, lead capture,
 2. Run the build:
 
 ```bash
-npm run build:js-popup-sales
+npm run build
 ```
 
 3. Output: `dist-js-popup-sales/js-popup-sales.js`
@@ -300,4 +300,4 @@ MIT License with restrictions on sale. See [LICENSE](LICENSE) for details.
 
 You are free to use, modify, and distribute this software, but you may not sell it as a standalone product.
 
-The project was vibecoded with Lovable
+The project was vibecoded with Lovable)
