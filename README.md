@@ -1,6 +1,6 @@
 # JS Popup Sales Widget
 
-A lightweight, customizable JavaScript pop-up widget for advertising messages and announcements. Built on vanilla JavaScript, with no dependencies and using Shadow DOM for style isolation.
+A lightweight, customizable pop-up widget for advertising messages and announcements. Built on vanilla JavaScript, with no dependencies and using Shadow DOM for style isolation.
 
 ## Features
 
