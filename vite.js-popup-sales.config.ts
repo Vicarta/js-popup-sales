@@ -13,12 +13,7 @@ export default defineConfig({
     },
     outDir: "dist",
     emptyOutDir: false,
-    minify: "terser",
-    terserOptions: {
-      compress: {
-        drop_console: true,
-      },
-    },
+    minify: true,
     rollupOptions: {
       output: {
         inlineDynamicImports: true,
