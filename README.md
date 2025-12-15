@@ -53,7 +53,7 @@ Upload `js-popup-sales.js` to your CDN or static hosting.
     title: "Don't lose customers! 🚀",
     subtitle: "**AIbizMate** helps you find _missed leads_ in your inbox",
     features: ["✅ Automatic scanning", "🤖 AI-powered analysis", "📧 Instant notifications"],
-    ctaText: "Try for free",
+    ctaText: "Find for free",
     ctaUrl: "https://aibizmate.com",
     theme: "light",
     position: "center",
@@ -103,7 +103,7 @@ Upload `js-popup-sales.js` to your CDN or static hosting.
 | `title`           | string   | `"Don't lose customers! 🚀"` | Popup title (supports markdown)                    |
 | `subtitle`        | string   | —                            | Subtitle text (supports markdown)                  |
 | `features`        | string[] | —                            | List of features (supports markdown)               |
-| `ctaText`         | string   | `"Try for free"`             | CTA button text                                    |
+| `ctaText`         | string   | `"Find for free"`            | CTA button text                                    |
 | `ctaUrl`          | string   | —                            | CTA button URL                                     |
 | `image`           | string   | —                            | Image URL                                          |
 | `theme`           | string   | `"light"`                    | `"light"`, `"dark"`, `"auto"`                      |

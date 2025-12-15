@@ -23,7 +23,7 @@ const JsPopupSaleDemo = () => {
     title: "Don't lose customers! 🚀",
     subtitle: "**AIbizMate** helps you find _missed leads_ in your Spam and Inbox",
     features: "✅ Automatic scanning\n🤖 AI-powered analysis\n📧 Instant notifications",
-    ctaText: "Try for free",
+    ctaText: "Find for free",
     ctaUrl: "https://aibizmate.com",
     image: "https://js-popup-sales.pages.dev/blonde_red_dress_359x663.webp",
     theme: "light",
@@ -87,7 +87,7 @@ const JsPopupSaleDemo = () => {
       .join("\n");
 
     // Use configured domain
-    const domain = config.domain.trim().replace(/^https?:\/\//, '') || "js-popup-sales.pages.dev";
+    const domain = config.domain.trim().replace(/^https?:\/\//, "") || "js-popup-sales.pages.dev";
 
     // Generate code with window.JSPopupSalesConfig
     let code = `<!-- JS Popup Sales - GTM Recommended Method -->
@@ -292,7 +292,7 @@ const JsPopupSaleDemo = () => {
                 </div>
 
                 <div>
-                <Label>Layout: vertical (image on top) or horizontal (image on left)</Label>
+                  <Label>Layout: vertical (image on top) or horizontal (image on left)</Label>
                   <Select value={config.layout} onValueChange={(v) => setConfig({ ...config, layout: v })}>
                     <SelectTrigger>
                       <SelectValue />
@@ -712,7 +712,8 @@ const JsPopupSaleDemo = () => {
                     <li className="flex gap-2">
                       <span className="text-muted-foreground">1.3</span>
                       <span>
-                        Name the tag, e.g.: <code className="bg-muted px-2 py-0.5 rounded">"JS Popup Sales Widget"</code>
+                        Name the tag, e.g.:{" "}
+                        <code className="bg-muted px-2 py-0.5 rounded">"JS Popup Sales Widget"</code>
                       </span>
                     </li>
                     <li className="flex gap-2">
