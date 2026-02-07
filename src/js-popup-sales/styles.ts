@@ -37,6 +37,11 @@ export const popupStyles = `
   padding: 20px;
   background: transparent;
   backdrop-filter: none;
+  pointer-events: none;
+}
+
+.js-popup-sales-overlay[class*="position-"]:not(.js-popup-sales-overlay.position-center) .js-popup-sales {
+  pointer-events: auto;
 }
 
 .position-top-left { align-items: flex-start; justify-content: flex-start; }

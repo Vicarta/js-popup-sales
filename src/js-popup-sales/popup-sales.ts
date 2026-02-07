@@ -63,6 +63,10 @@ class JSPopupSales {
   private previousActiveElement: Element | null = null;
   private resolvedTheme: 'light' | 'dark' = 'light';
 
+  private get isModal(): boolean {
+    return this.config.position === 'center';
+  }
+
   constructor(config: PopupConfig = {}) {
     // Validate numeric values with clamping
     const delay = clampNumber(config.delay, 100, 60000, DEFAULT_CONFIG.delay);
@@ -312,7 +316,7 @@ class JSPopupSales {
       
       // ARIA attributes for accessibility
       popup.setAttribute('role', 'dialog');
-      popup.setAttribute('aria-modal', 'true');
+      popup.setAttribute('aria-modal', this.isModal ? 'true' : 'false');
       popup.setAttribute('aria-labelledby', 'js-popup-sales-title');
       
       // Apply custom colors via CSS variables
@@ -547,16 +551,16 @@ class JSPopupSales {
       if (this.overlay) {
         this.isVisible = true;
         
-        // Save current focus for restoration
-        this.previousActiveElement = document.activeElement;
-        
         this.overlay.style.display = 'flex';
         // Trigger reflow for animation
         void this.overlay.offsetHeight;
         this.overlay.classList.add('show');
         
-        // Setup focus trap and focus first element
-        this.setupFocusTrap();
+        // Only trap focus for modal (center) popups
+        if (this.isModal) {
+          this.previousActiveElement = document.activeElement;
+          this.setupFocusTrap();
+        }
         
         // Track popup shown
         this.trackEvent('js_popup_sales_shown');
@@ -614,17 +618,17 @@ class JSPopupSales {
         this.isVisible = false;
         this.overlay.classList.remove('show');
         
-        // Clean up focus trap
-        if (this.focusTrapHandler && this.shadowRoot) {
-          this.shadowRoot.removeEventListener('keydown', this.focusTrapHandler);
-          this.focusTrapHandler = null;
+        // Clean up focus trap and restore focus only for modal popups
+        if (this.isModal) {
+          if (this.focusTrapHandler && this.shadowRoot) {
+            this.shadowRoot.removeEventListener('keydown', this.focusTrapHandler);
+            this.focusTrapHandler = null;
+          }
+          if (this.previousActiveElement instanceof HTMLElement) {
+            this.previousActiveElement.focus();
+          }
+          this.previousActiveElement = null;
         }
-        
-        // Restore focus to previous element
-        if (this.previousActiveElement && this.previousActiveElement instanceof HTMLElement) {
-          this.previousActiveElement.focus();
-        }
-        this.previousActiveElement = null;
         
         setTimeout(() => {
           if (this.overlay) {
