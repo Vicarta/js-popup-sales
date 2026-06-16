@@ -10,6 +10,9 @@ https://js-popup-sales.pages.dev/
 You are also welcome to use the production-ready script hosted on Cloudflare:
 https://js-popup-sales.pages.dev/js-popup-sales.js
 
+Legacy-compatible script path:
+https://js-popup-sales.pages.dev/js-popup-sale.js
+
 ## Features
 
 - 🎨 **Customizable themes** — Light, Dark, or Auto (system preference)
@@ -26,27 +29,20 @@ https://js-popup-sales.pages.dev/js-popup-sales.js
 
 ### Build the widget
 
-1. Add build script to `package.json`:
-
-```json
-{
-  "scripts": {
-    "build:js-popup-sales": "vite build --config vite.js-popup-sales.config.ts"
-  }
-}
-```
-
-2. Run the build:
+1. Run the build:
 
 ```bash
-npm run build
+npm run build:js-popup-sales
 ```
 
-3. Output: `dist-js-popup-sales/js-popup-sales.js`
+2. Output:
+
+- `dist/js-popup-sales.js` — canonical file
+- `dist/js-popup-sale.js` — legacy-compatible alias
 
 ### Deploy
 
-Upload `js-popup-sales.js` to your CDN or static hosting.
+Upload `js-popup-sales.js` to your CDN or static hosting. If an older tag expects `js-popup-sale.js`, upload the alias too.
 
 ## Usage
 
@@ -75,6 +71,7 @@ Upload `js-popup-sales.js` to your CDN or static hosting.
     enableTracking: true,
     popupId: "js_popup_sales",
     closeOnCtaClick: true,
+    modal: false,
     debug: false
   };
 </script>
@@ -126,6 +123,7 @@ Upload `js-popup-sales.js` to your CDN or static hosting.
 | `enableTracking`  | boolean  | `false`                      | Enable GTM dataLayer events                        |
 | `popupId`         | string   | `"js_popup_sales"`           | Unique ID for tracking                             |
 | `closeOnCtaClick` | boolean  | `true`                       | Close popup when CTA clicked                       |
+| `modal`           | boolean  | `false`                      | Block page interaction behind the popup            |
 | `debug`           | boolean  | `false`                      | Enable console logging                             |
 
 ### Positions
@@ -267,9 +265,9 @@ When disabled (default), no console logs are produced in production.
 
 ## Accessibility
 
-- ARIA `role="dialog"` and `aria-modal="true"`
+- ARIA `role="dialog"` and `aria-modal` reflect modal mode
 - `aria-labelledby` references popup title
-- Focus trap when popup is open
+- Focus trap when `modal: true`
 - `Escape` key closes popup
 - `prefers-reduced-motion` support
 - Links have `rel="noopener noreferrer"`

@@ -40,6 +40,7 @@ const JsPopupSaleDemo = () => {
     popupId: "js_popup_sales",
     // Behavior
     closeOnCtaClick: true,
+    modal: false,
     // Debug
     debug: false,
     // Domain for generated code
@@ -71,6 +72,7 @@ const JsPopupSaleDemo = () => {
       enableTracking: config.enableTracking,
       popupId: config.popupId,
       closeOnCtaClick: config.closeOnCtaClick,
+      modal: config.modal,
       debug: config.debug
     };
 
@@ -86,7 +88,7 @@ const JsPopupSaleDemo = () => {
     const domain = config.domain.trim().replace(/^https?:\/\//, "") || "js-popup-sales.pages.dev";
 
     // Generate code with window.JSPopupSalesConfig
-    let code = `<!-- JS Popup Sales - GTM Recommended Method -->
+    const code = `<!-- JS Popup Sales - GTM Recommended Method -->
 <script>
   window.JSPopupSalesConfig = ${configJson};
   
@@ -137,6 +139,7 @@ const JsPopupSaleDemo = () => {
         enableTracking: config.enableTracking,
         popupId: config.popupId,
         closeOnCtaClick: config.closeOnCtaClick,
+        modal: config.modal,
         debug: config.debug
       });
       widget.init();
@@ -403,6 +406,16 @@ const JsPopupSaleDemo = () => {
                     </div>
 
                     <div className="flex items-center space-x-2">
+                      <Checkbox id="modal" checked={config.modal} onCheckedChange={checked => setConfig({
+                      ...config,
+                      modal: checked as boolean
+                    })} />
+                      <Label htmlFor="modal" className="cursor-pointer">
+                        Block page interaction while open
+                      </Label>
+                    </div>
+
+                    <div className="flex items-center space-x-2">
                       <Checkbox id="debug" checked={config.debug} onCheckedChange={checked => setConfig({
                       ...config,
                       debug: checked as boolean
@@ -506,7 +519,7 @@ const JsPopupSaleDemo = () => {
                     </code>
                   </div>
                   <p className="text-xs sm:text-sm text-muted-foreground">
-                    Output: <code className="font-mono">dist-js-popup-sales/js-popup-sales.js</code>
+                    Output: <code className="font-mono">dist/js-popup-sales.js</code>
                   </p>
                 </div>
 

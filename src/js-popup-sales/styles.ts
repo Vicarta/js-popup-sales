@@ -18,29 +18,30 @@ export const popupStyles = `
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(4px);
+  background: transparent;
+  backdrop-filter: none;
   z-index: 999999;
   display: none;
   align-items: center;
   justify-content: center;
   opacity: 0;
   transition: opacity 0.3s ease;
+  padding: 20px;
+  pointer-events: none;
+}
+
+.js-popup-sales-overlay.modal {
+  padding: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  pointer-events: auto;
 }
 
 .js-popup-sales-overlay.show {
   opacity: 1;
 }
 
-/* Position variants - consolidated using CSS variables */
-.js-popup-sales-overlay[class*="position-"]:not(.js-popup-sales-overlay.position-center) {
-  padding: 20px;
-  background: transparent;
-  backdrop-filter: none;
-  pointer-events: none;
-}
-
-.js-popup-sales-overlay[class*="position-"]:not(.js-popup-sales-overlay.position-center) .js-popup-sales {
+.js-popup-sales-overlay .js-popup-sales {
   pointer-events: auto;
 }
 

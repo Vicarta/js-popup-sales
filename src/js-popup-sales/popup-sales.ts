@@ -38,6 +38,7 @@ interface PopupConfig {
   popupId?: string;
   // Behavior
   closeOnCtaClick?: boolean;
+  modal?: boolean;
   // Debug mode
   debug?: boolean;
   // Callbacks
@@ -64,7 +65,7 @@ class JSPopupSales {
   private resolvedTheme: 'light' | 'dark' = 'light';
 
   private get isModal(): boolean {
-    return this.config.position === 'center';
+    return this.config.modal === true;
   }
 
   constructor(config: PopupConfig = {}) {
@@ -284,6 +285,7 @@ class JSPopupSales {
       // Create container
       const container = document.createElement('div');
       container.id = 'js-popup-sales-container';
+      container.style.pointerEvents = this.isModal ? 'auto' : 'none';
       
       // Create shadow DOM for style isolation
       this.shadowRoot = container.attachShadow({ mode: 'open' });
@@ -313,6 +315,10 @@ class JSPopupSales {
       const popup = document.createElement('div');
       const hasImage = this.config.layout === 'horizontal' && this.config.image && this.sanitizeUrl(this.config.image);
       popup.className = `js-popup-sales theme-${this.resolvedTheme} layout-${this.config.layout} align-${this.config.contentAlign}${!hasImage && this.config.layout === 'horizontal' ? ' no-image' : ''}`;
+      
+      if (this.isModal) {
+        this.overlay.classList.add('modal');
+      }
       
       // ARIA attributes for accessibility
       popup.setAttribute('role', 'dialog');
@@ -556,7 +562,7 @@ class JSPopupSales {
         void this.overlay.offsetHeight;
         this.overlay.classList.add('show');
         
-        // Only trap focus for modal (center) popups
+        // Only trap focus for explicitly modal popups
         if (this.isModal) {
           this.previousActiveElement = document.activeElement;
           this.setupFocusTrap();
@@ -618,7 +624,7 @@ class JSPopupSales {
         this.isVisible = false;
         this.overlay.classList.remove('show');
         
-        // Clean up focus trap and restore focus only for modal popups
+        // Clean up focus trap and restore focus only for explicitly modal popups
         if (this.isModal) {
           if (this.focusTrapHandler && this.shadowRoot) {
             this.shadowRoot.removeEventListener('keydown', this.focusTrapHandler);
@@ -684,7 +690,7 @@ function safeParseInt(value: string | undefined, defaultValue?: number): number 
 
 // Перевірка чи є корисна конфігурація в dataset
 function hasValidConfig(dataset: DOMStringMap): boolean {
-  const configKeys = ['trigger', 'delay', 'scrollPercent', 'title', 'subtitle', 'ctaText', 'ctaUrl', 'features', 'image', 'theme', 'position', 'layout', 'enableTracking', 'popupId'];
+  const configKeys = ['trigger', 'delay', 'scrollPercent', 'title', 'subtitle', 'ctaText', 'ctaUrl', 'features', 'image', 'theme', 'position', 'layout', 'enableTracking', 'popupId', 'modal'];
   return configKeys.some(key => key in dataset && dataset[key]);
 }
 
@@ -730,6 +736,7 @@ function parseConfigFromScript(script: HTMLScriptElement): PopupConfig {
     enableTracking: data.enableTracking === 'true',
     popupId: data.popupId,
     closeOnCtaClick: data.closeOnCtaClick !== 'false',
+    modal: data.modal === 'true',
     debug: data.debug === 'true',
   };
 }
@@ -737,34 +744,64 @@ function parseConfigFromScript(script: HTMLScriptElement): PopupConfig {
 // Зберігаємо посилання на скрипт ДО того, як воно стане null
 const currentScriptRef = document.currentScript as HTMLScriptElement | null;
 
+function exposeGlobals(widget?: JSPopupSales): void {
+  (window as unknown as { JSPopupSales: typeof JSPopupSales }).JSPopupSales = JSPopupSales;
+  (window as unknown as { JSPopupSale: typeof JSPopupSales }).JSPopupSale = JSPopupSales;
+
+  if (widget) {
+    (window as unknown as { jsPopupSalesInstance: JSPopupSales }).jsPopupSalesInstance = widget;
+    (window as unknown as { jsPopupSaleInstance: JSPopupSales }).jsPopupSaleInstance = widget;
+
+    (window as unknown as { showJSPopupSales: () => void }).showJSPopupSales = () => widget.show();
+    (window as unknown as { hideJSPopupSales: () => void }).hideJSPopupSales = () => widget.hide();
+    (window as unknown as { dismissJSPopupSales: () => void }).dismissJSPopupSales = () => widget.dismiss();
+
+    (window as unknown as { showJSPopupSale: () => void }).showJSPopupSale = () => widget.show();
+    (window as unknown as { hideJSPopupSale: () => void }).hideJSPopupSale = () => widget.hide();
+    (window as unknown as { dismissJSPopupSale: () => void }).dismissJSPopupSale = () => widget.dismiss();
+    return;
+  }
+
+  const show = (customConfig?: Partial<PopupConfig>): JSPopupSales => {
+    const config = customConfig || {};
+    if (config.debug) console.log('[JS Popup Sales] Manual showJSPopupSales called with config:', config);
+    const manualWidget = new JSPopupSales(config);
+    manualWidget.init();
+    manualWidget.show();
+    (window as unknown as { jsPopupSalesInstance: JSPopupSales }).jsPopupSalesInstance = manualWidget;
+    (window as unknown as { jsPopupSaleInstance: JSPopupSales }).jsPopupSaleInstance = manualWidget;
+    return manualWidget;
+  };
+
+  (window as unknown as { showJSPopupSales: typeof show }).showJSPopupSales = show;
+  (window as unknown as { showJSPopupSale: typeof show }).showJSPopupSale = show;
+}
+
 // Auto-initialize з підтримкою GTM та fallback стратегіями
 function autoInit(savedScript?: HTMLScriptElement | null) {
   try {
     // Only log if debug mode is explicitly enabled
-    const debugMode = (window as unknown as { JSPopupSalesConfig?: PopupConfig }).JSPopupSalesConfig?.debug === true;
+    const globalConfig = (
+      (window as unknown as { JSPopupSalesConfig?: PopupConfig }).JSPopupSalesConfig ||
+      (window as unknown as { JSPopupSaleConfig?: PopupConfig }).JSPopupSaleConfig
+    );
+    const debugMode = globalConfig?.debug === true;
     const log = (...args: unknown[]) => { if (debugMode) console.log('[JS Popup Sales]', ...args); };
     
     log('AutoInit started');
     
     // ПРІОРИТЕТ 1: Перевірка глобальної змінної window.JSPopupSalesConfig (для GTM)
-    if ((window as unknown as { JSPopupSalesConfig?: PopupConfig }).JSPopupSalesConfig) {
-      const config = (window as unknown as { JSPopupSalesConfig: PopupConfig }).JSPopupSalesConfig;
+    if (globalConfig) {
+      const config = globalConfig;
       log('==========================================');
-      log('✓ Found config via window.JSPopupSalesConfig');
+      log('✓ Found config via window.JSPopupSalesConfig/JSPopupSaleConfig');
       log('Config:', config);
       log('==========================================');
       
       const widget = new JSPopupSales(config);
       widget.init();
       
-      // Expose both class and instance to global scope
-      (window as unknown as { JSPopupSales: typeof JSPopupSales }).JSPopupSales = JSPopupSales;
-      (window as unknown as { jsPopupSalesInstance: JSPopupSales }).jsPopupSalesInstance = widget;
-      
-      // Helper методи для зручності
-      (window as unknown as { showJSPopupSales: () => void }).showJSPopupSales = () => widget?.show();
-      (window as unknown as { hideJSPopupSales: () => void }).hideJSPopupSales = () => widget?.hide();
-      (window as unknown as { dismissJSPopupSales: () => void }).dismissJSPopupSales = () => widget?.dismiss();
+      exposeGlobals(widget);
       return;
     }
     
@@ -786,7 +823,7 @@ function autoInit(savedScript?: HTMLScriptElement | null) {
         const scriptEl = candidate as HTMLScriptElement;
         const src = scriptEl.src || scriptEl.getAttribute('data-gtmsrc') || '';
         
-        if (src.includes('js-popup-sales')) {
+        if (src.includes('js-popup-sales') || src.includes('js-popup-sale')) {
           log('Found js-popup-sales script, checking dataset...', scriptEl.dataset);
           if (hasValidConfig(scriptEl.dataset || {})) {
             log('✓ Found script via src/data-gtmsrc with valid config');
@@ -798,7 +835,7 @@ function autoInit(savedScript?: HTMLScriptElement | null) {
       }
       
       // Стратегія 3: Пошук за data-js-popup-sales маркером (fallback)
-      const markedScripts = document.querySelectorAll('script[data-js-popup-sales]');
+      const markedScripts = document.querySelectorAll('script[data-js-popup-sales], script[data-js-popup-sale]');
       if (markedScripts.length > 0) {
         const candidate = markedScripts[markedScripts.length - 1] as HTMLScriptElement;
         log('Found marked script, checking dataset...', candidate.dataset);
@@ -827,19 +864,7 @@ function autoInit(savedScript?: HTMLScriptElement | null) {
         console.warn('[JS Popup Sales] ==========================================');
       }
       
-      // Експортуємо клас та helper функції для ручної ініціалізації
-      (window as unknown as { JSPopupSales: typeof JSPopupSales }).JSPopupSales = JSPopupSales;
-      
-      // Helper функції для створення і показу попапу без autoInit
-      (window as unknown as { showJSPopupSales: (config?: Partial<PopupConfig>) => JSPopupSales }).showJSPopupSales = (customConfig?: Partial<PopupConfig>) => {
-        const config = customConfig || {};
-        if (config.debug) console.log('[JS Popup Sales] Manual showJSPopupSales called with config:', config);
-        const widget = new JSPopupSales(config);
-        widget.init();
-        widget.show();
-        (window as unknown as { jsPopupSalesInstance: JSPopupSales }).jsPopupSalesInstance = widget;
-        return widget;
-      };
+      exposeGlobals();
       return;
     }
     
@@ -853,14 +878,7 @@ function autoInit(savedScript?: HTMLScriptElement | null) {
     const widget = new JSPopupSales(config);
     widget.init();
     
-    // Expose both class and instance to global scope
-    (window as unknown as { JSPopupSales: typeof JSPopupSales }).JSPopupSales = JSPopupSales;
-    (window as unknown as { jsPopupSalesInstance: JSPopupSales }).jsPopupSalesInstance = widget;
-    
-    // Helper методи для зручності
-    (window as unknown as { showJSPopupSales: () => void }).showJSPopupSales = () => widget?.show();
-    (window as unknown as { hideJSPopupSales: () => void }).hideJSPopupSales = () => widget?.hide();
-    (window as unknown as { dismissJSPopupSales: () => void }).dismissJSPopupSales = () => widget?.dismiss();
+    exposeGlobals(widget);
   } catch (e) {
     console.error('[JS Popup Sales] Init error:', e);
     // Send error to dataLayer

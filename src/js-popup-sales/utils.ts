@@ -177,6 +177,8 @@ export const DEFAULT_CONFIG = {
   popupId: "js_popup_sales",
   // Close popup on CTA click
   closeOnCtaClick: true,
+  // Non-modal by default so the page remains interactive while popup is open
+  modal: false,
   // Debug mode
   debug: false,
 };

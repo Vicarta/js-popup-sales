@@ -1,5 +1,18 @@
 import { defineConfig } from "vite";
 import path from "path";
+import { copyFileSync, existsSync } from "fs";
+
+const legacyAliasPlugin = () => ({
+  name: "legacy-js-popup-sale-alias",
+  closeBundle() {
+    const outputFile = path.resolve(__dirname, "dist/js-popup-sales.js");
+    const legacyFile = path.resolve(__dirname, "dist/js-popup-sale.js");
+
+    if (existsSync(outputFile)) {
+      copyFileSync(outputFile, legacyFile);
+    }
+  },
+});
 
 // Vite config for building the embeddable popup sales widget
 // Build with: npx vite build --config vite.js-popup-sales.config.ts
@@ -26,4 +39,5 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  plugins: [legacyAliasPlugin()],
 });
